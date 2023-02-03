@@ -2,13 +2,9 @@ import { play, stop, changeAttribute } from '../synth/Synth';
 import './keyboard.css'
 
 interface keyCodes {
-  notes:      { [key: number]: string },
-  waveShapes: { [key: number]: string },
-  octaves:    number[],
-}
-
-interface e {
-  keyCode: number
+  notes       : { [key: number]: string },
+  waveShapes  : { [key: number]: string },
+  octaves     : number[],
 }
 
 interface CustomTouchEvent extends TouchEvent {
@@ -67,10 +63,10 @@ export default function Keyboard() {
   document.addEventListener('touchend'  , handleNoteEnd   as EventListener);
 
   const keys = [
-    ['`', 1, 2, 3, 4, 5, 6, 7, 8, 9, '0', ''],
-    ['Q', 'W', 'E', 'R', '', '', '', '', ''],
-    ['S', 'D', '', 'G', 'H', 'J', ''],
-    ['Z','X','C','V','B','N','M', ',']
+    ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ''],
+    ['Q', 'W', 'E', 'R',  '',  '',  '',  '',  ''              ],
+    ['S', 'D',  '', 'G', 'H', 'J',  ''                        ],
+    ['Z', 'X', 'C', 'V', 'B', 'N', 'M', ','                   ]
   ] 
 
   return (
