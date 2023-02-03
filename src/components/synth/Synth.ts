@@ -34,7 +34,6 @@ const transpose = (frequency: number) => {
   }
   return +frequency.toFixed(2)
 }
-
   
 export const play = (note: string) => {
   const i = keys.findIndex(key => key.note === note)
