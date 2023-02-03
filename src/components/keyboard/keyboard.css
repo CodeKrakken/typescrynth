@@ -1,0 +1,36 @@
+@import '../../index.css';
+
+#keyboard {
+  position: absolute;
+  left: 25vw;
+  right: 25vw;
+  top: 25vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center
+}
+
+.keyboard-row {
+  display: flex;
+  flex-direction: row
+}
+
+.circle-outer {
+  width: 50px;
+  height: 50px;
+  border: thin solid white;
+  display: flex;
+  justify-content: center;
+  border-radius: 100%;
+  margin: 0.5vw
+}
+
+.circle-inner {
+  width: 50px;
+  margin: auto auto;
+  text-align: center
+}
+
+.invisible {
+  border: none
+}
