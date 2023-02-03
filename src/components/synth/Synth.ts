@@ -1,9 +1,9 @@
-export default function Synth() {
+// export default function Synth(): any {
 
   const context = new AudioContext();
   // context.resume()
 
-  const settings = {
+  const settings: Record<string, number | string> = {
     octave  : 4,
     waveShape: 'sine'
   }
@@ -30,36 +30,38 @@ export default function Synth() {
     return key
   }))
     
-  this.play = (note) => {
+  export const play = (note: string) => {
     const i = keys.findIndex(key => key.note === note)
-    keys[i].oscillator.type = settings.waveShape
+    keys[i].oscillator.type = settings.waveShape as OscillatorType
     keys[i].oscillator.frequency.value = transpose(keys[i].frequency)
     console.log(transpose(keys[i].frequency))
     keys[i].gain.gain.value = 1
   }
 
-  this.stop = (note) => {
+  export const stop = (note: string) => {
     const i = keys.findIndex(key => key.note === note)
     
     keys[i].gain.gain.value = 0
   }
 
-  this.changeAttribute = (a, v) => {
+  
 
-    settings[a] = v
+  export const changeAttribute = (a: string, v: number | string) => {
+
+    settings[a as string] = v
 
     keys.forEach(key => {
       if(key.gain.gain.value > 0) {
-        this.play(key.note)
+        play(key.note)
       }
     })
   }
      
-  const transpose = (frequency) => {
+  const transpose = (frequency: number) => {
 
     for ( let i = 0 ; i < settings.octave; i++ ) {
       frequency *= 2
     }
     return +frequency.toFixed(2)
   }
-}
+// }

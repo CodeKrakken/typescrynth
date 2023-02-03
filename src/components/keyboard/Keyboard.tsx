@@ -1,4 +1,4 @@
-import Synth from '../synth/Synth';
+import { play, stop, changeAttribute } from '../synth/Synth';
 import './keyboard.css'
 
 interface keyCodes {
@@ -16,8 +16,6 @@ interface CustomTouchEvent extends TouchEvent {
 }
 
 export default function Keyboard() {
-
-  const synth = new Synth()
 
   const keyCodes: keyCodes = {
     notes   : {
@@ -44,22 +42,22 @@ export default function Keyboard() {
     
     if (e.keyCode in keyCodes.notes && !playingNotes.includes(e.keyCode)) {
       playingNotes.push(e.keyCode)
-      synth.play(keyCodes.notes[e.keyCode])
+      play(keyCodes.notes[e.keyCode])
     }
 
     if (keyCodes.octaves.includes(e.keyCode)) {
-      synth.changeAttribute('octave', keyCodes.octaves.indexOf(e.keyCode))
+      changeAttribute('octave', keyCodes.octaves.indexOf(e.keyCode))
     }
 
     if (e.keyCode in keyCodes.waveShapes) {
-      synth.changeAttribute('waveType', keyCodes.waveShapes[e.keyCode])
+      changeAttribute('waveShape', keyCodes.waveShapes[e.keyCode])
     }
   }
 
   function handleNoteEnd(e: CustomTouchEvent) {
     if (playingNotes.includes(e.keyCode)) {
       playingNotes = playingNotes.filter(note => note !== e.keyCode)
-      synth.stop(keyCodes.notes[e.keyCode])
+      stop(keyCodes.notes[e.keyCode])
     }
   }
 
