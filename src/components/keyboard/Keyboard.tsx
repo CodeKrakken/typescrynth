@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { play, stop, changeAttribute } from '../synth/Synth';
 import './keyboard.css'
 
@@ -31,13 +32,17 @@ export default function Keyboard() {
       82: 'square'
     }
   }
+
+  const [playingNotes, setPlayingNotes] = useState([])
   
-  let playingNotes: number[] = []
+  // let playingNotes: number[] = []
 
   function handleNoteStart(e: CustomTouchEvent) {
+
+    console.log(e.keyCode)
     
     if (e.keyCode in keyCodes.notes && !playingNotes.includes(e.keyCode)) {
-      playingNotes.push(e.keyCode)
+      setPlayingNotes(playingNotes.concat(e.keyCode))
       play(keyCodes.notes[e.keyCode])
     }
 
@@ -52,7 +57,7 @@ export default function Keyboard() {
 
   function handleNoteEnd(e: CustomTouchEvent) {
     if (playingNotes.includes(e.keyCode)) {
-      playingNotes = playingNotes.filter(note => note !== e.keyCode)
+      setPlayingNotes(playingNotes.filter(note => note !== e.keyCode))
       stop(keyCodes.notes[e.keyCode])
     }
   }
@@ -71,16 +76,19 @@ export default function Keyboard() {
 
   return (
     <div id="keyboard">
-      {keys.map(row => 
+      {keys.map((row: string[]) => 
         <div className="keyboard-row">
           {
-            row.map((key, i) => 
-              <span className={`circle-outer${!key ? ' invisible' : ''}`}>
-                <span className="circle-inner">
-                  {key}
+            row.map((key: string, i: number) => {
+              console.log(key.charCodeAt(0))
+              return <>
+                <span className={`circle-outer${!key ? ' invisible' : ''}`} style={playingNotes.includes(key.charCodeAt(0)) ? {background: 'red'} : {}}>
+                  <span className="circle-inner">
+                    {key}
+                  </span>
                 </span>
-              </span>
-            )
+              </>
+            })
           }
         </div>
       )}
