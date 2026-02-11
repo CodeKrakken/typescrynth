@@ -33,7 +33,7 @@ export default function Keyboard() {
     }
   }
 
-  const [playingNotes, setPlayingNotes] = useState([])
+  const [playingNotes, setPlayingNotes] = useState<number[]>([])
   
   // let playingNotes: number[] = []
 
