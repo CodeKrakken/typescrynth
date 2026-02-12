@@ -22,7 +22,7 @@ export default function Keyboard() {
       71 : 'F#',  5: 'F#',  66 : 'G' , 11: 'G' ,
       72 : 'G#',  4: 'G#',  78 : 'A' , 45: 'A' ,
       74 : 'A#', 38: 'A#',  77 : 'B' , 46: 'B' ,
-     188 : 'C+', 43: 'C+'    
+     188 : 'C+', 44: 'C+'    
     },
     octaves : [192, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48],
     waveShapes   :  { 
@@ -41,9 +41,6 @@ export default function Keyboard() {
   }, [playingNotes]) 
   
   function handleNoteStart(e: CustomTouchEvent) {
-
-    console.log('Handling Note Start')
-    console.log(playingNotes)
     
     if (e.keyCode in keyCodes.notes && !playingNotesRef.current.includes(e.keyCode)) {
       setPlayingNotes([...playingNotesRef.current, e.keyCode])
@@ -93,6 +90,7 @@ export default function Keyboard() {
         <div className="keyboard-row">
           {
             row.map((key: string, i: number) => {
+              console.log(key.charCodeAt(0))
               return <>
                 <span className={`circle-outer${!key ? ' invisible' : ''}`} style={playingNotes.includes(key.charCodeAt(0)) ? {background: 'red'} : {}}>
                   <span className="circle-inner">
