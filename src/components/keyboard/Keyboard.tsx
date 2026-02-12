@@ -41,10 +41,12 @@ export default function Keyboard() {
   }, [playingNotes]) 
   
   function handleNoteStart(e: CustomTouchEvent) {
+
+    const keyCode: number = e.keyCode === 188 ? 44 : e.keyCode
     
-    if (e.keyCode in keyCodes.notes && !playingNotesRef.current.includes(e.keyCode)) {
-      setPlayingNotes([...playingNotesRef.current, e.keyCode])
-      play(keyCodes.notes[e.keyCode])
+    if (keyCode in keyCodes.notes && !playingNotesRef.current.includes(keyCode)) {
+      setPlayingNotes([...playingNotesRef.current, keyCode])
+      play(keyCodes.notes[keyCode])
     }
 
     if (keyCodes.octaves.includes(e.keyCode)) {
@@ -57,9 +59,12 @@ export default function Keyboard() {
   }
 
   function handleNoteEnd(e: CustomTouchEvent) {
-    if (playingNotesRef.current.includes(e.keyCode)) {
-      setPlayingNotes(playingNotesRef.current.filter(note => note !== e.keyCode))
-      stop(keyCodes.notes[e.keyCode])
+    
+    const keyCode: number = e.keyCode === 188 ? 44 : e.keyCode
+
+    if (playingNotesRef.current.includes(keyCode)) {
+      setPlayingNotes(playingNotesRef.current.filter(note => note !== keyCode))
+      stop(keyCodes.notes[keyCode])
     }
   }
 
