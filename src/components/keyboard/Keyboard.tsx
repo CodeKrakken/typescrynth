@@ -3,7 +3,7 @@ import { play, stop, changeAttribute } from '../synth/Synth';
 import './keyboard.css'
 
 interface keyCodes {
-  notes       : { [key: number]: string },
+  notes       : { [key: string]: number[] },
   waveShapes  : { [key: number]: string },
   octaves     : number[],
 }
@@ -15,14 +15,11 @@ interface CustomTouchEvent extends TouchEvent {
 export default function Keyboard() {
 
   const keyCodes: keyCodes = {
-    notes   : {
-      90 : 'C' ,  6: 'C' ,  83 : 'C#',  1: 'C#',
-      88 : 'D' ,  7: 'D' ,  68 : 'D#',  2: 'D#',
-      67 : 'E' ,  8: 'E' ,  86 : 'F' ,  9: 'F' ,
-      71 : 'F#',  5: 'F#',  66 : 'G' , 11: 'G' ,
-      72 : 'G#',  4: 'G#',  78 : 'A' , 45: 'A' ,
-      74 : 'A#', 38: 'A#',  77 : 'B' , 46: 'B' ,
-     188 : 'C+', 44: 'C+'    
+    notes : {
+      'C' : [90, 6],  'C#': [83, 1],  'D' : [88, 7],  'D#': [68, 2], 
+      'E' : [67, 8],  'F' : [86, 9],  'F#': [71, 5],  'G' : [66, 11], 
+      'G#': [72, 4],  'A' : [78, 45], 'A#': [74, 38], 'B' : [77, 46], 
+      'C+': [188, 44]
     },
     octaves : [192, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48],
     waveShapes   :  { 
@@ -42,11 +39,12 @@ export default function Keyboard() {
   
   function handleNoteStart(e: CustomTouchEvent) {
 
-    const keyCode: number = e.keyCode === 188 ? 44 : e.keyCode
-    
-    if (keyCode in keyCodes.notes && !playingNotesRef.current.includes(keyCode)) {
-      setPlayingNotes([...playingNotesRef.current, keyCode])
-      play(keyCodes.notes[keyCode])
+    if (Object.values(keyCodes.notes).flat().includes(e.keyCode) && !playingNotesRef.current.includes(e.keyCode)) {
+      setPlayingNotes([...playingNotesRef.current, e.keyCode])
+
+      const noteToPlay = Object.entries(keyCodes.notes).filter(([_, codes]) => codes.includes(e.keyCode))[0][0]
+
+      play(noteToPlay)
     }
 
     if (keyCodes.octaves.includes(e.keyCode)) {
@@ -60,11 +58,12 @@ export default function Keyboard() {
 
   function handleNoteEnd(e: CustomTouchEvent) {
     
-    const keyCode: number = e.keyCode === 188 ? 44 : e.keyCode
+    if (playingNotesRef.current.includes(e.keyCode)) {
+      setPlayingNotes(playingNotesRef.current.filter(note => note !== e.keyCode))
+      
+      const noteToStop = Object.entries(keyCodes.notes).filter(([_, codes]) => codes.includes(e.keyCode))[0][0]
 
-    if (playingNotesRef.current.includes(keyCode)) {
-      setPlayingNotes(playingNotesRef.current.filter(note => note !== keyCode))
-      stop(keyCodes.notes[keyCode])
+      stop(noteToStop)
     }
   }
 
@@ -95,9 +94,13 @@ export default function Keyboard() {
         <div className="keyboard-row">
           {
             row.map((key: string, i: number) => {
-              console.log(key.charCodeAt(0))
+              console.log(playingNotes)
               return <>
-                <span className={`circle-outer${!key ? ' invisible' : ''}`} style={playingNotes.includes(key.charCodeAt(0)) ? {background: 'red'} : {}}>
+                <span className={`circle-outer${!key ? ' invisible' : ''}`} style={
+                  // playingNotes.includes(key) ? 
+                  {background: 'red'} 
+                  //  : {}
+                  }>
                   <span className="circle-inner">
                     {key}
                   </span>
