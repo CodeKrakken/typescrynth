@@ -74,6 +74,16 @@ export default function Keyboard() {
     }
   }
 
+  function randomColour() {
+    const r = Math.floor(Math.random() * 256)
+    const g = Math.floor(Math.random() * 256)
+    const b = Math.floor(Math.random() * 256)
+    const a = Math.floor(Math.random() * 11)/10
+
+
+    return `rgba(${r}, ${g}, ${b}, ${a})`
+  }
+
   useEffect(() => {  
       // keyboard interactions
     document.addEventListener     ('keydown',     handleNoteStart as EventListener);  
@@ -99,7 +109,7 @@ export default function Keyboard() {
           {
             row.map((key: string, i: number) => {
               return <>
-                <span className={`circle-outer${!key ? ' invisible' : ''}`} style={playingNotes.includes(key) ? {background: 'red'} : {}}
+                <span className={`circle-outer${!key ? ' invisible' : ''}`} style={playingNotes.includes(key) ? {background: randomColour()} : {}}
                   >
                   <span className="circle-inner">
                     {key}
