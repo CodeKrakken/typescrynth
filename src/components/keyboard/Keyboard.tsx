@@ -3,12 +3,13 @@ import { play, stop, changeAttribute } from '../synth/Synth';
 import './keyboard.css'
 
 interface keyCodes {
-  notes       : { [key: string]: number[] },
+  notes       : { [key: string]: string },
   waveShapes  : { [key: number]: string },
   octaves     : number[],
 }
 
 interface CustomTouchEvent extends TouchEvent {
+  key: string
   keyCode: number
 }
 
@@ -16,10 +17,10 @@ export default function Keyboard() {
 
   const keyCodes: keyCodes = {
     notes : {
-      'C' : [90, 6],  'C#': [83, 1],  'D' : [88, 7],  'D#': [68, 2], 
-      'E' : [67, 8],  'F' : [86, 9],  'F#': [71, 5],  'G' : [66, 11], 
-      'G#': [72, 4],  'A' : [78, 45], 'A#': [74, 38], 'B' : [77, 46], 
-      'C+': [188, 44]
+      z   : 'C' , s: 'C#' , x:  'D' , d : 'D#', 
+      c   : 'E' , v: 'F'  , g:  'F#', b : 'G' , 
+      h   : 'G#', n: 'A'  , j:  'A#', m : 'B' , 
+      ',' : 'C+'
     },
     octaves : [192, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48],
     waveShapes   :  { 
@@ -30,7 +31,14 @@ export default function Keyboard() {
     }
   }
 
-  const [playingNotes, setPlayingNotes] = useState<number[]>([])
+  const keys = [
+    ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ''],
+    ['q', 'w', 'e', 'r',  '',  '',  '',  '',  ''              ],
+    ['s', 'd',  '', 'g', 'h', 'j',  ''                        ],
+    ['z', 'x', 'c', 'v', 'b', 'n', 'm', ','                   ]
+  ] 
+
+  const [playingNotes, setPlayingNotes] = useState<string[]>([])
   const playingNotesRef = useRef(playingNotes)  
 
   useEffect(() => {  
@@ -39,11 +47,10 @@ export default function Keyboard() {
   
   function handleNoteStart(e: CustomTouchEvent) {
 
-    if (Object.values(keyCodes.notes).flat().includes(e.keyCode) && !playingNotesRef.current.includes(e.keyCode)) {
-      setPlayingNotes([...playingNotesRef.current, e.keyCode])
+    if (Object.keys(keyCodes.notes).includes(e.key) && !playingNotesRef.current.includes(e.key)) {
+      setPlayingNotes([...playingNotesRef.current, e.key])
 
-      const noteToPlay = Object.entries(keyCodes.notes).filter(([_, codes]) => codes.includes(e.keyCode))[0][0]
-
+      const noteToPlay = keyCodes.notes[e.key]
       play(noteToPlay)
     }
 
@@ -58,33 +65,30 @@ export default function Keyboard() {
 
   function handleNoteEnd(e: CustomTouchEvent) {
     
-    if (playingNotesRef.current.includes(e.keyCode)) {
-      setPlayingNotes(playingNotesRef.current.filter(note => note !== e.keyCode))
-      
-      const noteToStop = Object.entries(keyCodes.notes).filter(([_, codes]) => codes.includes(e.keyCode))[0][0]
+    if (playingNotesRef.current.includes(e.key)) {
+      setPlayingNotes(playingNotes => playingNotes.filter(note => note !== e.key))      
+
+      const noteToStop = keyCodes.notes[e.key]
 
       stop(noteToStop)
     }
   }
 
-  const keys = [
-    ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ''],
-    ['Q', 'W', 'E', 'R',  '',  '',  '',  '',  ''              ],
-    ['S', 'D',  '', 'G', 'H', 'J',  ''                        ],
-    ['Z', 'X', 'C', 'V', 'B', 'N', 'M', ','                   ]
-  ] 
-
   useEffect(() => {  
-    document.addEventListener('keydown', handleNoteStart as EventListener);  
-    document.addEventListener('keyup', handleNoteEnd as EventListener);  
-    document.addEventListener('touchstart', handleNoteStart as EventListener);  
-    document.addEventListener('touchend', handleNoteEnd as EventListener);  
+      // keyboard interactions
+    document.addEventListener     ('keydown',     handleNoteStart as EventListener);  
+    document.addEventListener     ('keyup',       handleNoteEnd   as EventListener);  
+      // touchscreen interactions
+    document.addEventListener     ('touchstart',  handleNoteStart as EventListener);  
+    document.addEventListener     ('touchend',    handleNoteEnd   as EventListener);  
       
     return () => {  
-      document.removeEventListener('keydown', handleNoteStart as EventListener);  
-      document.removeEventListener('keyup', handleNoteEnd as EventListener);  
-      document.removeEventListener('touchstart', handleNoteStart as EventListener);  
-      document.removeEventListener('touchend', handleNoteEnd as EventListener);  
+        // keyboard interactions
+      document.removeEventListener('keydown',     handleNoteStart as EventListener);  
+      document.removeEventListener('keyup',       handleNoteEnd   as EventListener);  
+        // touchscreen interactions
+      document.removeEventListener('touchstart',  handleNoteStart as EventListener);  
+      document.removeEventListener('touchend',    handleNoteEnd   as EventListener);  
     };  
   }, []);
 
@@ -94,13 +98,9 @@ export default function Keyboard() {
         <div className="keyboard-row">
           {
             row.map((key: string, i: number) => {
-              console.log(playingNotes)
               return <>
-                <span className={`circle-outer${!key ? ' invisible' : ''}`} style={
-                  // playingNotes.includes(key) ? 
-                  {background: 'red'} 
-                  //  : {}
-                  }>
+                <span className={`circle-outer${!key ? ' invisible' : ''}`} style={playingNotes.includes(key) ? {background: 'red'} : {}}
+                  >
                   <span className="circle-inner">
                     {key}
                   </span>
