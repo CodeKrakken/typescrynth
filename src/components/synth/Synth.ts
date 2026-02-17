@@ -67,7 +67,7 @@ export function Synth() {
     const now = context.currentTime
 
     keys.forEach(key => {
-      if (key.gain.gain.value > 0) {
+      if (key.isPlaying) {
         key.oscillator.frequency.setValueAtTime(
           transpose(key.frequency),
           now
