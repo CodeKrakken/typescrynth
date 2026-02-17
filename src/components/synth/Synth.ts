@@ -1,9 +1,16 @@
+import { Settings } from "http2";
+
 export function Synth() {
 
   const context = new AudioContext();
 
-  const settings: Record<string, number | string> = {
-    octave  : 4,
+  type settings = {
+    octave: number
+    waveShape: string
+  }
+
+  const settings: settings = {
+    octave: 4,
     waveShape: 'sine'
   }
 
@@ -18,7 +25,8 @@ export function Synth() {
       oscillator: context.createOscillator(),
       gain: context.createGain(),
       note: note,
-      frequency: frequency
+      frequency: frequency,
+      isPlaying: false
     }
 
     key.oscillator.connect(key.gain)
@@ -41,23 +49,40 @@ export function Synth() {
     const i = keys.findIndex(key => key.note === note)
     keys[i].oscillator.type = settings.waveShape as OscillatorType
     keys[i].oscillator.frequency.value = transpose(keys[i].frequency)
-    keys[i].gain.gain.value = 1
+    const now = context.currentTime
+    keys[i].gain.gain.cancelScheduledValues(now)
+    keys[i].gain.gain.setTargetAtTime(1, now, 0.01)
+    keys[i].isPlaying = true
   }
 
   const stop = (note: string) => {
     const i = keys.findIndex(key => key.note === note)
-    keys[i].gain.gain.value = 0
+    const now = context.currentTime
+    keys[i].gain.gain.cancelScheduledValues(now)
+    keys[i].gain.gain.setTargetAtTime(0, now, 0.01)
+    keys[i].isPlaying = false
   }
 
-  const changeAttribute = (a: string, v: number | string) => {
-
-    settings[a as string] = v
+  const updatePlayingNotes = () => {
+    const now = context.currentTime
 
     keys.forEach(key => {
-      if(key.gain.gain.value > 0) {
-        play(key.note)
+      if (key.gain.gain.value > 0) {
+        key.oscillator.frequency.setValueAtTime(
+          transpose(key.frequency),
+          now
+        )
       }
     })
+  }
+
+  const changeAttribute = <K extends keyof settings>(
+    key: K,
+    value: settings[K]
+  ) => {
+    settings[key] = value
+
+    updatePlayingNotes()
   }
 
   return {
@@ -66,6 +91,3 @@ export function Synth() {
     changeAttribute
   };
 }
-
-
-    

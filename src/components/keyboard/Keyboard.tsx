@@ -15,13 +15,13 @@ interface CustomTouchEvent extends TouchEvent {
 
 export default function Keyboard() {
 
-  // const synth = useRef<ReturnType<typeof Synth> | null>(null);
+  const synthRef = useRef<ReturnType<typeof Synth> | null>(null)
 
-  // if (!synth.current) {
-  //   synth.current = Synth();
-  // }
+  if (!synthRef.current) {
+    synthRef.current = Synth()
+  }
 
-  const synth = Synth()
+  const synth = synthRef.current
 
   const keyCodes: keyCodes = {
     notes : {
@@ -53,7 +53,9 @@ export default function Keyboard() {
     playingNotesRef.current = playingNotes  
   }, [playingNotes]) 
   
-  function handleNoteStart(e: CustomTouchEvent) {
+  function handleNoteStart(e: KeyboardEvent) {
+
+    if (e.repeat) return
 
     if (Object.keys(keyCodes.notes).includes(e.key) && !playingNotesRef.current.includes(e.key)) {
       setPlayingNotes([...playingNotesRef.current, e.key])
