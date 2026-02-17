@@ -2,7 +2,19 @@ import { Settings } from "http2";
 
 export function Synth() {
 
-  const context = new AudioContext();
+  let context: AudioContext | null = null
+
+  const getContext = () => {
+    if (!context) {
+      context = new AudioContext()
+    }
+
+    if (context.state === 'suspended') {
+      context.resume()
+    }
+
+    return context
+  }
 
   type settings = {
     octave: number
@@ -20,6 +32,8 @@ export function Synth() {
 
   const keys = notes.map(((note, i) => {
     if (i) { frequency *= ratio }
+
+    const context = getContext()
     
     const key = {
       oscillator: context.createOscillator(),
@@ -46,6 +60,7 @@ export function Synth() {
   }
     
   const play = (note: string) => {
+    const context = getContext()
     const i = keys.findIndex(key => key.note === note)
     keys[i].oscillator.type = settings.waveShape as OscillatorType
     keys[i].oscillator.frequency.value = transpose(keys[i].frequency)
@@ -56,6 +71,7 @@ export function Synth() {
   }
 
   const stop = (note: string) => {
+    const context = getContext()
     const i = keys.findIndex(key => key.note === note)
     const now = context.currentTime
     keys[i].gain.gain.cancelScheduledValues(now)
@@ -64,6 +80,7 @@ export function Synth() {
   }
 
   const updateFrequencies = () => {
+    const context = getContext()
     const now = context.currentTime
 
     keys.forEach(key => {
@@ -99,9 +116,15 @@ export function Synth() {
     })
   }
 
+  const resume = () => {
+    const context = getContext()
+    context.resume()
+  }
+
   return {
     play,
     stop,
-    changeAttribute
+    changeAttribute,
+    resume
   };
 }

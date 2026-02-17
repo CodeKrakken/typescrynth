@@ -56,6 +56,7 @@ export default function Keyboard() {
   function handleNoteStart(e: KeyboardEvent) {
 
     if (e.repeat) return
+    synth!.resume?.()
 
     if (Object.keys(keyCodes.notes).includes(e.key) && !playingNotesRef.current.includes(e.key)) {
       setPlayingNotes([...playingNotesRef.current, e.key])
