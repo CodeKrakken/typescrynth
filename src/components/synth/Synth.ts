@@ -14,12 +14,12 @@ export function Synth() {
     return context
   }
 
-  type settings = {
+  type Settings = {
     octave: number
     waveShape: string
   }
 
-  const settings: settings = {
+  const settings: Settings = {
     octave: 4,
     waveShape: 'sine'
   }
