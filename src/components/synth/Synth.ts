@@ -14,12 +14,12 @@ export function Synth() {
     return context
   }
 
-  type Settings = {
+  type synthSettings = {
     octave: number
     waveShape: string
   }
 
-  const settings: Settings = {
+  const settings: synthSettings = {
     octave: 4,
     waveShape: 'sine'
   }
@@ -91,9 +91,9 @@ export function Synth() {
     })
   }
 
-  const changeAttribute = <K extends keyof settings>(
+  const changeAttribute = <K extends keyof synthSettings>(
     key: K,
-    value: settings[K]
+    value: synthSettings[K]
   ) => {
     settings[key] = value
 
