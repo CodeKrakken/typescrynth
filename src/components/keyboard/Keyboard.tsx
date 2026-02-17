@@ -110,7 +110,7 @@ export default function Keyboard() {
       document.removeEventListener('touchstart',  handleNoteStart as EventListener);  
       document.removeEventListener('touchend',    handleNoteEnd   as EventListener);  
     };  
-  }, []);
+  }, [handleNoteEnd, handleNoteStart]);
 
   return (
     <div id="keyboard">

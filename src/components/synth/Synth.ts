@@ -1,5 +1,3 @@
-import { Settings } from "http2";
-
 export function Synth() {
 
   let context: AudioContext | null = null
