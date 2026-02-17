@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { play, stop, changeAttribute } from '../synth/Synth';
+import { Synth } from '../synth/Synth';
 import './keyboard.css'
 
 interface keyCodes {
@@ -14,6 +14,14 @@ interface CustomTouchEvent extends TouchEvent {
 }
 
 export default function Keyboard() {
+
+  const synthRef = useRef<ReturnType<typeof Synth> | null>(null)
+
+  if (!synthRef.current) {
+    synthRef.current = Synth()
+  }
+
+  const synth = synthRef.current
 
   const keyCodes: keyCodes = {
     notes : {
@@ -45,21 +53,23 @@ export default function Keyboard() {
     playingNotesRef.current = playingNotes  
   }, [playingNotes]) 
   
-  function handleNoteStart(e: CustomTouchEvent) {
+  function handleNoteStart(e: KeyboardEvent) {
+
+    if (e.repeat) return
 
     if (Object.keys(keyCodes.notes).includes(e.key) && !playingNotesRef.current.includes(e.key)) {
       setPlayingNotes([...playingNotesRef.current, e.key])
 
       const noteToPlay = keyCodes.notes[e.key]
-      play(noteToPlay)
+      synth.play(noteToPlay)
     }
 
     if (keyCodes.octaves.includes(e.keyCode)) {
-      changeAttribute('octave', keyCodes.octaves.indexOf(e.keyCode))
+      synth.changeAttribute('octave', keyCodes.octaves.indexOf(e.keyCode))
     }
 
     if (e.keyCode in keyCodes.waveShapes) {
-      changeAttribute('waveShape', keyCodes.waveShapes[e.keyCode])
+      synth.changeAttribute('waveShape', keyCodes.waveShapes[e.keyCode])
     }
   }
 
@@ -70,7 +80,7 @@ export default function Keyboard() {
 
       const noteToStop = keyCodes.notes[e.key]
 
-      stop(noteToStop)
+      synth.stop(noteToStop)
     }
   }
 
@@ -79,7 +89,6 @@ export default function Keyboard() {
     const g = Math.floor(Math.random() * 256)
     const b = Math.floor(Math.random() * 256)
     const a = Math.floor(Math.random() * 11)/10
-
 
     return `rgba(${r}, ${g}, ${b}, ${a})`
   }
