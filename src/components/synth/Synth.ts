@@ -63,7 +63,7 @@ export function Synth() {
     keys[i].isPlaying = false
   }
 
-  const updatePlayingNotes = () => {
+  const updateFrequencies = () => {
     const now = context.currentTime
 
     keys.forEach(key => {
@@ -82,7 +82,21 @@ export function Synth() {
   ) => {
     settings[key] = value
 
-    updatePlayingNotes()
+    if (key === 'octave') {
+      updateFrequencies()
+    }
+
+    if (key === 'waveShape') {
+      updateWaveShape()
+    }
+  }
+
+  const updateWaveShape = () => {
+    keys.forEach(key => {
+      if (key.isPlaying) {
+        key.oscillator.type = settings.waveShape as OscillatorType
+      }
+    })
   }
 
   return {
