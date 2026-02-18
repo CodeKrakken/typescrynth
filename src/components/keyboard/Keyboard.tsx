@@ -72,7 +72,7 @@ export default function Keyboard() {
     if (e.keyCode in keyCodes.waveShapes) {
       synth.changeAttribute('waveShape', keyCodes.waveShapes[e.keyCode])
     }
-  }, [playingNotes, keyCodes])
+  }, [playingNotes, keyCodes, synth])
 
   const handleNoteEnd = useCallback((e: CustomTouchEvent) => {
     
@@ -83,7 +83,7 @@ export default function Keyboard() {
 
       synth.stop(noteToStop)
     }
-  }, [playingNotes, keyCodes])
+  }, [playingNotes, keyCodes, synth])
 
   function randomColour() {
     const r = Math.floor(Math.random() * 256)
