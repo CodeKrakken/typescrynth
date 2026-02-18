@@ -40,47 +40,48 @@ export default function Keyboard() {
   const synth = synthRef.current
 
   const keys: {[key: string]: string[]} = {
-    octaves:    ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ''],
-    tones:      ['q', 'w', 'e', 'r',  '',  '',  '',  '',  ''              ],
-    'black keys':  ['s', 'd',  '', 'g', 'h', 'j',  ''                        ],
-    'white keys':  ['z', 'x', 'c', 'v', 'b', 'n', 'm', ','                   ]
+    octaves:      ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ''],
+    tones:        ['q', 'w', 'e', 'r',  '',  '',  '',  '',  ''              ],
+    'black keys': ['s', 'd',  '', 'g', 'h', 'j',  ''                        ],
+    'white keys': ['z', 'x', 'c', 'v', 'b', 'n', 'm', ','                   ]
   } 
 
-  const [playingNotes, setPlayingNotes] = useState<string[]>([])
-  const playingNotesRef = useRef(playingNotes)  
+  const [heldKeys, setHeldKeys] = useState<string[]>([])
+  const heldKeysRef = useRef(heldKeys)  
 
   useEffect(() => {  
-    playingNotesRef.current = playingNotes  
-  }, [playingNotes]) 
+    heldKeysRef.current = heldKeys  
+  }, [heldKeys]) 
   
   const handleNoteStart = useCallback((e: KeyboardEvent) => {
 
     if (e.repeat) return
     synth!.resume?.()
 
-    if (Object.keys(keyCodes.notes).includes(e.key) && !playingNotesRef.current.includes(e.key)) {
-      setPlayingNotes([...playingNotesRef.current, e.key])
+    if (Object.keys(keyCodes.notes).includes(e.key) && !heldKeysRef.current.includes(e.key)) {
+      setHeldKeys([...heldKeysRef.current, e.key])
 
       const noteToPlay = keyCodes.notes[e.key]
       synth.play(noteToPlay)
     }
 
-    if (keyCodes.octaves.includes(e.keyCode)) {
+    if (keyCodes.octaves.includes(e.keyCode) && !heldKeysRef.current.includes(e.key)) {
+      setHeldKeys([...heldKeysRef.current, e.key])
       synth.changeAttribute('octave', keyCodes.octaves.indexOf(e.keyCode))
     }
 
-    if (e.keyCode in keyCodes.waveShapes) {
+    if (e.keyCode in keyCodes.waveShapes && !heldKeysRef.current.includes(e.key)) {
+      setHeldKeys([...heldKeysRef.current, e.key])
       synth.changeAttribute('waveShape', keyCodes.waveShapes[e.keyCode])
     }
   }, [synth])
 
   const handleNoteEnd = useCallback((e: CustomTouchEvent) => {
+    setHeldKeys(heldKeys => heldKeys.filter(note => note !== e.key))      
     
-    if (playingNotesRef.current.includes(e.key)) {
-      setPlayingNotes(playingNotes => playingNotes.filter(note => note !== e.key))      
+    if (Object.keys(keyCodes.notes).includes(e.key) && heldKeysRef.current.includes(e.key)) {
 
       const noteToStop = keyCodes.notes[e.key]
-
       synth.stop(noteToStop)
     }
   }, [synth])
@@ -120,7 +121,7 @@ export default function Keyboard() {
           {
             keys[rowKey].map((key: string, i: number) => {
               return <>
-                <span className={`circle-outer${!key ? ' invisible' : ''}`} style={playingNotes.includes(key) ? {background: randomColour()} : {}}
+                <span className={`circle-outer${!key ? ' invisible' : ''}`} style={heldKeys.includes(key) ? {background: randomColour()} : {}}
                   >
                   <span className="circle-inner">
                     {key}
