@@ -12,7 +12,8 @@
 
 .keyboard-row {
   display: flex;
-  flex-direction: row
+  flex-direction: row;
+  align-items: center;
 }
 
 .circle-outer {

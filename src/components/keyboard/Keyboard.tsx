@@ -39,12 +39,12 @@ export default function Keyboard() {
 
   const synth = synthRef.current
 
-  const keys = [
-    ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ''],
-    ['q', 'w', 'e', 'r',  '',  '',  '',  '',  ''              ],
-    ['s', 'd',  '', 'g', 'h', 'j',  ''                        ],
-    ['z', 'x', 'c', 'v', 'b', 'n', 'm', ','                   ]
-  ] 
+  const keys: {[key: string]: string[]} = {
+    octaves:    ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ''],
+    tones:      ['q', 'w', 'e', 'r',  '',  '',  '',  '',  ''              ],
+    'black keys':  ['s', 'd',  '', 'g', 'h', 'j',  ''                        ],
+    'white keys':  ['z', 'x', 'c', 'v', 'b', 'n', 'm', ','                   ]
+  } 
 
   const [playingNotes, setPlayingNotes] = useState<string[]>([])
   const playingNotesRef = useRef(playingNotes)  
@@ -114,10 +114,11 @@ export default function Keyboard() {
 
   return (
     <div id="keyboard">
-      {keys.map((row: string[]) => 
+      {Object.keys(keys).map((rowKey: string) => 
         <div className="keyboard-row">
+          {rowKey}
           {
-            row.map((key: string, i: number) => {
+            keys[rowKey].map((key: string, i: number) => {
               return <>
                 <span className={`circle-outer${!key ? ' invisible' : ''}`} style={playingNotes.includes(key) ? {background: randomColour()} : {}}
                   >
