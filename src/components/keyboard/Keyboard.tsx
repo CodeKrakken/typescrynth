@@ -13,6 +13,22 @@ interface CustomTouchEvent extends TouchEvent {
   keyCode: number
 }
 
+const keyCodes: keyCodes = {
+  notes : {
+    z   : 'C' , s: 'C#' , x:  'D' , d : 'D#', 
+    c   : 'E' , v: 'F'  , g:  'F#', b : 'G' , 
+    h   : 'G#', n: 'A'  , j:  'A#', m : 'B' , 
+    ',' : 'C+'
+  },
+  octaves : [192, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48],
+  waveShapes   :  { 
+    81: 'sine',
+    87: 'triangle',
+    69: 'sawtooth', 
+    82: 'square'
+  }
+}
+
 export default function Keyboard() {
 
   const synthRef = useRef<ReturnType<typeof Synth> | null>(null)
@@ -22,22 +38,6 @@ export default function Keyboard() {
   }
 
   const synth = synthRef.current
-
-  const keyCodes: keyCodes = {
-    notes : {
-      z   : 'C' , s: 'C#' , x:  'D' , d : 'D#', 
-      c   : 'E' , v: 'F'  , g:  'F#', b : 'G' , 
-      h   : 'G#', n: 'A'  , j:  'A#', m : 'B' , 
-      ',' : 'C+'
-    },
-    octaves : [192, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48],
-    waveShapes   :  { 
-      81: 'sine',
-      87: 'triangle',
-      69: 'sawtooth', 
-      82: 'square'
-    }
-  }
 
   const keys = [
     ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ''],
