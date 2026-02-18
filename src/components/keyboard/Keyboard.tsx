@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Synth } from '../synth/Synth';
 import './keyboard.css'
 
@@ -53,7 +53,7 @@ export default function Keyboard() {
     playingNotesRef.current = playingNotes  
   }, [playingNotes]) 
   
-  function handleNoteStart(e: KeyboardEvent) {
+  const handleNoteStart = useCallback((e: KeyboardEvent) => {
 
     if (e.repeat) return
     synth!.resume?.()
@@ -72,9 +72,9 @@ export default function Keyboard() {
     if (e.keyCode in keyCodes.waveShapes) {
       synth.changeAttribute('waveShape', keyCodes.waveShapes[e.keyCode])
     }
-  }
+  }, [playingNotes])
 
-  function handleNoteEnd(e: CustomTouchEvent) {
+  const handleNoteEnd = useCallback((e: CustomTouchEvent) => {
     
     if (playingNotesRef.current.includes(e.key)) {
       setPlayingNotes(playingNotes => playingNotes.filter(note => note !== e.key))      
@@ -83,7 +83,7 @@ export default function Keyboard() {
 
       synth.stop(noteToStop)
     }
-  }
+  }, [playingNotes])
 
   function randomColour() {
     const r = Math.floor(Math.random() * 256)
