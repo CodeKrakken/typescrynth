@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Synth } from '../synth/Synth';
 import './keyboard.css'
 
-interface keyCodes {
+interface keyCodesInterface {
   notes       : { [key: string]: string },
   waveShapes  : { [key: number]: string },
   octaves     : number[],
@@ -13,7 +13,7 @@ interface CustomTouchEvent extends TouchEvent {
   keyCode: number
 }
 
-const keyCodes: keyCodes = {
+const keyCodes: keyCodesInterface = {
   notes : {
     z   : 'C' , s: 'C#' , x:  'D' , d : 'D#', 
     c   : 'E' , v: 'F'  , g:  'F#', b : 'G' , 
