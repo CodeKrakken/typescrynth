@@ -39,11 +39,11 @@ export default function Keyboard() {
 
   const synth = synthRef.current
 
-  const keys: {[key: string]: string[]} = {
-    octaves:      ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ''],
-    tones:        ['q', 'w', 'e', 'r',  '',  '',  '',  '',  ''              ],
-    'black keys': ['s', 'd',  '', 'g', 'h', 'j',  ''                        ],
-    'white keys': ['z', 'x', 'c', 'v', 'b', 'n', 'm', ','                   ]
+  const keys: {[key: string]: {label: string}[]} = {
+    octaves:      [{label: '`'}, {label: '1'}, {label: '2'}, {label: '3'}, {label: '4'}, {label: '5'}, {label: '6'}, {label: '7'}, {label: '8'}, {label: '9'}, {label: '0'}, {label: ''}],
+    tones:        [{label: 'q'}, {label: 'w'}, {label: 'e'}, {label: 'r'}, {label: ''},  {label: ''},  {label: ''},  {label: ''},  {label: ''}],
+    'black keys': [{label: 's'}, {label: 'd'}, {label: ''},  {label: 'g'}, {label: 'h'}, {label: 'j'}, {label: ''}],
+    'white keys': [{label: 'z'}, {label: 'x'}, {label: 'c'}, {label: 'v'}, {label: 'b'}, {label: 'n'}, {label: 'm'}, {label: ','}]
   } 
 
   const [heldKeys, setHeldKeys] = useState<string[]>([])
@@ -119,12 +119,12 @@ export default function Keyboard() {
         <div className="keyboard-row">
           {rowKey}
           {
-            keys[rowKey].map((key: string, i: number) => {
+            keys[rowKey].map((key: {label: string}, i: number) => {
               return <>
-                <span className={`circle-outer${!key ? ' invisible' : ''}`} style={heldKeys.includes(key) ? {background: randomColour()} : {}}
+                <span className={`circle-outer${!key.label ? ' invisible' : ''}`} style={heldKeys.includes(key.label) ? {background: randomColour()} : {}}
                   >
                   <span className="circle-inner">
-                    {key}
+                    {key.label}
                   </span>
                 </span>
               </>
