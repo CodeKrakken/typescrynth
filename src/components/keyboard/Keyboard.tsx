@@ -24,7 +24,7 @@ export default function Keyboard() {
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
 
     if (e.repeat) return
-    
+
     synth!.resume?.()
 
     if (Object.keys(keyCodes.notes).includes(e.key) && !heldKeysRef.current.includes(e.key)) {
@@ -46,7 +46,7 @@ export default function Keyboard() {
   }, [synth])
 
   const handleKeyUp = useCallback((e: CustomTouchEvent) => {
-    setHeldKeys(heldKeys => heldKeys.filter(note => note !== e.key))      
+    setHeldKeys(heldKeys => heldKeys.filter(key => key !== e.key))      
     
     if (Object.keys(keyCodes.notes).includes(e.key) && heldKeysRef.current.includes(e.key)) {
 
