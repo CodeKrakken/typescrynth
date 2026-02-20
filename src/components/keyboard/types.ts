@@ -2,6 +2,13 @@ export type keysType = {
   [key: string]: {
     label: string
     key: string 
-    function?: string
+    htmlTitle?: string
   }[]
+}
+
+
+export interface keyCodesInterface {
+  notes       : { [key: string]: string },
+  waveShapes  : { [key: number]: string },
+  octaves     : number[],
 }

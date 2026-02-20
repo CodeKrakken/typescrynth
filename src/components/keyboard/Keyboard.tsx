@@ -1,33 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Synth } from '../synth/Synth';
 import './keyboard.css'
-import { keys } from './data'
-
-interface keyCodesInterface {
-  notes       : { [key: string]: string },
-  waveShapes  : { [key: number]: string },
-  octaves     : number[],
-}
+import { keys, keyCodes } from './data'
 
 interface CustomTouchEvent extends TouchEvent {
   key: string
   keyCode: number
-}
-
-const keyCodes: keyCodesInterface = {
-  notes : {
-    z   : 'C' , s: 'C#' , x:  'D' , d : 'D#', 
-    c   : 'E' , v: 'F'  , g:  'F#', b : 'G' , 
-    h   : 'G#', n: 'A'  , j:  'A#', m : 'B' , 
-    ',' : 'C+'
-  },
-  octaves : [192, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48],
-  waveShapes   :  { 
-    81: 'sine',
-    87: 'triangle',
-    69: 'sawtooth', 
-    82: 'square'
-  }
 }
 
 export default function Keyboard() {
@@ -113,12 +91,12 @@ export default function Keyboard() {
         <div className="keyboard-row">
           {rowKey}
           {
-            keys[rowKey].map((key: {key: string, label: string, function?: string}) => {
+            keys[rowKey].map((key: {key: string, label: string, htmlTitle?: string}) => {
               return <>
                 <span 
                   className={`circle-outer${!key.label ? ' invisible' : ''}`} 
                   style={heldKeys.includes(key.label) ? {background: randomColour()} : {}}
-                  title={key.function}
+                  title={key.htmlTitle}
                 >
                   <span className="circle-inner">
                     {key.label}
