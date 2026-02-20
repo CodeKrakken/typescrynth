@@ -2,11 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Synth } from '../synth/Synth';
 import './keyboard.css'
 import { keys, keyCodes } from './data'
-
-interface CustomTouchEvent extends TouchEvent {
-  key: string
-  keyCode: number
-}
+import { CustomTouchEvent } from './types';
 
 export default function Keyboard() {
 
@@ -28,6 +24,7 @@ export default function Keyboard() {
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
 
     if (e.repeat) return
+    
     synth!.resume?.()
 
     if (Object.keys(keyCodes.notes).includes(e.key) && !heldKeysRef.current.includes(e.key)) {

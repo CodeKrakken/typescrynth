@@ -12,3 +12,7 @@ export interface keyCodesInterface {
   waveShapes  : { [key: number]: string },
   octaves     : number[],
 }
+
+export interface CustomTouchEvent extends TouchEvent {
+  key: string
+}
