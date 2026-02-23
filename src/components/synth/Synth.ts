@@ -1,5 +1,5 @@
 import {synthSettings} from './types'
-import { notes, baseFrequency, defaultSettings } from './data'
+import { notes, baseFrequency, defaultSettings, noteRatio } from './data'
 
 let frequency = baseFrequency
 
@@ -20,11 +20,9 @@ export function Synth() {
   }
 
   const settings: synthSettings = defaultSettings
-
-  const ratio   = Math.pow(2, 1/12)
   
   const keys = notes.map(((note, i) => {
-    if (i) { frequency *= ratio }
+    if (i) { frequency *= noteRatio }
 
     const context = getContext()
     
