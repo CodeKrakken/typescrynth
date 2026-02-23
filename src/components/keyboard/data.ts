@@ -43,7 +43,8 @@ export const keys: keysType = {
     {key: 'b', label: 'b', htmlTitle: 'G'}, 
     {key: 'n', label: 'n', htmlTitle: 'A'}, 
     {key: 'm', label: 'm', htmlTitle: 'B'}, 
-    {key: ',', label: ',', htmlTitle: 'C'}]
+    {key: ',', label: ',', htmlTitle: 'C'}
+  ]
 } 
 
 export const keyCodes: keyCodesInterface = {
