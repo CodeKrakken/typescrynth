@@ -1,3 +1,8 @@
+import {synthSettings} from './types'
+import { notes, baseFrequency } from './data'
+
+let frequency = baseFrequency
+
 export function Synth() {
 
   let context: AudioContext | null = null
@@ -14,20 +19,13 @@ export function Synth() {
     return context
   }
 
-  type synthSettings = {
-    octave: number
-    waveShape: string
-  }
-
   const settings: synthSettings = {
     octave: 4,
     waveShape: 'sine'
   }
 
   const ratio   = Math.pow(2, 1/12)
-  let frequency = 16.35
-  let notes     = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C+']
-
+  
   const keys = notes.map(((note, i) => {
     if (i) { frequency *= ratio }
 

@@ -6,7 +6,6 @@ export type keysType = {
   }[]
 }
 
-
 export interface keyCodesInterface {
   notes       : { [key: string]: string },
   waveShapes  : { [key: number]: string },
@@ -15,4 +14,10 @@ export interface keyCodesInterface {
 
 export interface CustomTouchEvent extends TouchEvent {
   key: string
+}
+
+export type keyType = {
+  key: string 
+  label: string
+  htmlTitle?: string
 }

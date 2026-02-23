@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Synth } from '../synth/Synth';
 import './keyboard.css'
 import { keys, keyCodes } from './data'
-import { CustomTouchEvent } from './types';
+import { CustomTouchEvent, keyType } from './types';
 
 export default function Keyboard() {
 
@@ -88,7 +88,7 @@ export default function Keyboard() {
         <div className="keyboard-row">
           {rowKey}
           {
-            keys[rowKey].map((key: {key: string, label: string, htmlTitle?: string}) => {
+            keys[rowKey].map((key: keyType) => {
               return <>
                 <span 
                   className={`circle-outer${!key.label ? ' invisible' : ''}`} 
