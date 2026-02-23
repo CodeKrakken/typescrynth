@@ -1,5 +1,5 @@
 import {synthSettings} from './types'
-import { notes, baseFrequency } from './data'
+import { notes, baseFrequency, defaultSettings } from './data'
 
 let frequency = baseFrequency
 
@@ -19,10 +19,7 @@ export function Synth() {
     return context
   }
 
-  const settings: synthSettings = {
-    octave: 4,
-    waveShape: 'sine'
-  }
+  const settings: synthSettings = defaultSettings
 
   const ratio   = Math.pow(2, 1/12)
   

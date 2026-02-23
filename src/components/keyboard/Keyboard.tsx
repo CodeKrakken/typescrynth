@@ -18,7 +18,7 @@ export default function Keyboard() {
   const heldKeysRef = useRef(heldKeys)  
 
   useEffect(() => {  
-    heldKeysRef.current = heldKeys  
+    heldKeysRef.current = heldKeys
   }, [heldKeys]) 
   
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
