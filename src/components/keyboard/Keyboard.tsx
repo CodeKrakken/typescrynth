@@ -96,9 +96,9 @@ export default function Keyboard() {
     
     setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
     
-    if (Object.keys(keyCodes.notes).includes(key) && heldKeysRef.current.includes(key)) {
+    if (Object.keys(keyCodes.notes).includes(releasedKey) && heldKeysRef.current.includes(releasedKey)) {
 
-      const noteToStop = keyCodes.notes[key]
+      const noteToStop = keyCodes.notes[releasedKey]
       synth.stop(noteToStop)
     }
   }, [synth])
