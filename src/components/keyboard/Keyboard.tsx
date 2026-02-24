@@ -92,9 +92,9 @@ export default function Keyboard() {
 
   const handleTouchEnd = useCallback((e: CustomTouchEvent) => {
 
-    const key = e.explicitOriginalTarget.innerText
+    const releasedKey = e.explicitOriginalTarget.innerText
     
-    setHeldKeys(heldKeys => heldKeys.filter(key => key !== key))      
+    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
     
     if (Object.keys(keyCodes.notes).includes(key) && heldKeysRef.current.includes(key)) {
 
