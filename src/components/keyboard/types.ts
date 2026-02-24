@@ -13,7 +13,9 @@ export interface keyCodesInterface {
 }
 
 export interface CustomTouchEvent extends TouchEvent {
-  key: string
+  explicitOriginalTarget: {
+    innerText: string
+  }
 }
 
 export type keyType = {

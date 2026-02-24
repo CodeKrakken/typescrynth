@@ -21,6 +21,8 @@ export default function Keyboard() {
     heldKeysRef.current = heldKeys
   }, [heldKeys]) 
   
+
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
 
     if (e.repeat) return
@@ -45,7 +47,10 @@ export default function Keyboard() {
     }
   }, [synth])
 
-  const handleKeyUp = useCallback((e: CustomTouchEvent) => {
+
+
+
+  const handleKeyUp = useCallback((e: KeyboardEvent) => {
     setHeldKeys(heldKeys => heldKeys.filter(key => key !== e.key))      
     
     if (Object.keys(keyCodes.notes).includes(e.key) && heldKeysRef.current.includes(e.key)) {
@@ -54,6 +59,53 @@ export default function Keyboard() {
       synth.stop(noteToStop)
     }
   }, [synth])
+
+
+
+
+  const handleTouchStart = useCallback((e: CustomTouchEvent) => {
+
+    const key = e.explicitOriginalTarget.innerText
+
+    synth!.resume?.()
+
+    if (Object.keys(keyCodes.notes).includes(key) && !heldKeysRef.current.includes(key)) {
+      setHeldKeys([...heldKeysRef.current, key])
+
+      const noteToPlay = keyCodes.notes[key]
+      synth.play(noteToPlay)
+    }
+
+    // if (keyCodes.octaves.includes(e.keyCode) && !heldKeysRef.current.includes(e.key)) {
+    //   setHeldKeys([...heldKeysRef.current, e.key])
+    //   synth.changeAttribute('octave', keyCodes.octaves.indexOf(e.keyCode))
+    // }
+
+    // if (e.keyCode in keyCodes.waveShapes && !heldKeysRef.current.includes(e.key)) {
+    //   setHeldKeys([...heldKeysRef.current, e.key])
+    //   synth.changeAttribute('waveShape', keyCodes.waveShapes[e.keyCode])
+    // }
+  }, [synth])
+
+
+
+
+  const handleTouchEnd = useCallback((e: CustomTouchEvent) => {
+
+    const key = e.explicitOriginalTarget.innerText
+    
+    setHeldKeys(heldKeys => heldKeys.filter(key => key !== key))      
+    
+    if (Object.keys(keyCodes.notes).includes(key) && heldKeysRef.current.includes(key)) {
+
+      const noteToStop = keyCodes.notes[key]
+      synth.stop(noteToStop)
+    }
+  }, [synth])
+
+
+
+
 
   function randomColour() {
     const r = Math.floor(Math.random() * 256)
@@ -69,16 +121,16 @@ export default function Keyboard() {
     document.addEventListener     ('keydown',     handleKeyDown as EventListener);  
     document.addEventListener     ('keyup',       handleKeyUp   as EventListener);  
       // touchscreen interactions
-    document.addEventListener     ('touchstart',  handleKeyDown as EventListener);  
-    document.addEventListener     ('touchend',    handleKeyUp   as EventListener);  
+    document.addEventListener     ('touchstart',  handleTouchStart as EventListener);  
+    document.addEventListener     ('touchend',    handleTouchEnd   as EventListener);  
       
     return () => {  
         // keyboard interactions
       document.removeEventListener('keydown',     handleKeyDown as EventListener);  
       document.removeEventListener('keyup',       handleKeyUp   as EventListener);  
         // touchscreen interactions
-      document.removeEventListener('touchstart',  handleKeyDown as EventListener);  
-      document.removeEventListener('touchend',    handleKeyUp   as EventListener);  
+      document.removeEventListener('touchstart',  handleTouchStart as EventListener);  
+      document.removeEventListener('touchend',    handleTouchEnd   as EventListener);  
     };  
   }, [handleKeyUp, handleKeyDown]);
 
