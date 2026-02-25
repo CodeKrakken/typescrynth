@@ -2,17 +2,17 @@ import { keysType, keyCodesInterface } from './types'
 
 export const keys: keysType = {
   octaves:      [
-    {key: '`', label: '`', htmlTitle: '0'}, 
-    {key: '1', label: '1', htmlTitle: '1'}, 
-    {key: '2', label: '2', htmlTitle: '2'}, 
-    {key: '3', label: '3', htmlTitle: '3'}, 
-    {key: '4', label: '4', htmlTitle: '4'}, 
-    {key: '5', label: '5', htmlTitle: '5'}, 
-    {key: '6', label: '6', htmlTitle: '6'}, 
-    {key: '7', label: '7', htmlTitle: '7'}, 
-    {key: '8', label: '8', htmlTitle: '8'}, 
-    {key: '9', label: '9', htmlTitle: '9'}, 
-    {key: '0', label: '0', htmlTitle: '10'}, 
+    {key: '`', label: '`', htmlTitle:  '0', function:  0}, 
+    {key: '1', label: '1', htmlTitle:  '1', function:  1}, 
+    {key: '2', label: '2', htmlTitle:  '2', function:  2}, 
+    {key: '3', label: '3', htmlTitle:  '3', function:  3}, 
+    {key: '4', label: '4', htmlTitle:  '4', function:  4}, 
+    {key: '5', label: '5', htmlTitle:  '5', function:  5}, 
+    {key: '6', label: '6', htmlTitle:  '6', function:  6}, 
+    {key: '7', label: '7', htmlTitle:  '7', function:  7}, 
+    {key: '8', label: '8', htmlTitle:  '8', function:  8}, 
+    {key: '9', label: '9', htmlTitle:  '9', function:  9}, 
+    {key: '0', label: '0', htmlTitle: '10', function: 10},
     {key: '-', label: ''}
   ],
   tones:        [
