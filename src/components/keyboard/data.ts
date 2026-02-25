@@ -16,10 +16,10 @@ export const keys: keysType = {
     {key: '-', label: ''}
   ],
   tones:        [
-    {key: 'q', label: 'q', htmlTitle: 'sine'}, 
-    {key: 'w', label: 'w', htmlTitle: 'triangle'}, 
-    {key: 'e', label: 'e', htmlTitle: 'sawtooth'}, 
-    {key: 'r', label: 'r', htmlTitle: 'square'}, 
+    {key: 'q', label: 'q', htmlTitle: 'sine'    , function: 'sine'}, 
+    {key: 'w', label: 'w', htmlTitle: 'triangle', function: 'triangle'}, 
+    {key: 'e', label: 'e', htmlTitle: 'sawtooth', function: 'sawtooth'}, 
+    {key: 'r', label: 'r', htmlTitle: 'square'  , function: 'square'}, 
     {key: 't', label: ''},  
     {key: 'y', label: ''}, 
     {key: 'u', label: ''},  

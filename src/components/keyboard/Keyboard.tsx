@@ -60,32 +60,30 @@ export default function Keyboard() {
     }
   }, [synth])
 
-
-
-
   const handleTouchStart = useCallback((e: CustomTouchEvent) => {
 
     const heldKey = e.explicitOriginalTarget.innerText
 
     synth!.resume?.()
 
-    if (Object.keys(keyCodes.notes).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
+    if (Object.keys(keyCodes.notes) && !heldKeysRef.current.includes(heldKey)) {
       setHeldKeys([...heldKeysRef.current, heldKey])
-
       const noteToPlay = keyCodes.notes[heldKey]
       synth.play(noteToPlay)
     }
 
-    if (Object.keys(keys.octaves).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
+    if (keys.octaves.filter(octave => octave.key === heldKey)[0] && !heldKeysRef.current.includes(heldKey)) {
       setHeldKeys([...heldKeysRef.current, heldKey])
       const newOctave = keys.octaves.filter((octave) => octave.key === heldKey)[0].function
       synth.changeAttribute('octave', newOctave as number)
     }
 
-    // if (e.keyCode in keyCodes.waveShapes && !heldKeysRef.current.includes(e.key)) {
-    //   setHeldKeys([...heldKeysRef.current, e.key])
-    //   synth.changeAttribute('waveShape', keyCodes.waveShapes[e.keyCode])
-    // }
+    if (Object.keys(keys.tones).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
+      setHeldKeys([...heldKeysRef.current, heldKey])
+      console.log(keys.tones.filter((tone) => tone.key === heldKey)[0].function)
+      // const newWaveShape = keys.tones.filter((tone) => tone.key === heldKey)[0].function
+      // synth.changeAttribute('waveShape', newWaveShape as string)
+    }
   }, [synth])
  
 
