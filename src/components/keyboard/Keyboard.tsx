@@ -38,6 +38,10 @@ export default function Keyboard() {
     return keys.tones.filter(tone => tone.key === key)
   }
 
+  const noteFrom = (key: string) => {
+    return noteKeys().filter(note => note.key === key)[0].function
+  }
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
 
     if (e.repeat) return
@@ -47,7 +51,7 @@ export default function Keyboard() {
     if (isNote(e.key) && !heldKeysRef.current.includes(e.key)) {
       setHeldKeys([...heldKeysRef.current, e.key])
 
-      const noteToPlay = noteKeys().filter(note => note.key === e.key)[0].function
+      const noteToPlay = noteFrom(e.key)
       synth.play(noteToPlay as string)
     }
 
@@ -70,10 +74,10 @@ export default function Keyboard() {
   const handleKeyUp = useCallback((e: KeyboardEvent) => {
     setHeldKeys(heldKeys => heldKeys.filter(key => key !== e.key))      
     
-    if (Object.keys(keyCodes.notes).includes(e.key) && heldKeysRef.current.includes(e.key)) {
+    if (isNote(e.key) && heldKeysRef.current.includes(e.key)) {
 
-      const noteToStop = keyCodes.notes[e.key]
-      synth.stop(noteToStop)
+      const noteToStop = noteFrom(e.key)
+      synth.stop(noteToStop as string)
     }
   }, [synth])
 
