@@ -3,6 +3,7 @@ export type keysType = {
     label: string
     key: string 
     htmlTitle?: string
+    function?: string | number
   }[]
 }
 
