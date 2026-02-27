@@ -30,6 +30,14 @@ export default function Keyboard() {
     return [keys['black keys'], keys['white keys']].flat()
   }
 
+  const isOctave = (key: string) => {
+    return keys.octaves.filter(octave => octave.key === key)
+  }
+
+  const isWaveShape = (key: string) => {
+    return keys.tones.filter(tone => tone.key === key)
+  }
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
 
     if (e.repeat) return
@@ -43,14 +51,16 @@ export default function Keyboard() {
       synth.play(noteToPlay as string)
     }
 
-    if (keyCodes.octaves.includes(e.keyCode) && !heldKeysRef.current.includes(e.key)) {
+    if (isOctave(e.key) && !heldKeysRef.current.includes(e.key)) {
       setHeldKeys([...heldKeysRef.current, e.key])
-      synth.changeAttribute('octave', keyCodes.octaves.indexOf(e.keyCode))
+      const newOctave = keys.octaves.filter(octave => octave.key === e.key)[0].function
+      synth.changeAttribute('octave', newOctave as number)
     }
 
-    if (e.keyCode in keyCodes.waveShapes && !heldKeysRef.current.includes(e.key)) {
+    if (isWaveShape(e.key) && !heldKeysRef.current.includes(e.key)) {
       setHeldKeys([...heldKeysRef.current, e.key])
-      synth.changeAttribute('waveShape', keyCodes.waveShapes[e.keyCode])
+      const newWaveShape = keys.tones.filter(waveShape => waveShape.key === e.key)[0].function
+      synth.changeAttribute('waveShape', newWaveShape as string)
     }
   }, [synth])
 
