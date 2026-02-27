@@ -66,7 +66,8 @@ export default function Keyboard() {
 
     synth!.resume?.()
 
-    if (Object.keys(keyCodes.notes) && !heldKeysRef.current.includes(heldKey)) {
+    if (Object.keys(keyCodes.notes).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
+      console.log('Running line 70')
       setHeldKeys([...heldKeysRef.current, heldKey])
       const noteToPlay = keyCodes.notes[heldKey]
       synth.play(noteToPlay)
