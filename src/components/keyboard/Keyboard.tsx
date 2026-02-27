@@ -74,15 +74,16 @@ export default function Keyboard() {
     }
 
     if (keys.octaves.map(octave => octave.key).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
+      console.log(77)
       setHeldKeys([...heldKeysRef.current, heldKey])
       const newOctave = keys.octaves.filter((octave) => octave.key === heldKey)[0].function
       synth.changeAttribute('octave', newOctave as number)
     }
 
-    if (Object.keys(keys.tones).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
+    if (keys.tones.map(tone => tone.key).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
       setHeldKeys([...heldKeysRef.current, heldKey])
-      // const newWaveShape = keys.tones.filter((tone) => tone.key === heldKey)[0].function
-      // synth.changeAttribute('waveShape', newWaveShape as string)
+      const newWaveShape = keys.tones.filter((tone) => tone.key === heldKey)[0].function
+      synth.changeAttribute('waveShape', newWaveShape as string)
     }
   }, [synth])
  
