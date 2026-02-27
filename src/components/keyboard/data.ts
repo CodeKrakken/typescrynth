@@ -27,23 +27,23 @@ export const keys: keysType = {
     {key: 'o', label: ''}
   ],
   'black keys': [
-    {key: 's', label: 's', htmlTitle: 'C#'}, 
-    {key: 'd', label: 'd', htmlTitle: 'D#'}, 
+    {key: 's', label: 's', htmlTitle: 'C#', function: 'C#'}, 
+    {key: 'd', label: 'd', htmlTitle: 'D#', function: 'D#'}, 
     {key: 'f', label: ''}, 
-    {key: 'g', label: 'g', htmlTitle: 'F#'}, 
-    {key: 'h', label: 'h', htmlTitle: 'G#'}, 
-    {key: 'j', label: 'j', htmlTitle: 'A#'}, 
+    {key: 'g', label: 'g', htmlTitle: 'F#', function: 'F#'}, 
+    {key: 'h', label: 'h', htmlTitle: 'G#', function: 'G#'}, 
+    {key: 'j', label: 'j', htmlTitle: 'A#', function: 'A#'}, 
     {key: 'k', label: ''}
   ],
   'white keys': [
-    {key: 'z', label: 'z', htmlTitle: 'C'}, 
-    {key: 'x', label: 'x', htmlTitle: 'D'}, 
-    {key: 'c', label: 'c', htmlTitle: 'E'}, 
-    {key: 'v', label: 'v', htmlTitle: 'F'}, 
-    {key: 'b', label: 'b', htmlTitle: 'G'}, 
-    {key: 'n', label: 'n', htmlTitle: 'A'}, 
-    {key: 'm', label: 'm', htmlTitle: 'B'}, 
-    {key: ',', label: ',', htmlTitle: 'C'}
+    {key: 'z', label: 'z', htmlTitle: 'C', function: 'C'}, 
+    {key: 'x', label: 'x', htmlTitle: 'D', function: 'D'}, 
+    {key: 'c', label: 'c', htmlTitle: 'E', function: 'E'}, 
+    {key: 'v', label: 'v', htmlTitle: 'F', function: 'F'}, 
+    {key: 'b', label: 'b', htmlTitle: 'G', function: 'G'}, 
+    {key: 'n', label: 'n', htmlTitle: 'A', function: 'A'}, 
+    {key: 'm', label: 'm', htmlTitle: 'B', function: 'B'}, 
+    {key: ',', label: ',', htmlTitle: 'C', function: 'C'}
   ]
 } 
 

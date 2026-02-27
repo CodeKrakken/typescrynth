@@ -22,8 +22,8 @@ export default function Keyboard() {
   }, [heldKeys]) 
   
   const isNote = (key: string) => {
-    const musicalKeys = [keys['black keys'], keys['white keys']].flat().map(note => note.key)
-    return musicalKeys.includes(key)
+    const notes = [keys['black keys'], keys['white keys']].flat().map(note => note.function && note.key)
+    return notes.includes(key) 
   }
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
