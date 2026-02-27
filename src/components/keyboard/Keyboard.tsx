@@ -22,8 +22,12 @@ export default function Keyboard() {
   }, [heldKeys]) 
   
   const isNote = (key: string) => {
-    const notes = [keys['black keys'], keys['white keys']].flat().map(note => note.function && note.key)
+    const notes = noteKeys().map(note => note.function && note.key)
     return notes.includes(key) 
+  }
+
+  const noteKeys = () => {
+    return [keys['black keys'], keys['white keys']].flat()
   }
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -35,8 +39,8 @@ export default function Keyboard() {
     if (isNote(e.key) && !heldKeysRef.current.includes(e.key)) {
       setHeldKeys([...heldKeysRef.current, e.key])
 
-      const noteToPlay = keyCodes.notes[e.key]
-      synth.play(noteToPlay)
+      const noteToPlay = noteKeys().filter(note => note.key === e.key)[0].function
+      synth.play(noteToPlay as string)
     }
 
     if (keyCodes.octaves.includes(e.keyCode) && !heldKeysRef.current.includes(e.key)) {
@@ -77,7 +81,6 @@ export default function Keyboard() {
     }
 
     if (keys.octaves.map(octave => octave.key).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
-      console.log(77)
       setHeldKeys([...heldKeysRef.current, heldKey])
       const newOctave = keys.octaves.filter((octave) => octave.key === heldKey)[0].function
       synth.changeAttribute('octave', newOctave as number)
