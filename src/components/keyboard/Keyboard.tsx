@@ -73,7 +73,7 @@ export default function Keyboard() {
       synth.play(noteToPlay)
     }
 
-    if (keys.octaves.filter(octave => octave.key === heldKey)[0] && !heldKeysRef.current.includes(heldKey)) {
+    if (keys.octaves.map(octave => octave.key).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
       setHeldKeys([...heldKeysRef.current, heldKey])
       const newOctave = keys.octaves.filter((octave) => octave.key === heldKey)[0].function
       synth.changeAttribute('octave', newOctave as number)
@@ -81,7 +81,6 @@ export default function Keyboard() {
 
     if (Object.keys(keys.tones).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
       setHeldKeys([...heldKeysRef.current, heldKey])
-      console.log(keys.tones.filter((tone) => tone.key === heldKey)[0].function)
       // const newWaveShape = keys.tones.filter((tone) => tone.key === heldKey)[0].function
       // synth.changeAttribute('waveShape', newWaveShape as string)
     }
