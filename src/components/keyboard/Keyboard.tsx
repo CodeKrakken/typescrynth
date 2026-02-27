@@ -60,9 +60,6 @@ export default function Keyboard() {
     }
   }, [synth])
 
-
-
-
   const handleTouchStart = useCallback((e: CustomTouchEvent) => {
 
     const heldKey = e.explicitOriginalTarget.innerText
@@ -76,16 +73,18 @@ export default function Keyboard() {
       synth.play(noteToPlay)
     }
 
-    if (Object.keys(keys.octaves).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
+    if (keys.octaves.map(octave => octave.key).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
+      console.log(77)
       setHeldKeys([...heldKeysRef.current, heldKey])
       const newOctave = keys.octaves.filter((octave) => octave.key === heldKey)[0].function
       synth.changeAttribute('octave', newOctave as number)
     }
 
-    // if (e.keyCode in keyCodes.waveShapes && !heldKeysRef.current.includes(e.key)) {
-    //   setHeldKeys([...heldKeysRef.current, e.key])
-    //   synth.changeAttribute('waveShape', keyCodes.waveShapes[e.keyCode])
-    // }
+    if (keys.tones.map(tone => tone.key).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
+      setHeldKeys([...heldKeysRef.current, heldKey])
+      const newWaveShape = keys.tones.filter((tone) => tone.key === heldKey)[0].function
+      synth.changeAttribute('waveShape', newWaveShape as string)
+    }
   }, [synth])
  
 
