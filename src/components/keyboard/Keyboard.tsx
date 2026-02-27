@@ -21,7 +21,10 @@ export default function Keyboard() {
     heldKeysRef.current = heldKeys
   }, [heldKeys]) 
   
-
+  const isNote = (key: string) => {
+    const musicalKeys = [keys['black keys'], keys['white keys']].flat().map(note => note.key)
+    return musicalKeys.includes(key)
+  }
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
 
@@ -29,7 +32,7 @@ export default function Keyboard() {
 
     synth!.resume?.()
 
-    if (Object.keys(keyCodes.notes).includes(e.key) && !heldKeysRef.current.includes(e.key)) {
+    if (isNote(e.key) && !heldKeysRef.current.includes(e.key)) {
       setHeldKeys([...heldKeysRef.current, e.key])
 
       const noteToPlay = keyCodes.notes[e.key]
