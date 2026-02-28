@@ -39,7 +39,7 @@ export default function Keyboard() {
   }
 
   const noteFrom = (key: string) => {
-    return noteKeys().filter(note => note.key === key)[0].function
+    return noteKeys().filter(note => note.key === key)[0].function as string
   }
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -87,11 +87,11 @@ export default function Keyboard() {
 
     synth!.resume?.()
 
-    if (Object.keys(keyCodes.notes).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
+    if (isNote(heldKey) && !heldKeysRef.current.includes(heldKey)) {
       setHeldKeys([...heldKeysRef.current, heldKey])
-
-      const noteToPlay = keyCodes.notes[heldKey]
-      synth.play(noteToPlay)
+      console.log(heldKey)
+      const noteToPlay = noteFrom[heldKey]
+      synth.play(noteToPlay as string)
     }
 
     if (keys.octaves.map(octave => octave.key).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
