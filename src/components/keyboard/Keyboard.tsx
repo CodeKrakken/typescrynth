@@ -42,6 +42,10 @@ export default function Keyboard() {
     return noteKeys().filter(note => note.key === key)[0].function as string
   }, [noteKeys])
 
+  const isHeld = (key: string) => {
+    return heldKeysRef.current.includes(key)
+  }
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
 
     if (e.repeat) return
@@ -50,20 +54,20 @@ export default function Keyboard() {
 
     const key = e.key.toLowerCase()
 
-    if (isNote(key) && !heldKeysRef.current.includes(key)) {
+    if (isNote(key) && !isHeld(key)) {
       setHeldKeys([...heldKeysRef.current, key])
 
       const noteToPlay = noteFrom(key)
       synth.play(noteToPlay as string)
     }
 
-    if (isOctave(key) && !heldKeysRef.current.includes(key)) {
+    if (isOctave(key) && !isHeld(key)) {
       setHeldKeys([...heldKeysRef.current, key])
       const newOctave = keys.octaves.filter(octave => octave.key === key)[0].function
       synth.changeAttribute('octave', newOctave as number)
     }
 
-    if (isWaveShape(key) && !heldKeysRef.current.includes(key)) {
+    if (isWaveShape(key) && !isHeld(key)) {
       setHeldKeys([...heldKeysRef.current, key])
       const newWaveShape = keys.tones.filter(waveShape => waveShape.key === key)[0].function
       synth.changeAttribute('waveShape', newWaveShape as string)
