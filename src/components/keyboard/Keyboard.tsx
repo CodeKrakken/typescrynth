@@ -20,15 +20,15 @@ export default function Keyboard() {
   useEffect(() => {  
     heldKeysRef.current = heldKeys
   }, [heldKeys]) 
-  
-  const isNote = (key: string) => {
-    const notes = noteKeys().map(note => note.function && note.key)
-    return notes.includes(key) 
-  }
 
   const noteKeys = () => {
     return [keys['black keys'], keys['white keys']].flat()
   }
+  
+  const isNote = useCallback((key: string) => {
+    const notes = noteKeys().map(note => note.function && note.key)
+    return notes.includes(key) 
+  }, [noteKeys])
 
   const isOctave = (key: string) => {
     return keys.octaves.filter(octave => octave.key === key)
@@ -38,9 +38,9 @@ export default function Keyboard() {
     return keys.tones.filter(tone => tone.key === key)
   }
 
-  const noteFrom = (key: string) => {
+  const noteFrom = useCallback((key: string) => {
     return noteKeys().filter(note => note.key === key)[0].function as string
-  }
+  }, [noteKeys])
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
 
