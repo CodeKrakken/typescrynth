@@ -31,7 +31,7 @@ export function Synth() {
       gain: context.createGain(),
       note: note,
       frequency: frequency,
-      isPlaying: false
+      isHeld: false
     }
 
     key.oscillator.connect(key.gain)
@@ -58,7 +58,7 @@ export function Synth() {
     const now = context.currentTime
     keys[i].gain.gain.cancelScheduledValues(now)
     keys[i].gain.gain.setTargetAtTime(1, now, 0.01)
-    keys[i].isPlaying = true
+    keys[i].isHeld = true
   }
 
   const stop = (note: string) => {
@@ -67,7 +67,7 @@ export function Synth() {
     const now = context.currentTime
     keys[i].gain.gain.cancelScheduledValues(now)
     keys[i].gain.gain.setTargetAtTime(0, now, 0.01)
-    keys[i].isPlaying = false
+    keys[i].isHeld = false
   }
 
   const updateFrequencies = () => {
@@ -75,7 +75,7 @@ export function Synth() {
     const now = context.currentTime
 
     keys.forEach(key => {
-      if (key.isPlaying) {
+      if (key.isHeld) {
         key.oscillator.frequency.setValueAtTime(
           transpose(key.frequency),
           now
@@ -101,7 +101,7 @@ export function Synth() {
 
   const updateWaveShape = () => {
     keys.forEach(key => {
-      if (key.isPlaying) {
+      if (key.isHeld) {
         key.oscillator.type = settings.waveShape as OscillatorType
       }
     })
