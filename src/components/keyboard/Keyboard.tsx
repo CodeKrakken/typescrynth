@@ -31,11 +31,11 @@ export default function Keyboard() {
   }, [noteKeys])
 
   const isOctave = (key: string) => {
-    return keys.octaves.filter(octave => octave.key === key)
+    return keys.octaves.map(octave => octave.key).includes(key)
   }
 
   const isWaveShape = (key: string) => {
-    return keys.tones.filter(tone => tone.key === key)
+    return keys.tones.map(tone => tone.key).includes(key)
   }
 
   const noteFrom = useCallback((key: string) => {
@@ -49,6 +49,7 @@ export default function Keyboard() {
     synth!.resume?.()
 
     if (isNote(e.key) && !heldKeysRef.current.includes(e.key)) {
+      console.log(`Note block firing`)
       setHeldKeys([...heldKeysRef.current, e.key])
 
       const noteToPlay = noteFrom(e.key)
@@ -56,12 +57,14 @@ export default function Keyboard() {
     }
 
     if (isOctave(e.key) && !heldKeysRef.current.includes(e.key)) {
+      console.log(`Octave block firing`)
       setHeldKeys([...heldKeysRef.current, e.key])
       const newOctave = keys.octaves.filter(octave => octave.key === e.key)[0].function
       synth.changeAttribute('octave', newOctave as number)
     }
 
     if (isWaveShape(e.key) && !heldKeysRef.current.includes(e.key)) {
+      console.log(`Waveshape block firing`)
       setHeldKeys([...heldKeysRef.current, e.key])
       const newWaveShape = keys.tones.filter(waveShape => waveShape.key === e.key)[0].function
       synth.changeAttribute('waveShape', newWaveShape as string)
