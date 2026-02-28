@@ -74,11 +74,13 @@ export default function Keyboard() {
 
 
   const handleKeyUp = useCallback((e: KeyboardEvent) => {
-    setHeldKeys(heldKeys => heldKeys.filter(key => key !== e.key))      
-    
-    if (isNote(e.key) && heldKeysRef.current.includes(e.key)) {
 
-      const noteToStop = noteFrom(e.key)
+    const releasedKey = e.key.toLowerCase()
+    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
+    
+    if (isNote(releasedKey) && heldKeysRef.current.includes(releasedKey)) {
+
+      const noteToStop = noteFrom(releasedKey)
       synth.stop(noteToStop as string)
     }
   }, [synth, isNote, noteFrom])

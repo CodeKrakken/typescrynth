@@ -43,6 +43,6 @@ export const keys: keysType = {
     {key: 'b', label: 'b', htmlTitle: 'G', function: 'G'}, 
     {key: 'n', label: 'n', htmlTitle: 'A', function: 'A'}, 
     {key: 'm', label: 'm', htmlTitle: 'B', function: 'B'}, 
-    {key: ',', label: ',', htmlTitle: 'C', function: 'C'}
+    {key: ',', label: ',', htmlTitle: 'C', function: 'C+'}
   ]
 } 
