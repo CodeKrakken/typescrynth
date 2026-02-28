@@ -3,7 +3,7 @@ Scrynth
 
 Browser based synthesiser built with TypeScript and React, leveraging the Web Audio API.
 
-Use your computer keyboard to play the synth.
+Be a Synth God with your computer keyboard or touchscreen device.
 
 Internal synth calculates notes that cover the entire audible frequency range. 
 
@@ -24,6 +24,9 @@ npx nodemon
 To Use
 ------
 
-Visit https://localhost:3000
-
-Play the keyboard with letters [ Z X C V B N M ,] (white keys)
+- Visit https://localhost:3000
+- White notes: z x c v b n m ,
+- Black notes: s d g h j
+- Waveforms:   q (sine), w (tri), e (saw), r (squ)
+- Octaves:     ` 1 2 3 4 5 6 7 8 9 0 -
+- Have fun!
