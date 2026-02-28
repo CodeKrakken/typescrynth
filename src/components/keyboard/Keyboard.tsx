@@ -66,7 +66,7 @@ export default function Keyboard() {
       const newWaveShape = keys.tones.filter(waveShape => waveShape.key === e.key)[0].function
       synth.changeAttribute('waveShape', newWaveShape as string)
     }
-  }, [synth])
+  }, [synth, isNote, noteFrom])
 
 
 
@@ -79,7 +79,7 @@ export default function Keyboard() {
       const noteToStop = noteFrom(e.key)
       synth.stop(noteToStop as string)
     }
-  }, [synth])
+  }, [synth, isNote, noteFrom])
 
   const handleTouchStart = useCallback((e: CustomTouchEvent) => {
 
@@ -105,7 +105,7 @@ export default function Keyboard() {
       const newWaveShape = keys.tones.filter((tone) => tone.key === heldKey)[0].function
       synth.changeAttribute('waveShape', newWaveShape as string)
     }
-  }, [synth])
+  }, [synth, isNote, noteFrom])
  
 
 
@@ -121,7 +121,7 @@ export default function Keyboard() {
       const noteToStop = noteFrom(releasedKey)
       synth.stop(noteToStop)
     }
-  }, [synth])
+  }, [synth, isNote, noteFrom])
 
 
 
