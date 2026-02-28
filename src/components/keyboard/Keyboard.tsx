@@ -21,9 +21,9 @@ export default function Keyboard() {
     heldKeysRef.current = heldKeys
   }, [heldKeys]) 
 
-  const noteKeys = () => {
+  const noteKeys = useCallback(() => {
     return [keys['black keys'], keys['white keys']].flat()
-  }
+  }, [])
   
   const isNote = useCallback((key: string) => {
     const notes = noteKeys().map(note => note.function && note.key)
