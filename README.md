@@ -30,3 +30,7 @@ To Use
 - Waveforms:   q (sine), w (tri), e (saw), r (squ)
 - Octaves:     ` 1 2 3 4 5 6 7 8 9 0 -
 - Have fun!
+
+Live version hosted [here](https://scrynth.netlify.app)
+
+Continuous Integration handled by Netlify.
