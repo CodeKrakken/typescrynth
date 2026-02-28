@@ -46,6 +46,10 @@ export default function Keyboard() {
     return heldKeysRef.current.includes(key)
   }
 
+  const octaveFrom = (key: string) => {
+    return keys.octaves.filter(octave => octave.key === key)[0].function
+  }
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
 
     if (e.repeat) return
@@ -63,7 +67,7 @@ export default function Keyboard() {
 
     if (isOctave(key) && !isHeld(key)) {
       setHeldKeys([...heldKeysRef.current, key])
-      const newOctave = keys.octaves.filter(octave => octave.key === key)[0].function
+      const newOctave = octaveFrom(key)
       synth.changeAttribute('octave', newOctave as number)
     }
 
