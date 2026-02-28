@@ -50,6 +50,10 @@ export default function Keyboard() {
     return keys.octaves.filter(octave => octave.key === key)[0].function
   }
 
+  const waveShapeFrom = (key: string) => {
+    return keys.tones.filter(waveShape => waveShape.key === key)[0].function
+  }
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
 
     if (e.repeat) return
@@ -73,7 +77,7 @@ export default function Keyboard() {
 
     if (isWaveShape(key) && !isHeld(key)) {
       setHeldKeys([...heldKeysRef.current, key])
-      const newWaveShape = keys.tones.filter(waveShape => waveShape.key === key)[0].function
+      const newWaveShape = waveShapeFrom(key)
       synth.changeAttribute('waveShape', newWaveShape as string)
     }
   }, [synth, isNote, noteFrom])
@@ -86,7 +90,7 @@ export default function Keyboard() {
     const releasedKey = e.key.toLowerCase()
     setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
     
-    if (isNote(releasedKey) && heldKeysRef.current.includes(releasedKey)) {
+    if (isNote(releasedKey) && isHeld(releasedKey)) {
 
       const noteToStop = noteFrom(releasedKey)
       synth.stop(noteToStop as string)
@@ -99,22 +103,21 @@ export default function Keyboard() {
 
     synth!.resume?.()
 
-    if (isNote(heldKey) && !heldKeysRef.current.includes(heldKey)) {
+    if (isNote(heldKey) && !isHeld(heldKey)) {
       setHeldKeys([...heldKeysRef.current, heldKey])
-      console.log(heldKey)
       const noteToPlay = noteFrom(heldKey)
       synth.play(noteToPlay)
     }
 
-    if (keys.octaves.map(octave => octave.key).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
+    if (isOctave(heldKey) && !isHeld(heldKey)) {
       setHeldKeys([...heldKeysRef.current, heldKey])
-      const newOctave = keys.octaves.filter((octave) => octave.key === heldKey)[0].function
+      const newOctave = octaveFrom(heldKey)
       synth.changeAttribute('octave', newOctave as number)
     }
 
-    if (keys.tones.map(tone => tone.key).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
+    if (isWaveShape(heldKey) && !isHeld(heldKey)) {
       setHeldKeys([...heldKeysRef.current, heldKey])
-      const newWaveShape = keys.tones.filter((tone) => tone.key === heldKey)[0].function
+      const newWaveShape = waveShapeFrom(heldKey)
       synth.changeAttribute('waveShape', newWaveShape as string)
     }
   }, [synth, isNote, noteFrom])
@@ -128,7 +131,7 @@ export default function Keyboard() {
     
     setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
     
-    if (isNote(releasedKey) && heldKeysRef.current.includes(releasedKey)) {
+    if (isNote(releasedKey) && isHeld(releasedKey)) {
 
       const noteToStop = noteFrom(releasedKey)
       synth.stop(noteToStop)
