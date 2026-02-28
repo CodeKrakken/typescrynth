@@ -48,25 +48,24 @@ export default function Keyboard() {
 
     synth!.resume?.()
 
-    if (isNote(e.key) && !heldKeysRef.current.includes(e.key)) {
-      console.log(`Note block firing`)
-      setHeldKeys([...heldKeysRef.current, e.key])
+    const key = e.key.toLowerCase()
 
-      const noteToPlay = noteFrom(e.key)
+    if (isNote(key) && !heldKeysRef.current.includes(key)) {
+      setHeldKeys([...heldKeysRef.current, key])
+
+      const noteToPlay = noteFrom(key)
       synth.play(noteToPlay as string)
     }
 
-    if (isOctave(e.key) && !heldKeysRef.current.includes(e.key)) {
-      console.log(`Octave block firing`)
-      setHeldKeys([...heldKeysRef.current, e.key])
-      const newOctave = keys.octaves.filter(octave => octave.key === e.key)[0].function
+    if (isOctave(key) && !heldKeysRef.current.includes(key)) {
+      setHeldKeys([...heldKeysRef.current, key])
+      const newOctave = keys.octaves.filter(octave => octave.key === key)[0].function
       synth.changeAttribute('octave', newOctave as number)
     }
 
-    if (isWaveShape(e.key) && !heldKeysRef.current.includes(e.key)) {
-      console.log(`Waveshape block firing`)
-      setHeldKeys([...heldKeysRef.current, e.key])
-      const newWaveShape = keys.tones.filter(waveShape => waveShape.key === e.key)[0].function
+    if (isWaveShape(key) && !heldKeysRef.current.includes(key)) {
+      setHeldKeys([...heldKeysRef.current, key])
+      const newWaveShape = keys.tones.filter(waveShape => waveShape.key === key)[0].function
       synth.changeAttribute('waveShape', newWaveShape as string)
     }
   }, [synth, isNote, noteFrom])
