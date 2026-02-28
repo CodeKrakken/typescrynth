@@ -9,7 +9,7 @@ Internal synth calculates notes that cover the entire audible frequency range.
 
 Sine, triangle, sawtooth and square waveforms available. 
 
-Work in progress.
+Work in progress. See [Issues](https://github.com/CodeKrakken/typescrynth/issues) for upcoming fixes and features. This list too is work in progress.
 
 To Install
 ----------
