@@ -1,4 +1,4 @@
-import { keysType, keyCodesInterface } from './types'
+import { keysType } from './types'
 
 export const keys: keysType = {
   octaves:      [
@@ -46,19 +46,3 @@ export const keys: keysType = {
     {key: ',', label: ',', htmlTitle: 'C', function: 'C'}
   ]
 } 
-
-export const keyCodes: keyCodesInterface = {
-  notes : {
-    z   : 'C' , s: 'C#' , x:  'D' , d : 'D#', 
-    c   : 'E' , v: 'F'  , g:  'F#', b : 'G' , 
-    h   : 'G#', n: 'A'  , j:  'A#', m : 'B' , 
-    ',' : 'C+'
-  },
-  octaves : [192, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48],
-  waveShapes   :  { 
-    81: 'sine',
-    87: 'triangle',
-    69: 'sawtooth', 
-    82: 'square'
-  }
-}

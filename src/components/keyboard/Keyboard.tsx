@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Synth } from '../synth/Synth';
 import './keyboard.css'
-import { keys, keyCodes } from './data'
+import { keys } from './data'
 import { CustomTouchEvent, keyType } from './types';
 
 export default function Keyboard() {
@@ -90,8 +90,8 @@ export default function Keyboard() {
     if (isNote(heldKey) && !heldKeysRef.current.includes(heldKey)) {
       setHeldKeys([...heldKeysRef.current, heldKey])
       console.log(heldKey)
-      const noteToPlay = noteFrom[heldKey]
-      synth.play(noteToPlay as string)
+      const noteToPlay = noteFrom(heldKey)
+      synth.play(noteToPlay)
     }
 
     if (keys.octaves.map(octave => octave.key).includes(heldKey) && !heldKeysRef.current.includes(heldKey)) {
@@ -116,9 +116,9 @@ export default function Keyboard() {
     
     setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
     
-    if (Object.keys(keyCodes.notes).includes(releasedKey) && heldKeysRef.current.includes(releasedKey)) {
+    if (isNote(releasedKey) && heldKeysRef.current.includes(releasedKey)) {
 
-      const noteToStop = keyCodes.notes[releasedKey]
+      const noteToStop = noteFrom(releasedKey)
       synth.stop(noteToStop)
     }
   }, [synth])

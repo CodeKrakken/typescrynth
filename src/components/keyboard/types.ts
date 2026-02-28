@@ -7,12 +7,6 @@ export type keysType = {
   }[]
 }
 
-export interface keyCodesInterface {
-  notes       : { [key: string]: string },
-  waveShapes  : { [key: number]: string },
-  octaves     : number[],
-}
-
 export interface CustomTouchEvent extends TouchEvent {
   explicitOriginalTarget: {
     innerText: string
