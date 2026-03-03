@@ -27,7 +27,7 @@ To Use
 - Visit https://localhost:3000
 - White notes: z x c v b n m ,
 - Black notes: s d g h j
-- Waveforms:   q (sine), w (tri), e (saw), r (squ)
+- Waveforms:   q _(sine)_, w _(tri)_, e _(saw)_, r _(squ)_
 - Octaves:     ` 1 2 3 4 5 6 7 8 9 0 -
 - Have fun!
 
