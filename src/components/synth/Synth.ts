@@ -1,13 +1,15 @@
 import {synthSettings} from './types'
 import { notes, baseFrequency, defaultSettings, noteRatio } from './data'
 
+const settings: synthSettings = defaultSettings
+
 let context: AudioContext | null = null
 let frequency = baseFrequency
-const settings: synthSettings = defaultSettings
 
 // Helper functions
 
 const getContext = () => {
+  
   if (!context) {
     context = new AudioContext()
   }
@@ -45,10 +47,12 @@ const transpose = (frequency: number) => {
   for ( let i = 0 ; i < settings.octave; i++ ) {
     frequency *= 2
   }
+
   return +frequency.toFixed(2)
 }
 
 const updateFrequencies = () => {
+
   const context = getContext()
   const now = context.currentTime
 
@@ -63,7 +67,9 @@ const updateFrequencies = () => {
 }
 
 const updateWaveShape = () => {
+
   keys.forEach(key => {
+
     if (key.isPlaying) {
       key.oscillator.type = settings.waveShape as OscillatorType
     }
@@ -76,29 +82,36 @@ const updateWaveShape = () => {
 export const synth = {
   
   play: (note: string) => {
+
     const context = getContext()
     const i = keys.findIndex(key => key.note === note)
+    
     keys[i].oscillator.type = settings.waveShape as OscillatorType
     keys[i].oscillator.frequency.value = transpose(keys[i].frequency)
     const now = context.currentTime
+
     keys[i].gain.gain.cancelScheduledValues(now)
     keys[i].gain.gain.setTargetAtTime(1, now, 0.01)
     keys[i].isPlaying = true
   },
 
   stop: (note: string) => {
+
     const context = getContext()
     const i = keys.findIndex(key => key.note === note)
     const now = context.currentTime
+
     keys[i].gain.gain.cancelScheduledValues(now)
     keys[i].gain.gain.setTargetAtTime(0, now, 0.01)
     keys[i].isPlaying = false
   },
   
   changeAttribute: <K extends keyof synthSettings>(
+
     key: K,
     value: synthSettings[K]
   ) => {
+    
     settings[key] = value
 
     if (key === 'octave') {
@@ -111,6 +124,7 @@ export const synth = {
   },
 
   resume: () => {
+
     const context = getContext()
     context.resume()
   }
