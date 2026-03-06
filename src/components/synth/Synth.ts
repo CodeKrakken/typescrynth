@@ -1,56 +1,81 @@
 import {synthSettings} from './types'
 import { notes, baseFrequency, defaultSettings, noteRatio } from './data'
 
+let context: AudioContext | null = null
 let frequency = baseFrequency
+const settings: synthSettings = defaultSettings
 
-export function Synth() {
+// Helper functions
 
-  let context: AudioContext | null = null
-
-  const getContext = () => {
-    if (!context) {
-      context = new AudioContext()
-    }
-
-    if (context.state === 'suspended') {
-      context.resume()
-    }
-
-    return context
+const getContext = () => {
+  if (!context) {
+    context = new AudioContext()
   }
 
-  const settings: synthSettings = defaultSettings
+  if (context.state === 'suspended') {
+    context.resume()
+  }
+
+  return context
+}
+
+const keys = notes.map(((note, i) => {
+  if (i) { frequency *= noteRatio }
+
+  const context = getContext()
   
-  const keys = notes.map(((note, i) => {
-    if (i) { frequency *= noteRatio }
-
-    const context = getContext()
-    
-    const key = {
-      oscillator: context.createOscillator(),
-      gain: context.createGain(),
-      note: note,
-      frequency: frequency,
-      isPlaying: false
-    }
-
-    key.oscillator.connect(key.gain)
-    key.gain.connect(context.destination)
-    key.gain.gain.value = 0
-    key.oscillator.start(0)
-
-    return key
-  }))
-
-  const transpose = (frequency: number) => {
-
-    for ( let i = 0 ; i < settings.octave; i++ ) {
-      frequency *= 2
-    }
-    return +frequency.toFixed(2)
+  const key = {
+    oscillator: context.createOscillator(),
+    gain: context.createGain(),
+    note: note,
+    frequency: frequency,
+    isPlaying: false
   }
-    
-  const play = (note: string) => {
+
+  key.oscillator.connect(key.gain)
+  key.gain.connect(context.destination)
+  key.gain.gain.value = 0
+  key.oscillator.start(0)
+
+  return key
+}))
+
+const transpose = (frequency: number) => {
+
+  for ( let i = 0 ; i < settings.octave; i++ ) {
+    frequency *= 2
+  }
+  return +frequency.toFixed(2)
+}
+
+const updateFrequencies = () => {
+  const context = getContext()
+  const now = context.currentTime
+
+  keys.forEach(key => {
+    if (key.isPlaying) {
+      key.oscillator.frequency.setValueAtTime(
+        transpose(key.frequency),
+        now
+      )
+    }
+  })
+}
+
+const updateWaveShape = () => {
+  keys.forEach(key => {
+    if (key.isPlaying) {
+      key.oscillator.type = settings.waveShape as OscillatorType
+    }
+  })
+}
+
+
+// Synth
+
+export const synth = {
+  
+  play: (note: string) => {
     const context = getContext()
     const i = keys.findIndex(key => key.note === note)
     keys[i].oscillator.type = settings.waveShape as OscillatorType
@@ -59,32 +84,18 @@ export function Synth() {
     keys[i].gain.gain.cancelScheduledValues(now)
     keys[i].gain.gain.setTargetAtTime(1, now, 0.01)
     keys[i].isPlaying = true
-  }
+  },
 
-  const stop = (note: string) => {
+  stop: (note: string) => {
     const context = getContext()
     const i = keys.findIndex(key => key.note === note)
     const now = context.currentTime
     keys[i].gain.gain.cancelScheduledValues(now)
     keys[i].gain.gain.setTargetAtTime(0, now, 0.01)
     keys[i].isPlaying = false
-  }
-
-  const updateFrequencies = () => {
-    const context = getContext()
-    const now = context.currentTime
-
-    keys.forEach(key => {
-      if (key.isPlaying) {
-        key.oscillator.frequency.setValueAtTime(
-          transpose(key.frequency),
-          now
-        )
-      }
-    })
-  }
-
-  const changeAttribute = <K extends keyof synthSettings>(
+  },
+  
+  changeAttribute: <K extends keyof synthSettings>(
     key: K,
     value: synthSettings[K]
   ) => {
@@ -97,25 +108,11 @@ export function Synth() {
     if (key === 'waveShape') {
       updateWaveShape()
     }
-  }
+  },
 
-  const updateWaveShape = () => {
-    keys.forEach(key => {
-      if (key.isPlaying) {
-        key.oscillator.type = settings.waveShape as OscillatorType
-      }
-    })
-  }
-
-  const resume = () => {
+  resume: () => {
     const context = getContext()
     context.resume()
   }
 
-  return {
-    play,
-    stop,
-    changeAttribute,
-    resume
-  };
 }

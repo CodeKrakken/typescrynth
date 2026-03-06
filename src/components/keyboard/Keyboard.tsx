@@ -1,18 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Synth } from '../synth/Synth';
+import { synth } from '../synth/Synth';
 import './keyboard.css'
 import { keys } from './data'
 import { CustomTouchEvent, keyType } from './types';
 
 export default function Keyboard() {
-
-  const synthRef = useRef<ReturnType<typeof Synth> | null>(null)
-
-  if (!synthRef.current) {
-    synthRef.current = Synth()
-  }
-
-  const synth = synthRef.current
 
   const [heldKeys, setHeldKeys] = useState<string[]>([])
   const heldKeysRef = useRef(heldKeys)  
