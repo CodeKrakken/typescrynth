@@ -61,28 +61,20 @@ export default function Keyboard() {
   
   const functionFrom = (key: string) => {
 
-    let returnFunction: string = ''
+    let keyFunction: string = ''
     
     if (isNote(key)) {
-      returnFunction = 'note'
+      keyFunction = 'note'
     } else if (isOctave(key)) {
-      returnFunction = 'octave'
+      keyFunction = 'octave'
     } else if (isWaveform(key)) {
-      returnFunction = 'waveform'
+      keyFunction = 'waveform'
     }
 
-    return returnFunction
+    return keyFunction
   }
 
-  
-  // Event handlers
-
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-
-    if (e.repeat) return
-    synth!.resume?.()
-    const key = e.key.toLowerCase()
-    const keyFunction = functionFrom(key)
+  const activate = (key: string, keyFunction: string) => {
 
     if (!isHeld(key)) {
 
@@ -102,8 +94,18 @@ export default function Keyboard() {
         default: break
       }
     }
+  }
 
-    
+  
+  // Event handlers
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+
+    if (e.repeat) return
+    synth!.resume?.()
+    const key = e.key.toLowerCase()
+    const keyFunction = functionFrom(key)
+    activate(key, keyFunction)
     setHeldKeys([...heldKeysRef.current, key])
 
   }, [isNote, noteFrom])
