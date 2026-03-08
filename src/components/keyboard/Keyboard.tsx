@@ -34,7 +34,7 @@ export default function Keyboard() {
   }
 
 
-  const iswaveform = (key: string) => {
+  const isWaveform = (key: string) => {
     return keys.waveforms.map(waveform => waveform.key).includes(key)
   }
 
@@ -59,31 +59,51 @@ export default function Keyboard() {
   }
 
   
+  const functionFrom = (key: string) => {
+
+    let returnFunction: string = ''
+    
+    if (isNote(key)) {
+      returnFunction = 'note'
+    } else if (isOctave(key)) {
+      returnFunction = 'octave'
+    } else if (isWaveform(key)) {
+      returnFunction = 'waveform'
+    }
+
+    return returnFunction
+  }
+
+  
   // Event handlers
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
 
     if (e.repeat) return
-
     synth!.resume?.()
-
     const key = e.key.toLowerCase()
+    const keyFunction = functionFrom(key)
 
-    if (!isHeld(key) && isNote(key)) {      
-      const noteToPlay = noteFrom(key)
-      synth.play(noteToPlay as string)
+    if (!isHeld(key)) {
+
+      switch(keyFunction) {
+        case 'note':
+          const noteToPlay = noteFrom(key)
+          synth.play(noteToPlay as string)
+          break
+        case 'octave':
+          const newOctave = octaveFrom(key)
+          synth.changeAttribute('octave', newOctave as number)
+          break
+        case 'waveform':
+          const newWaveform = waveformFrom(key)
+          synth.changeAttribute('waveform', newWaveform as string)
+          break
+        default: break
+      }
     }
 
-    if (!isHeld(key) && isOctave(key)) {
-      const newOctave = octaveFrom(key)
-      synth.changeAttribute('octave', newOctave as number)
-    }
-
-    if (!isHeld(key) && iswaveform(key)) {
-      const newwaveform = waveformFrom(key)
-      synth.changeAttribute('waveform', newwaveform as string)
-    }
-
+    
     setHeldKeys([...heldKeysRef.current, key])
 
   }, [isNote, noteFrom])
@@ -123,7 +143,7 @@ export default function Keyboard() {
       synth.changeAttribute('octave', newOctave as number)
     }
 
-    if (!isHeld(heldKey) && iswaveform(heldKey)) {
+    if (!isHeld(heldKey) && isWaveform(heldKey)) {
       const newWaveform = waveformFrom(heldKey)
       synth.changeAttribute('waveform', newWaveform as string)
     }
