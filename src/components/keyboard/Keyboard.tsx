@@ -17,9 +17,7 @@ export default function Keyboard() {
   // handler helpers
   
   const noteKeys = useCallback(() => {
-
     return [keys['black keys'], keys['white keys']].flat()
-
   }, [])
   
 
@@ -32,35 +30,31 @@ export default function Keyboard() {
 
 
   const isOctave = (key: string) => {
-
     return keys.octaves.map(octave => octave.key).includes(key)
   }
 
 
   const iswaveform = (key: string) => {
-
     return keys.waveforms.map(waveform => waveform.key).includes(key)
   }
 
 
   const noteFrom = useCallback((key: string) => {
-
     return noteKeys().filter(note => note.key === key)[0].function as string
-
   }, [noteKeys])
 
-  const isHeld = (key: string) => {
 
+  const isHeld = (key: string) => {
     return heldKeysRef.current.includes(key)
   }
 
-  const octaveFrom = (key: string) => {
 
+  const octaveFrom = (key: string) => {
     return keys.octaves.filter(octave => octave.key === key)[0].function
   }
 
-  const waveformFrom = (key: string) => {
 
+  const waveformFrom = (key: string) => {
     return keys.waveforms.filter(waveform => waveform.key === key)[0].function
   }
 
