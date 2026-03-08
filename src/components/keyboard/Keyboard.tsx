@@ -75,9 +75,12 @@ export default function Keyboard() {
   }
 
 
-  const activate = (key: string, keyFunction: string) => {
+  const activate = (key: string) => {
 
     if (!isHeld(key)) {
+
+      synth!.resume?.()
+      const keyFunction = functionFrom(key)
 
       switch(keyFunction) {
         case 'note'     :synth.play(noteFrom(key) as string)                            ; break
@@ -85,6 +88,8 @@ export default function Keyboard() {
         case 'waveform' :synth.changeAttribute('waveform', waveformFrom(key) as string) ; break
         default: break
       }
+
+      setHeldKeys([...heldKeysRef.current, key])
     }
   }
 
@@ -96,11 +101,17 @@ export default function Keyboard() {
     const handleKeyDown = (e: KeyboardEvent) => {
 
       if (e.repeat) return
-      synth!.resume?.()
       const key = e.key.toLowerCase()
-      const keyFunction = functionFrom(key)
-      activate(key, keyFunction)
-      setHeldKeys([...heldKeysRef.current, key])
+      activate(key)
+
+    }
+
+
+
+    const handleTouchStart = (e: CustomTouchEvent) => {
+
+      const key = e.explicitOriginalTarget.innerText
+      activate(key)
 
     }
 
@@ -119,19 +130,8 @@ export default function Keyboard() {
       setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
 
     }
-
-
-
-    const handleTouchStart = (e: CustomTouchEvent) => {
-
-      synth!.resume?.()
-      const key = e.explicitOriginalTarget.innerText
-      const keyFunction = functionFrom(key)
-      activate(key, keyFunction)
-      setHeldKeys([...heldKeysRef.current, key])
-
-    }
-  
+    
+    
 
     const handleTouchEnd = (e: CustomTouchEvent) => {
 
