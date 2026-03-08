@@ -74,23 +74,15 @@ export default function Keyboard() {
     return keyFunction
   }
 
+  
   const activate = (key: string, keyFunction: string) => {
 
     if (!isHeld(key)) {
 
       switch(keyFunction) {
-        case 'note':
-          const noteToPlay = noteFrom(key)
-          synth.play(noteToPlay as string)
-          break
-        case 'octave':
-          const newOctave = octaveFrom(key)
-          synth.changeAttribute('octave', newOctave as number)
-          break
-        case 'waveform':
-          const newWaveform = waveformFrom(key)
-          synth.changeAttribute('waveform', newWaveform as string)
-          break
+        case 'note'     :synth.play(noteFrom(key) as string)                            ; break
+        case 'octave'   :synth.changeAttribute('octave', octaveFrom(key) as number)     ; break
+        case 'waveform' :synth.changeAttribute('waveform', waveformFrom(key) as string) ; break
         default: break
       }
     }
