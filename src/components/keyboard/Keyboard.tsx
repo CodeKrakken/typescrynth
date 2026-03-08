@@ -7,11 +7,6 @@ import { CustomTouchEvent, keyType } from './types';
 export default function Keyboard() {
 
   const [heldKeys, setHeldKeys] = useState<string[]>([])
-  const heldKeysRef = useRef(heldKeys)  
-
-  useEffect(() => {  
-    heldKeysRef.current = heldKeys
-  }, [heldKeys]) 
 
   const noteKeys = useCallback(() => {
     return [keys['black keys'], keys['white keys']].flat()
@@ -35,7 +30,7 @@ export default function Keyboard() {
   }, [noteKeys])
 
   const isHeld = (key: string) => {
-    return heldKeysRef.current.includes(key)
+    return heldKeys.includes(key)
   }
 
   const octaveFrom = (key: string) => {
@@ -55,20 +50,20 @@ export default function Keyboard() {
     const key = e.key.toLowerCase()
 
     if (isNote(key) && !isHeld(key)) {
-      setHeldKeys([...heldKeysRef.current, key])
+      setHeldKeys([...heldKeys, key])
 
       const noteToPlay = noteFrom(key)
       synth.play(noteToPlay as string)
     }
 
     if (isOctave(key) && !isHeld(key)) {
-      setHeldKeys([...heldKeysRef.current, key])
+      setHeldKeys([...heldKeys, key])
       const newOctave = octaveFrom(key)
       synth.changeAttribute('octave', newOctave as number)
     }
 
     if (isWaveShape(key) && !isHeld(key)) {
-      setHeldKeys([...heldKeysRef.current, key])
+      setHeldKeys([...heldKeys, key])
       const newWaveShape = waveShapeFrom(key)
       synth.changeAttribute('waveShape', newWaveShape as string)
     }
@@ -80,13 +75,15 @@ export default function Keyboard() {
   const handleKeyUp = useCallback((e: KeyboardEvent) => {
 
     const releasedKey = e.key.toLowerCase()
-    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
     
     if (isNote(releasedKey) && isHeld(releasedKey)) {
 
       const noteToStop = noteFrom(releasedKey)
       synth.stop(noteToStop as string)
     }
+
+    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
+
   }, [isNote, noteFrom])
 
   const handleTouchStart = useCallback((e: CustomTouchEvent) => {
@@ -96,19 +93,19 @@ export default function Keyboard() {
     synth!.resume?.()
 
     if (isNote(heldKey) && !isHeld(heldKey)) {
-      setHeldKeys([...heldKeysRef.current, heldKey])
+      setHeldKeys([...heldKeys, heldKey])
       const noteToPlay = noteFrom(heldKey)
       synth.play(noteToPlay)
     }
 
     if (isOctave(heldKey) && !isHeld(heldKey)) {
-      setHeldKeys([...heldKeysRef.current, heldKey])
+      setHeldKeys([...heldKeys, heldKey])
       const newOctave = octaveFrom(heldKey)
       synth.changeAttribute('octave', newOctave as number)
     }
 
     if (isWaveShape(heldKey) && !isHeld(heldKey)) {
-      setHeldKeys([...heldKeysRef.current, heldKey])
+      setHeldKeys([...heldKeys, heldKey])
       const newWaveShape = waveShapeFrom(heldKey)
       synth.changeAttribute('waveShape', newWaveShape as string)
     }
