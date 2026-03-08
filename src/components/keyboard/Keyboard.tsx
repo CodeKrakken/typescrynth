@@ -98,22 +98,22 @@ export default function Keyboard() {
     synth!.resume?.()
 
     if (isNote(heldKey) && !isHeld(heldKey)) {
-      setHeldKeys([...heldKeysRef.current, heldKey])
       const noteToPlay = noteFrom(heldKey)
       synth.play(noteToPlay)
     }
 
     if (isOctave(heldKey) && !isHeld(heldKey)) {
-      setHeldKeys([...heldKeysRef.current, heldKey])
       const newOctave = octaveFrom(heldKey)
       synth.changeAttribute('octave', newOctave as number)
     }
 
     if (isWaveShape(heldKey) && !isHeld(heldKey)) {
-      setHeldKeys([...heldKeysRef.current, heldKey])
       const newWaveShape = waveShapeFrom(heldKey)
       synth.changeAttribute('waveShape', newWaveShape as string)
     }
+
+    setHeldKeys([...heldKeysRef.current, heldKey])
+
   }, [isNote, noteFrom])
  
 
