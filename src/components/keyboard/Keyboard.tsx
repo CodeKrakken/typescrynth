@@ -93,6 +93,17 @@ export default function Keyboard() {
     }
   }
 
+  const deactivate = (key: string) => {
+
+    if (isHeld(key) && isNote(key)) {
+
+        const noteToStop = noteFrom(key)
+        synth.stop(noteToStop as string)
+      }
+
+      setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))      
+  }
+
 
   useEffect(() => {  
 
@@ -103,47 +114,27 @@ export default function Keyboard() {
       if (e.repeat) return
       const key = e.key.toLowerCase()
       activate(key)
-
     }
-
 
 
     const handleTouchStart = (e: CustomTouchEvent) => {
 
       const key = e.explicitOriginalTarget.innerText
       activate(key)
-
     }
-
 
 
     const handleKeyUp = (e: KeyboardEvent) => {
 
       const releasedKey = e.key.toLowerCase()
-      
-      if (isHeld(releasedKey) && isNote(releasedKey)) {
-
-        const noteToStop = noteFrom(releasedKey)
-        synth.stop(noteToStop as string)
-      }
-
-      setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
-
+      deactivate(releasedKey)
     }
-    
-    
+        
 
     const handleTouchEnd = (e: CustomTouchEvent) => {
 
       const releasedKey = e.explicitOriginalTarget.innerText
-      
-      if (isHeld(releasedKey) && isNote(releasedKey)) {
-        const noteToStop = noteFrom(releasedKey)
-        synth.stop(noteToStop)
-      }
-      
-      setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
-
+      deactivate(releasedKey)
     }
 
     // event listeners
