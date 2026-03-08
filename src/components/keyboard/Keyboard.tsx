@@ -75,17 +75,17 @@ export default function Keyboard() {
 
     const key = e.key.toLowerCase()
 
-    if (isNote(key) && !isHeld(key)) {      
+    if (!isHeld(key) && isNote(key)) {      
       const noteToPlay = noteFrom(key)
       synth.play(noteToPlay as string)
     }
 
-    if (isOctave(key) && !isHeld(key)) {
+    if (!isHeld(key) && isOctave(key)) {
       const newOctave = octaveFrom(key)
       synth.changeAttribute('octave', newOctave as number)
     }
 
-    if (iswaveform(key) && !isHeld(key)) {
+    if (!isHeld(key) && iswaveform(key)) {
       const newwaveform = waveformFrom(key)
       synth.changeAttribute('waveform', newwaveform as string)
     }
@@ -101,7 +101,7 @@ export default function Keyboard() {
 
     const releasedKey = e.key.toLowerCase()
     
-    if (isNote(releasedKey) && isHeld(releasedKey)) {
+    if (isHeld(releasedKey) && isNote(releasedKey)) {
 
       const noteToStop = noteFrom(releasedKey)
       synth.stop(noteToStop as string)
@@ -119,19 +119,19 @@ export default function Keyboard() {
 
     synth!.resume?.()
 
-    if (isNote(heldKey) && !isHeld(heldKey)) {
+    if (!isHeld(heldKey) && isNote(heldKey)) {
       const noteToPlay = noteFrom(heldKey)
       synth.play(noteToPlay)
     }
 
-    if (isOctave(heldKey) && !isHeld(heldKey)) {
+    if (!isHeld(heldKey) && isOctave(heldKey)) {
       const newOctave = octaveFrom(heldKey)
       synth.changeAttribute('octave', newOctave as number)
     }
 
-    if (iswaveform(heldKey) && !isHeld(heldKey)) {
-      const newwaveform = waveformFrom(heldKey)
-      synth.changeAttribute('waveform', newwaveform as string)
+    if (!isHeld(heldKey) && iswaveform(heldKey)) {
+      const newWaveform = waveformFrom(heldKey)
+      synth.changeAttribute('waveform', newWaveform as string)
     }
 
     setHeldKeys([...heldKeysRef.current, heldKey])
@@ -143,7 +143,7 @@ export default function Keyboard() {
 
     const releasedKey = e.explicitOriginalTarget.innerText
     
-    if (isNote(releasedKey) && isHeld(releasedKey)) {
+    if (isHeld(releasedKey) && isNote(releasedKey)) {
       const noteToStop = noteFrom(releasedKey)
       synth.stop(noteToStop)
     }
