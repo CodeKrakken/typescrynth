@@ -4,7 +4,7 @@ export const notes     = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 
 
 export const defaultSettings = {
     octave: 4,
-    waveShape: 'sine'
+    waveform: 'sine'
 }
 
 export const noteRatio = Math.pow(2, 1/12)

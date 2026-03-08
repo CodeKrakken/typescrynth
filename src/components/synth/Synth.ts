@@ -66,12 +66,12 @@ const updateFrequencies = () => {
   })
 }
 
-const updateWaveShape = () => {
+const updatewaveform = () => {
 
   keys.forEach(key => {
 
     if (key.isPlaying) {
-      key.oscillator.type = settings.waveShape as OscillatorType
+      key.oscillator.type = settings.waveform as OscillatorType
     }
   })
 }
@@ -86,7 +86,7 @@ export const synth = {
     const context = getContext()
     const i = keys.findIndex(key => key.note === note)
     
-    keys[i].oscillator.type = settings.waveShape as OscillatorType
+    keys[i].oscillator.type = settings.waveform as OscillatorType
     keys[i].oscillator.frequency.value = transpose(keys[i].frequency)
     const now = context.currentTime
 
@@ -118,8 +118,8 @@ export const synth = {
       updateFrequencies()
     }
 
-    if (key === 'waveShape') {
-      updateWaveShape()
+    if (key === 'waveform') {
+      updatewaveform()
     }
   },
 

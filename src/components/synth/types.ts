@@ -1,4 +1,4 @@
 export type synthSettings = {
     octave: number
-    waveShape: string
+    waveform: string
 }

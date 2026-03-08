@@ -15,7 +15,7 @@ export const keys: keysType = {
     {key: '0', label: '0', htmlTitle: '10', function: 10},
     {key: '-', label: ''}
   ],
-  tones:        [
+  waveforms:        [
     {key: 'q', label: 'q', htmlTitle: 'sine'    , function: 'sine'}, 
     {key: 'w', label: 'w', htmlTitle: 'triangle', function: 'triangle'}, 
     {key: 'e', label: 'e', htmlTitle: 'sawtooth', function: 'sawtooth'}, 

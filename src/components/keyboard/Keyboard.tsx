@@ -11,8 +11,8 @@ export default function Keyboard() {
 
   useEffect(() => {  
     heldKeysRef.current = heldKeys
-  }, [heldKeys]) 
-
+  }, [heldKeys])
+  
   const noteKeys = useCallback(() => {
     return [keys['black keys'], keys['white keys']].flat()
   }, [])
@@ -26,8 +26,8 @@ export default function Keyboard() {
     return keys.octaves.map(octave => octave.key).includes(key)
   }
 
-  const isWaveShape = (key: string) => {
-    return keys.tones.map(tone => tone.key).includes(key)
+  const iswaveform = (key: string) => {
+    return keys.waveforms.map(waveform => waveform.key).includes(key)
   }
 
   const noteFrom = useCallback((key: string) => {
@@ -42,8 +42,8 @@ export default function Keyboard() {
     return keys.octaves.filter(octave => octave.key === key)[0].function
   }
 
-  const waveShapeFrom = (key: string) => {
-    return keys.tones.filter(waveShape => waveShape.key === key)[0].function
+  const waveformFrom = (key: string) => {
+    return keys.waveforms.filter(waveform => waveform.key === key)[0].function
   }
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -67,10 +67,10 @@ export default function Keyboard() {
       synth.changeAttribute('octave', newOctave as number)
     }
 
-    if (isWaveShape(key) && !isHeld(key)) {
+    if (iswaveform(key) && !isHeld(key)) {
       setHeldKeys([...heldKeysRef.current, key])
-      const newWaveShape = waveShapeFrom(key)
-      synth.changeAttribute('waveShape', newWaveShape as string)
+      const newwaveform = waveformFrom(key)
+      synth.changeAttribute('waveform', newwaveform as string)
     }
   }, [isNote, noteFrom])
 
@@ -107,9 +107,9 @@ export default function Keyboard() {
       synth.changeAttribute('octave', newOctave as number)
     }
 
-    if (isWaveShape(heldKey) && !isHeld(heldKey)) {
-      const newWaveShape = waveShapeFrom(heldKey)
-      synth.changeAttribute('waveShape', newWaveShape as string)
+    if (iswaveform(heldKey) && !isHeld(heldKey)) {
+      const newwaveform = waveformFrom(heldKey)
+      synth.changeAttribute('waveform', newwaveform as string)
     }
 
     setHeldKeys([...heldKeysRef.current, heldKey])
@@ -131,8 +131,6 @@ export default function Keyboard() {
     setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
 
   }, [isNote, noteFrom])
-
-
 
 
 
