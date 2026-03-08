@@ -12,39 +12,60 @@ export default function Keyboard() {
   useEffect(() => {  
     heldKeysRef.current = heldKeys
   }, [heldKeys])
+
+
+  // handler helpers
   
   const noteKeys = useCallback(() => {
+
     return [keys['black keys'], keys['white keys']].flat()
+
   }, [])
   
+
   const isNote = useCallback((key: string) => {
+
     const notes = noteKeys().map(note => note.function && note.key)
-    return notes.includes(key) 
+    return notes.includes(key)
+
   }, [noteKeys])
 
+
   const isOctave = (key: string) => {
+
     return keys.octaves.map(octave => octave.key).includes(key)
   }
 
+
   const iswaveform = (key: string) => {
+
     return keys.waveforms.map(waveform => waveform.key).includes(key)
   }
 
+
   const noteFrom = useCallback((key: string) => {
+
     return noteKeys().filter(note => note.key === key)[0].function as string
+
   }, [noteKeys])
 
   const isHeld = (key: string) => {
+
     return heldKeysRef.current.includes(key)
   }
 
   const octaveFrom = (key: string) => {
+
     return keys.octaves.filter(octave => octave.key === key)[0].function
   }
 
   const waveformFrom = (key: string) => {
+
     return keys.waveforms.filter(waveform => waveform.key === key)[0].function
   }
+
+  
+  // Event handlers
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
 
