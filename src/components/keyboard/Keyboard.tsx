@@ -6,7 +6,8 @@ import { CustomTouchEvent, keyType } from './types';
 
 export default function Keyboard() {
 
-  const [heldKeys, setHeldKeys] = useState<string[]>([])
+  // const [heldKeys, setHeldKeys] = useState<string[]>([])
+  let heldKeys: string[] = []
 
   const noteKeys = useCallback(() => {
     return [keys['black keys'], keys['white keys']].flat()
@@ -14,10 +15,9 @@ export default function Keyboard() {
   
   const isNote = useCallback((key: string) => {
     const notes = noteKeys().map(note => note.function && note.key)
-    return notes.includes(key) 
+    return notes.includes(key)  
   }, [noteKeys])
-
-  const isOctave = (key: string) => {
+ const isOctave = (key: string) => {
     return keys.octaves.map(octave => octave.key).includes(key)
   }
 
@@ -50,22 +50,23 @@ export default function Keyboard() {
     const key = e.key.toLowerCase()
 
     if (isNote(key) && !isHeld(key)) {
-      setHeldKeys([...heldKeys, key])
-
-      console.log(heldKeys)
+      // setHeldKeys([...heldKeys, key])
+      heldKeys.push(key)
       
       const noteToPlay = noteFrom(key)
       synth.play(noteToPlay as string)
     }
 
     if (isOctave(key) && !isHeld(key)) {
-      setHeldKeys([...heldKeys, key])
+      // setHeldKeys([...heldKeys, key])
+      heldKeys.push(key)
       const newOctave = octaveFrom(key)
       synth.changeAttribute('octave', newOctave as number)
     }
 
     if (isWaveShape(key) && !isHeld(key)) {
-      setHeldKeys([...heldKeys, key])
+      // setHeldKeys([...heldKeys, key])
+      heldKeys.push(key)
       const newWaveShape = waveShapeFrom(key)
       synth.changeAttribute('waveShape', newWaveShape as string)
     }
@@ -90,7 +91,8 @@ export default function Keyboard() {
       console.log(heldKeys)
     }
 
-    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
+    // setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))
+    heldKeys = heldKeys.filter(heldKey => heldKey !== releasedKey)
 
   }, [isNote, noteFrom])
 
@@ -101,19 +103,25 @@ export default function Keyboard() {
     synth!.resume?.()
 
     if (isNote(heldKey) && !isHeld(heldKey)) {
-      setHeldKeys([...heldKeys, heldKey])
+      // setHeldKeys([...heldKeys, heldKey])
+      heldKeys.push(heldKey)
+
       const noteToPlay = noteFrom(heldKey)
       synth.play(noteToPlay)
     }
 
     if (isOctave(heldKey) && !isHeld(heldKey)) {
-      setHeldKeys([...heldKeys, heldKey])
+      // setHeldKeys([...heldKeys, heldKey])
+      heldKeys.push(heldKey)
+
       const newOctave = octaveFrom(heldKey)
       synth.changeAttribute('octave', newOctave as number)
     }
 
     if (isWaveShape(heldKey) && !isHeld(heldKey)) {
-      setHeldKeys([...heldKeys, heldKey])
+      // setHeldKeys([...heldKeys, heldKey])
+      heldKeys.push(heldKey)
+
       const newWaveShape = waveShapeFrom(heldKey)
       synth.changeAttribute('waveShape', newWaveShape as string)
     }
@@ -126,8 +134,9 @@ export default function Keyboard() {
 
     const releasedKey = e.explicitOriginalTarget.innerText
     
-    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
-    
+    // setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
+    heldKeys = heldKeys.filter(heldKey => heldKey !== releasedKey)
+
     if (isNote(releasedKey) && isHeld(releasedKey)) {
 
       const noteToStop = noteFrom(releasedKey)
@@ -173,6 +182,8 @@ export default function Keyboard() {
           {rowKey}
           {
             keys[rowKey].map((key: keyType) => {
+              console.log(key)
+              console.log(heldKeys)
               return <>
                 <span 
                   className={`circle-outer${!key.label ? ' invisible' : ''}`} 
