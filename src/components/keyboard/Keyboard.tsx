@@ -54,24 +54,23 @@ export default function Keyboard() {
 
     const key = e.key.toLowerCase()
 
-    if (isNote(key) && !isHeld(key)) {
-      setHeldKeys([...heldKeysRef.current, key])
-
+    if (isNote(key) && !isHeld(key)) {      
       const noteToPlay = noteFrom(key)
       synth.play(noteToPlay as string)
     }
 
     if (isOctave(key) && !isHeld(key)) {
-      setHeldKeys([...heldKeysRef.current, key])
       const newOctave = octaveFrom(key)
       synth.changeAttribute('octave', newOctave as number)
     }
 
     if (iswaveform(key) && !isHeld(key)) {
-      setHeldKeys([...heldKeysRef.current, key])
       const newwaveform = waveformFrom(key)
       synth.changeAttribute('waveform', newwaveform as string)
     }
+
+    setHeldKeys([...heldKeysRef.current, key])
+
   }, [isNote, noteFrom])
 
 
