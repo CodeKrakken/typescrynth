@@ -90,6 +90,8 @@ export default function Keyboard() {
 
   }, [isNote, noteFrom])
 
+
+
   const handleTouchStart = useCallback((e: CustomTouchEvent) => {
 
     const heldKey = e.explicitOriginalTarget.innerText
@@ -116,8 +118,6 @@ export default function Keyboard() {
   }, [isNote, noteFrom])
  
 
-
-
   const handleTouchEnd = useCallback((e: CustomTouchEvent) => {
 
     const releasedKey = e.explicitOriginalTarget.innerText
@@ -132,6 +132,24 @@ export default function Keyboard() {
   }, [isNote, noteFrom])
 
 
+  // Event listeners
+
+  useEffect(() => {  
+    document.addEventListener     ('keydown'    , handleKeyDown     as EventListener);  
+    document.addEventListener     ('keyup'      , handleKeyUp       as EventListener);  
+    document.addEventListener     ('touchstart' , handleTouchStart  as EventListener);  
+    document.addEventListener     ('touchend'   , handleTouchEnd    as EventListener);  
+      
+    return () => {  
+      document.removeEventListener('keydown'    , handleKeyDown     as EventListener);  
+      document.removeEventListener('keyup'      , handleKeyUp       as EventListener);  
+      document.removeEventListener('touchstart' , handleTouchStart  as EventListener);  
+      document.removeEventListener('touchend'   , handleTouchEnd    as EventListener);  
+    };  
+  }, [handleKeyUp, handleKeyDown, handleTouchStart, handleTouchEnd]);
+
+
+  // html helpers
 
   function randomColour() {
     const r = Math.floor(Math.random() * 256)
@@ -141,24 +159,6 @@ export default function Keyboard() {
 
     return `rgba(${r}, ${g}, ${b}, ${a})`
   }
-
-  useEffect(() => {  
-      // keyboard interactions
-    document.addEventListener     ('keydown',     handleKeyDown as EventListener);  
-    document.addEventListener     ('keyup',       handleKeyUp   as EventListener);  
-      // touchscreen interactions
-    document.addEventListener     ('touchstart',  handleTouchStart as EventListener);  
-    document.addEventListener     ('touchend',    handleTouchEnd   as EventListener);  
-      
-    return () => {  
-        // keyboard interactions
-      document.removeEventListener('keydown',     handleKeyDown as EventListener);  
-      document.removeEventListener('keyup',       handleKeyUp   as EventListener);  
-        // touchscreen interactions
-      document.removeEventListener('touchstart',  handleTouchStart as EventListener);  
-      document.removeEventListener('touchend',    handleTouchEnd   as EventListener);  
-    };  
-  }, [handleKeyUp, handleKeyDown, handleTouchStart, handleTouchEnd]);
 
   return (
     <div id="keyboard">
