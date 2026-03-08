@@ -123,13 +123,13 @@ export default function Keyboard() {
 
     const releasedKey = e.explicitOriginalTarget.innerText
     
-    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
-    
     if (isNote(releasedKey) && isHeld(releasedKey)) {
-
       const noteToStop = noteFrom(releasedKey)
       synth.stop(noteToStop)
     }
+    
+    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
+
   }, [isNote, noteFrom])
 
 
