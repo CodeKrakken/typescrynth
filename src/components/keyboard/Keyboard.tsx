@@ -80,13 +80,15 @@ export default function Keyboard() {
   const handleKeyUp = useCallback((e: KeyboardEvent) => {
 
     const releasedKey = e.key.toLowerCase()
-    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
     
     if (isNote(releasedKey) && isHeld(releasedKey)) {
 
       const noteToStop = noteFrom(releasedKey)
       synth.stop(noteToStop as string)
     }
+
+    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
+
   }, [isNote, noteFrom])
 
   const handleTouchStart = useCallback((e: CustomTouchEvent) => {
