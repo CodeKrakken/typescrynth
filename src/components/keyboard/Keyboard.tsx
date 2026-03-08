@@ -52,6 +52,8 @@ export default function Keyboard() {
     if (isNote(key) && !isHeld(key)) {
       setHeldKeys([...heldKeys, key])
 
+      console.log(heldKeys)
+      
       const noteToPlay = noteFrom(key)
       synth.play(noteToPlay as string)
     }
@@ -77,9 +79,15 @@ export default function Keyboard() {
     const releasedKey = e.key.toLowerCase()
     
     if (isNote(releasedKey) && isHeld(releasedKey)) {
-
+      console.log('Stopping note')
       const noteToStop = noteFrom(releasedKey)
       synth.stop(noteToStop as string)
+    } else {
+      console.log(`This note ain't NEVER gonna stop!!!`)
+      console.log(releasedKey)
+      console.log(isNote(releasedKey))
+      console.log(isHeld(releasedKey))
+      console.log(heldKeys)
     }
 
     setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
