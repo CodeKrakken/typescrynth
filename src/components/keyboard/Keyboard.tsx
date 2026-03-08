@@ -74,7 +74,7 @@ export default function Keyboard() {
     return keyFunction
   }
 
-  
+
   const activate = (key: string, keyFunction: string) => {
 
     if (!isHeld(key)) {
@@ -123,26 +123,11 @@ export default function Keyboard() {
 
   const handleTouchStart = useCallback((e: CustomTouchEvent) => {
 
-    const heldKey = e.explicitOriginalTarget.innerText
-
     synth!.resume?.()
-
-    if (!isHeld(heldKey) && isNote(heldKey)) {
-      const noteToPlay = noteFrom(heldKey)
-      synth.play(noteToPlay)
-    }
-
-    if (!isHeld(heldKey) && isOctave(heldKey)) {
-      const newOctave = octaveFrom(heldKey)
-      synth.changeAttribute('octave', newOctave as number)
-    }
-
-    if (!isHeld(heldKey) && isWaveform(heldKey)) {
-      const newWaveform = waveformFrom(heldKey)
-      synth.changeAttribute('waveform', newWaveform as string)
-    }
-
-    setHeldKeys([...heldKeysRef.current, heldKey])
+    const key = e.explicitOriginalTarget.innerText
+    const keyFunction = functionFrom(key)
+    activate(key, keyFunction)
+    setHeldKeys([...heldKeysRef.current, key])
 
   }, [isNote, noteFrom])
  
