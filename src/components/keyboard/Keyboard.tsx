@@ -165,26 +165,34 @@ export default function Keyboard() {
 
   return (
     <div id="keyboard">
-      {Object.keys(keys).map((rowKey: string) => 
-        <div className="keyboard-row">
-          {rowKey}
-          {
-            keys[rowKey].map((key: keyType) => {
-              return <>
-                <span 
-                  className={`circle-outer${!key.label ? ' invisible' : ''}`} 
-                  style={heldKeys.includes(key.label) ? {background: randomColour()} : {}}
-                  title={key.htmlTitle}
-                >
-                  <span className="circle-inner">
-                    {key.label}
+      {
+        Object.keys(keys).map((rowKey: string) => 
+
+          <div className="keyboard-row">
+
+            {rowKey}
+    
+            {
+              keys[rowKey].map((key: keyType) => {
+
+                return <>
+
+                  <span 
+                    className={`circle-outer${!key.label ? ' invisible' : ''}`} 
+                    style={heldKeys.includes(key.label) ? {background: randomColour()} : {}}
+                    title={key.htmlTitle}
+                  >
+                    <span className="circle-inner">
+                      {key.label}
+                    </span>
+                    
                   </span>
-                </span>
-              </>
-            })
-          }
-        </div>
-      )}
+                </>
+              })
+            }
+          </div>
+        )
+      }
     </div>
   )
 }
