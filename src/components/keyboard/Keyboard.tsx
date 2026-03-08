@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { synth } from '../synth/Synth';
 import './keyboard.css'
 import { keys } from './data'
@@ -16,17 +16,17 @@ export default function Keyboard() {
 
   // handler helpers
   
-  const noteKeys = useCallback(() => {
+  const noteKeys = () => {
     return [keys['black keys'], keys['white keys']].flat()
-  }, [])
+  }
   
 
-  const isNote = useCallback((key: string) => {
+  const isNote = (key: string) => {
 
     const notes = noteKeys().map(note => note.function && note.key)
     return notes.includes(key)
 
-  }, [noteKeys])
+  }
 
 
   const isOctave = (key: string) => {
@@ -39,9 +39,9 @@ export default function Keyboard() {
   }
 
 
-  const noteFrom = useCallback((key: string) => {
+  const noteFrom = (key: string) => {
     return noteKeys().filter(note => note.key === key)[0].function as string
-  }, [noteKeys])
+  }
 
 
   const isHeld = (key: string) => {
@@ -88,67 +88,66 @@ export default function Keyboard() {
     }
   }
 
-  
-  // Event handlers
-
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-
-    if (e.repeat) return
-    synth!.resume?.()
-    const key = e.key.toLowerCase()
-    const keyFunction = functionFrom(key)
-    activate(key, keyFunction)
-    setHeldKeys([...heldKeysRef.current, key])
-
-  }, [isNote, noteFrom])
-
-
-
-
-  const handleKeyUp = useCallback((e: KeyboardEvent) => {
-
-    const releasedKey = e.key.toLowerCase()
-    
-    if (isHeld(releasedKey) && isNote(releasedKey)) {
-
-      const noteToStop = noteFrom(releasedKey)
-      synth.stop(noteToStop as string)
-    }
-
-    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
-
-  }, [isNote, noteFrom])
-
-
-
-  const handleTouchStart = useCallback((e: CustomTouchEvent) => {
-
-    synth!.resume?.()
-    const key = e.explicitOriginalTarget.innerText
-    const keyFunction = functionFrom(key)
-    activate(key, keyFunction)
-    setHeldKeys([...heldKeysRef.current, key])
-
-  }, [isNote, noteFrom])
- 
-
-  const handleTouchEnd = useCallback((e: CustomTouchEvent) => {
-
-    const releasedKey = e.explicitOriginalTarget.innerText
-    
-    if (isHeld(releasedKey) && isNote(releasedKey)) {
-      const noteToStop = noteFrom(releasedKey)
-      synth.stop(noteToStop)
-    }
-    
-    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
-
-  }, [isNote, noteFrom])
-
-
-  // Event listeners
 
   useEffect(() => {  
+
+    // event handlers
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+
+      if (e.repeat) return
+      synth!.resume?.()
+      const key = e.key.toLowerCase()
+      const keyFunction = functionFrom(key)
+      activate(key, keyFunction)
+      setHeldKeys([...heldKeysRef.current, key])
+
+    }
+
+
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+
+      const releasedKey = e.key.toLowerCase()
+      
+      if (isHeld(releasedKey) && isNote(releasedKey)) {
+
+        const noteToStop = noteFrom(releasedKey)
+        synth.stop(noteToStop as string)
+      }
+
+      setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
+
+    }
+
+
+
+    const handleTouchStart = (e: CustomTouchEvent) => {
+
+      synth!.resume?.()
+      const key = e.explicitOriginalTarget.innerText
+      const keyFunction = functionFrom(key)
+      activate(key, keyFunction)
+      setHeldKeys([...heldKeysRef.current, key])
+
+    }
+  
+
+    const handleTouchEnd = (e: CustomTouchEvent) => {
+
+      const releasedKey = e.explicitOriginalTarget.innerText
+      
+      if (isHeld(releasedKey) && isNote(releasedKey)) {
+        const noteToStop = noteFrom(releasedKey)
+        synth.stop(noteToStop)
+      }
+      
+      setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== releasedKey))      
+
+    }
+
+    // event listeners
+
     document.addEventListener     ('keydown'    , handleKeyDown     as EventListener);  
     document.addEventListener     ('keyup'      , handleKeyUp       as EventListener);  
     document.addEventListener     ('touchstart' , handleTouchStart  as EventListener);  
@@ -160,7 +159,7 @@ export default function Keyboard() {
       document.removeEventListener('touchstart' , handleTouchStart  as EventListener);  
       document.removeEventListener('touchend'   , handleTouchEnd    as EventListener);  
     };  
-  }, [handleKeyUp, handleKeyDown, handleTouchStart, handleTouchEnd]);
+  }, [activate, functionFrom, isNote, noteFrom]);
 
 
   // html helpers
