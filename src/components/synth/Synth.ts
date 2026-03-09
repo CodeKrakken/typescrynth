@@ -31,7 +31,7 @@ const keys = notes.map(((note, i) => {
     gain: context.createGain(),
     note: note,
     frequency: frequency,
-    isPlaying: false
+    isHeld: false
   }
 
   key.oscillator.connect(key.gain)
@@ -57,7 +57,7 @@ const updateFrequencies = () => {
   const now = context.currentTime
 
   keys.forEach(key => {
-    if (key.isPlaying) {
+    if (key.isHeld) {
       key.oscillator.frequency.setValueAtTime(
         transpose(key.frequency),
         now
@@ -70,7 +70,7 @@ const updatewaveform = () => {
 
   keys.forEach(key => {
 
-    if (key.isPlaying) {
+    if (key.isHeld) {
       key.oscillator.type = settings.waveform as OscillatorType
     }
   })
@@ -92,7 +92,7 @@ export const synth = {
 
     keys[i].gain.gain.cancelScheduledValues(now)
     keys[i].gain.gain.setTargetAtTime(1, now, 0.01)
-    keys[i].isPlaying = true
+    keys[i].isHeld = true
   },
 
   stop: (note: string) => {
@@ -103,7 +103,7 @@ export const synth = {
 
     keys[i].gain.gain.cancelScheduledValues(now)
     keys[i].gain.gain.setTargetAtTime(0, now, 0.01)
-    keys[i].isPlaying = false
+    keys[i].isHeld = false
   },
   
   changeAttribute: <K extends keyof synthSettings>(
