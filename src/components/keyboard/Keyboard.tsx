@@ -3,67 +3,7 @@ import { synth } from '../synth/Synth';
 import './keyboard.css'
 import { keys } from './data'
 import { CustomTouchEvent, keyType } from './types';
-
-// Helper functions
-
-const noteKeys = () => {
-  return [keys['black keys'], keys['white keys']].flat()
-}
-
-const isNote = (key: string) => {
-  const notes = noteKeys().map(note => note.function && note.key)
-  return notes.includes(key)
-}
-
-const isOctave = (key: string) => {
-  return keys.octaves.map(octave => octave.key).includes(key)
-}
-
-const isWaveform = (key: string) => {
-  return keys.waveforms.map(waveform => waveform.key).includes(key)
-}
-
-const noteFrom = (key: string) => {
-  return noteKeys().filter(note => note.key === key)[0].function as string
-}
-
-const octaveFrom = (key: string) => {
-  return keys.octaves.filter(octave => octave.key === key)[0].function
-}
-
-const waveformFrom = (key: string) => {
-  return keys.waveforms.filter(waveform => waveform.key === key)[0].function
-}
-
-const functionFrom = (key: string) => {
-
-  let keyFunction: string = ''
-  
-  if (isNote(key)) {
-    keyFunction = 'note'
-  } else if (isOctave(key)) {
-    keyFunction = 'octave'
-  } else if (isWaveform(key)) {
-    keyFunction = 'waveform'
-  }
-
-  return keyFunction
-}
-
-const randomColour = () => {
-  const r = Math.floor(Math.random() * 256)
-  const g = Math.floor(Math.random() * 256)
-  const b = Math.floor(Math.random() * 256)
-  const a = Math.floor(Math.random() * 11)/10
-
-  return `rgba(${r}, ${g}, ${b}, ${a})`
-}
-
-const circleOuterClassName = (key: keyType) => {
-  const suffix = key.label ? '' : ' invisible'
-  return `circle-outer${suffix}`
-}
-
+import { functionFrom, noteFrom, octaveFrom, waveformFrom, randomColour, circleOuterClassName, isNote } from './functions';
 
 export default function Keyboard() {
 
@@ -89,7 +29,7 @@ export default function Keyboard() {
       const keyFunction = functionFrom(key)
 
       switch(keyFunction) {
-        case 'note'     :synth.play(noteFrom(key) as string)                            ; break
+        case 'note'     :synth.play(noteFrom(key) as string)               ; break
         case 'octave'   :synth.changeOctave(octaveFrom(key) as number)     ; break
         case 'waveform' :synth.changeWaveform(waveformFrom(key) as string) ; break
         default: break
