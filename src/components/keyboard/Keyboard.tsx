@@ -162,27 +162,29 @@ export default function Keyboard() {
     return `rgba(${r}, ${g}, ${b}, ${a})`
   }
 
-  const visibilityOf = (key: keyType) => {
-    return key.label ? '' : ' invisible' as string
+  const circleOuterClassName = (key: keyType) => {
+    const suffix = key.label ? '' : ' invisible'
+    return `circle-outer${suffix}`
+  }
+
+  const backgroundColour = (key: keyType) => {
+    return heldKeys.includes(key.label) ? {background: randomColour()} : {}
   }
 
   return (
     <div id="keyboard">
       {
         Object.keys(keys).map((rowKey: string) => 
-
           <div className="keyboard-row">
-
             {rowKey}
-    
+
             {
               keys[rowKey].map((key: keyType) => {
 
                 return <>
-
                   <span 
-                    className={`circle-outer${visibilityOf(key)}`} 
-                    style={heldKeys.includes(key.label) ? {background: randomColour()} : {}}
+                    className={circleOuterClassName(key)} 
+                    style={backgroundColour(key)}
                     title={key.htmlTitle}
                   >
                     <span className="circle-inner">
