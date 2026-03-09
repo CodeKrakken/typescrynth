@@ -22,10 +22,8 @@ export default function Keyboard() {
   
 
   const isNote = (key: string) => {
-
     const notes = noteKeys().map(note => note.function && note.key)
     return notes.includes(key)
-
   }
 
 
@@ -155,13 +153,17 @@ export default function Keyboard() {
 
   // html helpers
 
-  function randomColour() {
+  const randomColour = () => {
     const r = Math.floor(Math.random() * 256)
     const g = Math.floor(Math.random() * 256)
     const b = Math.floor(Math.random() * 256)
     const a = Math.floor(Math.random() * 11)/10
 
     return `rgba(${r}, ${g}, ${b}, ${a})`
+  }
+
+  const visibilityOf = (key: keyType) => {
+    return key.label ? '' : ' invisible' as string
   }
 
   return (
@@ -179,7 +181,7 @@ export default function Keyboard() {
                 return <>
 
                   <span 
-                    className={`circle-outer${!key.label ? ' invisible' : ''}`} 
+                    className={`circle-outer${visibilityOf(key)}`} 
                     style={heldKeys.includes(key.label) ? {background: randomColour()} : {}}
                     title={key.htmlTitle}
                   >
