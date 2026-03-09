@@ -82,8 +82,8 @@ export default function Keyboard() {
 
       switch(keyFunction) {
         case 'note'     :synth.play(noteFrom(key) as string)                            ; break
-        case 'octave'   :synth.changeAttribute('octave', octaveFrom(key) as number)     ; break
-        case 'waveform' :synth.changeAttribute('waveform', waveformFrom(key) as string) ; break
+        case 'octave'   :synth.changeOctave(octaveFrom(key) as number)     ; break
+        case 'waveform' :synth.changeWaveform(waveformFrom(key) as string) ; break
         default: break
       }
 

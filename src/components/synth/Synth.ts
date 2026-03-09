@@ -51,31 +51,6 @@ const transpose = (frequency: number) => {
   return +frequency.toFixed(2)
 }
 
-const updateFrequencies = () => {
-
-  const context = getContext()
-  const now = context.currentTime
-
-  keys.forEach(key => {
-    if (key.isHeld) {
-      key.oscillator.frequency.setValueAtTime(
-        transpose(key.frequency),
-        now
-      )
-    }
-  })
-}
-
-const updatewaveform = () => {
-
-  keys.forEach(key => {
-
-    if (key.isHeld) {
-      key.oscillator.type = settings.waveform as OscillatorType
-    }
-  })
-}
-
 
 // Synth
 
@@ -106,21 +81,32 @@ export const synth = {
     keys[i].isHeld = false
   },
   
-  changeAttribute: <K extends keyof synthSettings>(
 
-    key: K,
-    value: synthSettings[K]
-  ) => {
-    
-    settings[key] = value
+  changeOctave: (octave: number) => {
+    settings.octave = octave
 
-    if (key === 'octave') {
-      updateFrequencies()
-    }
+    const context = getContext()
+    const now = context.currentTime
 
-    if (key === 'waveform') {
-      updatewaveform()
-    }
+    keys.forEach(key => {
+      if (key.isHeld) {
+        key.oscillator.frequency.setValueAtTime(
+          transpose(key.frequency),
+          now
+        )
+      }
+    })
+  },
+
+  changeWaveform: (waveform: string) => {
+    settings.waveform = waveform
+
+    keys.forEach(key => {
+
+      if (key.isHeld) {
+        key.oscillator.type = settings.waveform as OscillatorType
+      }
+    })
   },
 
   resume: () => {
