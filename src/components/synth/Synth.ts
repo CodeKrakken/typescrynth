@@ -1,10 +1,11 @@
 import {synthSettings} from './types'
-import { notes, baseFrequency, defaultSettings, noteRatio } from './data'
+import { defaultSettings } from './data'
+import { keys } from '../keyboard/data'
+import { keyType } from '../keyboard/types'
 
 const settings: synthSettings = defaultSettings
 
 let context: AudioContext | null = null
-let frequency = baseFrequency
 
 // Helper functions
 
@@ -21,26 +22,7 @@ const getContext = () => {
   return context
 }
 
-const keys = notes.map(((note, i) => {
-  if (i) { frequency *= noteRatio }
 
-  const context = getContext()
-  
-  const key = {
-    oscillator: context.createOscillator(),
-    gain: context.createGain(),
-    note: note,
-    frequency: frequency,
-    isHeld: false
-  }
-
-  key.oscillator.connect(key.gain)
-  key.gain.connect(context.destination)
-  key.gain.gain.value = 0
-  key.oscillator.start(0)
-
-  return key
-}))
 
 const transpose = (frequency: number) => {
 
@@ -51,38 +33,54 @@ const transpose = (frequency: number) => {
   return +frequency.toFixed(2)
 }
 
+const initialise = (keys: { [key: string]: keyType }) => {
+
+  for(let key in keys) {
+    if (keys[key].type === 'note') {
+      const context = getContext()
+      keys[key].oscillator = context.createOscillator()
+      keys[key].gain = context.createGain()
+      keys[key].oscillator.connect(keys[key].gain)
+      keys[key].gain.connect(context.destination)
+      keys[key].gain.gain.value = 0
+      keys[key].oscillator.start(0)
+    }
+
+  }
+}
+
+initialise(keys)
 
 // Synth
 
 export const synth = {
 
   process: (key: string) => {
-    
+    if (keys[key].type === 'note') {
+      synth.play(key)
+    }
   },
   
-  play: (note: string) => {
+  play: (key: string) => {
 
     const context = getContext()
-    const i = keys.findIndex(key => key.note === note)
-    
-    keys[i].oscillator.type = settings.waveform as OscillatorType
-    keys[i].oscillator.frequency.value = transpose(keys[i].frequency)
+    keys[key].oscillator!.type = settings.waveform as OscillatorType
+    keys[key].oscillator!.frequency.value = transpose(keys[key].function as number)
     const now = context.currentTime
 
-    keys[i].gain.gain.cancelScheduledValues(now)
-    keys[i].gain.gain.setTargetAtTime(1, now, 0.01)
-    keys[i].isHeld = true
+    keys[key].gain!.gain.cancelScheduledValues(now)
+    keys[key].gain!.gain.setTargetAtTime(1, now, 0.01)
+    keys[key].isHeld = true
   },
 
-  stop: (note: string) => {
+  stop: (key: string) => {
 
     const context = getContext()
-    const i = keys.findIndex(key => key.note === note)
     const now = context.currentTime
 
-    keys[i].gain.gain.cancelScheduledValues(now)
-    keys[i].gain.gain.setTargetAtTime(0, now, 0.01)
-    keys[i].isHeld = false
+    keys[key].gain!.gain.cancelScheduledValues(now)
+    keys[key].gain!.gain.setTargetAtTime(0, now, 0.01)
+    keys[key].isHeld = false
   },
   
 
@@ -92,25 +90,24 @@ export const synth = {
     const context = getContext()
     const now = context.currentTime
 
-    keys.forEach(key => {
-      if (key.isHeld) {
-        key.oscillator.frequency.setValueAtTime(
-          transpose(key.frequency),
+    for (let key in keys) {
+      if (keys[key].isHeld) {
+        keys[key].oscillator!.frequency.setValueAtTime(
+          transpose(keys[key].function as number),
           now
         )
       }
-    })
+    }
   },
 
   changeWaveform: (waveform: string) => {
     settings.waveform = waveform
 
-    keys.forEach(key => {
-
-      if (key.isHeld) {
-        key.oscillator.type = settings.waveform as OscillatorType
+    for (let key in keys) {
+      if (keys[key].isHeld) {
+        keys[key].oscillator!.type = settings.waveform as OscillatorType
       }
-    })
+    }
   },
 
   resume: () => {
