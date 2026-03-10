@@ -40,10 +40,10 @@ const initialise = (keys: { [key: string]: keyType }) => {
       const context = getContext()
       keys[key].oscillator = context.createOscillator()
       keys[key].gain = context.createGain()
-      keys[key].oscillator.connect(keys[key].gain)
-      keys[key].gain.connect(context.destination)
-      keys[key].gain.gain.value = 0
-      keys[key].oscillator.start(0)
+      keys[key].oscillator!.connect(keys[key].gain as GainNode)
+      keys[key].gain!.connect(context.destination)
+      keys[key].gain!.gain.value = 0
+      keys[key].oscillator!.start(0)
     }
 
   }
@@ -62,7 +62,7 @@ export const synth = {
   },
   
   play: (key: string) => {
-
+    
     const context = getContext()
     keys[key].oscillator!.type = settings.waveform as OscillatorType
     keys[key].oscillator!.frequency.value = transpose(keys[key].function as number)
