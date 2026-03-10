@@ -55,6 +55,10 @@ const transpose = (frequency: number) => {
 // Synth
 
 export const synth = {
+
+  process: (key: string) => {
+    
+  },
   
   play: (note: string) => {
 

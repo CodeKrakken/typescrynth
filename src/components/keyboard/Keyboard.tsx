@@ -3,7 +3,7 @@ import { synth } from '../synth/Synth';
 import './keyboard.css'
 import { keys } from './data'
 import { CustomTouchEvent, keyType } from './types';
-import { functionFrom, noteFrom, octaveFrom, waveformFrom, randomColour, circleOuterClassName, isNote } from './functions';
+import { randomColour, circleOuterClassName, isNote } from './functions';
 
 export default function Keyboard() {
 
@@ -22,18 +22,10 @@ export default function Keyboard() {
   
 
   const activate = (key: string) => {
-
     if (!isHeld(key)) {
 
       synth!.resume?.()
-      const keyFunction = functionFrom(key)
-
-      switch(keyFunction) {
-        case 'note'     :synth.play(noteFrom(key) as string)               ; break
-        case 'octave'   :synth.changeOctave(octaveFrom(key) as number)     ; break
-        case 'waveform' :synth.changeWaveform(waveformFrom(key) as string) ; break
-        default: break
-      }
+      synth.process(key)
 
       setHeldKeys([...heldKeysRef.current, key])
     }
@@ -42,7 +34,7 @@ export default function Keyboard() {
 
   const deactivate = (key: string) => {
     if (isHeld(key) && isNote(key)) {
-        const noteToStop = noteFrom(key)
+        const noteToStop = keys[key].function
         synth.stop(noteToStop as string)
       }
       setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))      
@@ -102,29 +94,17 @@ export default function Keyboard() {
   return (
     <div id="keyboard">
       {
-        Object.keys(keys).map((rowKey: string) => 
-          <div className="keyboard-row">
-            {rowKey}
-
-            {
-              keys[rowKey].map((key: keyType) => {
-
-                return <>
-                  <span 
-                    className={circleOuterClassName(key)} 
-                    style={backgroundColour(key)}
-                    title={key.htmlTitle}
-                  >
-                    <span className="circle-inner">
-                      {key.label}
-                    </span>
-                    
-                  </span>
-                </>
-              })
-            }
-          </div>
-        )
+        Object.keys(keys).map((key: string) => {
+          return <span 
+            className={circleOuterClassName(keys[key])} 
+            style={backgroundColour(keys[key])}
+            title={keys[key].htmlTitle}
+          >
+            <span className="circle-inner">
+              {keys[key].label}
+            </span>
+          </span>
+        })
       }
     </div>
   )

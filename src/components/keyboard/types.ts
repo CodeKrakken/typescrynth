@@ -1,10 +1,5 @@
 export type keysType = {
-  [key: string]: {
-    label: string
-    key: string 
-    htmlTitle?: string
-    function?: string | number
-  }[]
+  [key: string]: keyType
 }
 
 export interface CustomTouchEvent extends TouchEvent {
@@ -14,7 +9,8 @@ export interface CustomTouchEvent extends TouchEvent {
 }
 
 export type keyType = {
-  key: string 
   label: string
   htmlTitle?: string
+  function: string | number
+  type?: string
 }
