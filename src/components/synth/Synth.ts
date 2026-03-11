@@ -57,14 +57,6 @@ initialise(keys)
 // Synth
 
 export const synth = {
-
-  process: (key: string) => {
-    if (keys[key].type === 'note') {
-      keys[key].isHeld ?
-      synth.stop(key) :
-      synth.play(key)
-    }
-  },
   
   play: (key: string) => {
     
