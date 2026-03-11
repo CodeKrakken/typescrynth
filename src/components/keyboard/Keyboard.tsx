@@ -15,16 +15,7 @@ export default function Keyboard() {
   }, [heldKeys])
 
   // handler helpers
-  
-  const isHeld = (key: string) => {
-    return heldKeysRef.current.includes(key)
-  }
-
-  const isFunctional = (key: string) => {
-    const functionalKeys = Object.keys(keys)
-    return functionalKeys.includes(key)
-  }
-  
+   
 
   const activate = (key: string) => {
     if (!keys[key].isHeld) {
