@@ -20,14 +20,14 @@ export default function Keyboard() {
     return heldKeysRef.current.includes(key)
   }
 
-  const is = (key: string) => {
+  const isFunctional = (key: string) => {
     const functionalKeys = Object.keys(keys)
     return functionalKeys.includes(key)
   }
   
 
   const activate = (key: string) => {
-    if (is(key) && !isHeld(key)) {
+    if (isFunctional(key) && !isHeld(key)) {
 
       synth!.resume?.()
       synth.process(key)
@@ -46,7 +46,7 @@ export default function Keyboard() {
 
 
   const backgroundColour = (key: keyType) => {
-    return heldKeys.includes(key.label) ? {background: randomColour()} : {}
+    return key.isHeld ? {background: randomColour()} : {}
   }
 
 
