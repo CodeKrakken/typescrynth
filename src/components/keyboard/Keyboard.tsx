@@ -19,10 +19,15 @@ export default function Keyboard() {
   const isHeld = (key: string) => {
     return heldKeysRef.current.includes(key)
   }
+
+  const is = (key: string) => {
+    const functionalKeys = Object.keys(keys)
+    return functionalKeys.includes(key)
+  }
   
 
   const activate = (key: string) => {
-    if (!isHeld(key)) {
+    if (is(key) && !isHeld(key)) {
 
       synth!.resume?.()
       synth.process(key)
