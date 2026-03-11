@@ -1,25 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { synth } from '../synth/Synth';
 import './keyboard.css'
 import { keys } from './data'
 import { CustomTouchEvent, keyType } from './types';
-import { randomColour, circleOuterClassName, isNote } from './functions';
+import { randomColour, circleOuterClassName } from './functions';
 
 export default function Keyboard() {
 
-  const [heldKeys, setHeldKeys] = useState<string[]>([])
-  const heldKeysRef = useRef(heldKeys)  
-
-  useEffect(() => {  
-    heldKeysRef.current = heldKeys
-  }, [heldKeys])
 
   // handler helpers
   
-  const isHeld = (key: string) => {
-    return heldKeysRef.current.includes(key)
-  }
-
   const isFunctional = (key: string) => {
     const functionalKeys = Object.keys(keys)
     return functionalKeys.includes(key)
@@ -27,21 +17,19 @@ export default function Keyboard() {
   
 
   const activate = (key: string) => {
-    if (isFunctional(key) && !isHeld(key)) {
 
+    if (isFunctional(key) && !keys[key].isHeld) {
       synth!.resume?.()
       synth.process(key)
       keys[key].isHeld = true
-      setHeldKeys([...heldKeysRef.current, key])
     }
   }
 
 
   const deactivate = (key: string) => {
-    if (isHeld(key)) {
+    if (isFunctional(key) && keys[key].isHeld) {
       synth.process(key)
     }
-    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))    
   }
 
 
