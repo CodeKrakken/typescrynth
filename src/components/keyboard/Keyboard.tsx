@@ -26,18 +26,17 @@ export default function Keyboard() {
 
       synth!.resume?.()
       synth.process(key)
-
+      keys[key].isHeld = true
       setHeldKeys([...heldKeysRef.current, key])
     }
   }
 
 
   const deactivate = (key: string) => {
-    if (isHeld(key) && isNote(key)) {
-        const noteToStop = keys[key].function
-        synth.stop(noteToStop as string)
-      }
-      setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))      
+    if (isHeld(key)) {
+      synth.process(key)
+    }
+    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))    
   }
 
 

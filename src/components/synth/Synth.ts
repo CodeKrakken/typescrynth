@@ -2,6 +2,7 @@ import {synthSettings} from './types'
 import { defaultSettings } from './data'
 import { keys } from '../keyboard/data'
 import { keyType } from '../keyboard/types'
+import { useEffect } from 'react'
 
 const settings: synthSettings = defaultSettings
 
@@ -51,12 +52,16 @@ const initialise = (keys: { [key: string]: keyType }) => {
 
 initialise(keys)
 
+
+
 // Synth
 
 export const synth = {
 
   process: (key: string) => {
     if (keys[key].type === 'note') {
+      keys[key].isHeld ?
+      synth.stop(key) :
       synth.play(key)
     }
   },
