@@ -67,7 +67,7 @@ export default function Keyboard() {
 
 
     const handleTouchStart = (e: CustomTouchEvent) => {
-      const key = (e.target as HTMLElement).innerText
+      const key = (e.target as HTMLElement).innerText.toLowerCase()
       startHold(key)
     }
 
@@ -79,7 +79,7 @@ export default function Keyboard() {
         
 
     const handleTouchEnd = (e: CustomTouchEvent) => {
-      const releasedKey = e.explicitOriginalTarget.innerText
+      const releasedKey = (e.target as HTMLElement).innerText.toLowerCase()
       endHold(releasedKey)
     }
 
