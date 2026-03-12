@@ -104,7 +104,8 @@ export default function Keyboard() {
     <div id="keyboard">
       {
         Object.keys(keys).map((key: string) => {
-          return <span 
+          return <span
+            data-key={key} 
             className={circleOuterClassName(keys[key])} 
             style={backgroundColour(key)}
             title={keys[key].htmlTitle}
