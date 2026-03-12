@@ -15,43 +15,38 @@ export default function Keyboard() {
   }, [heldKeys])
 
   // handler helpers
-
+  
   const isHeld = (key: string) => {
-    return keys[key].isHeld
+    return heldKeysRef.current.includes(key)
   }
-   
 
-  const startHold = (key: string) => {
-    if (!isHeld(key)) {
-      keys[key].isHeld = true
+  const is = (key: string) => {
+    const functionalKeys = Object.keys(keys)
+    return functionalKeys.includes(key)
+  }
+  
+
+  const activate = (key: string) => {
+    if (is(key) && !isHeld(key)) {
+
       synth!.resume?.()
-      
-      switch(keys[key].type) {
-        case 'note':  synth.play(key); break
-        case 'octave': synth.changeOctave(keys[key].function as number); break
-        case 'waveform': synth.changeWaveform(keys[key].function as string); break
-      }
+      synth.process(key)
+      keys[key].isHeld = true
       setHeldKeys([...heldKeysRef.current, key])
     }
   }
 
 
-  const endHold = (key: string) => {
+  const deactivate = (key: string) => {
     if (isHeld(key)) {
-      keys[key].isHeld = false
-      
-      switch(keys[key].type) {
-        case 'note':  synth.stop(key); break
-        case 'octave': synth.changeOctave(keys[key].function as number); break
-        case 'waveform': synth.changeWaveform(keys[key].function as string); break
-      }
-      setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))    
+      synth.process(key)
     }
+    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))    
   }
 
 
   const backgroundColour = (key: keyType) => {
-    return isHeld(key.label) ? {background: randomColour()} : {}
+    return heldKeys.includes(key.label) ? {background: randomColour()} : {}
   }
 
 
@@ -62,25 +57,25 @@ export default function Keyboard() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.repeat) return
       const key = e.key.toLowerCase()
-      startHold(key)
+      activate(key)
     }
 
 
     const handleTouchStart = (e: CustomTouchEvent) => {
       const key = e.explicitOriginalTarget.innerText
-      startHold(key)
+      activate(key)
     }
 
 
     const handleKeyUp = (e: KeyboardEvent) => {
       const releasedKey = e.key.toLowerCase()
-      endHold(releasedKey)
+      deactivate(releasedKey)
     }
         
 
     const handleTouchEnd = (e: CustomTouchEvent) => {
       const releasedKey = e.explicitOriginalTarget.innerText
-      endHold(releasedKey)
+      deactivate(releasedKey)
     }
 
     // event listeners
