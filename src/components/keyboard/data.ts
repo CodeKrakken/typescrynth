@@ -26,6 +26,7 @@ export const keys: keysType = {
   'c': {label: 'c', htmlTitle: 'E', function: 20.60, type: 'note', isHeld: false}, 
   'v': {label: 'v', htmlTitle: 'F', function: 21.83, type: 'note', isHeld: false}, 
   'b': {label: 'b', htmlTitle: 'G', function: 24.50, type: 'note', isHeld: false},
+  'n': {label: 'n', htmlTitle: 'A', function: 27.50, type: 'note', isHeld: false},
   'm': {label: 'm', htmlTitle: 'B', function: 30.87, type: 'note' , isHeld: false}, 
   ',': {label: ',', htmlTitle: 'C', function: 32.70, type: 'note', isHeld: false}
 } 

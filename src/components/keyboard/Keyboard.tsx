@@ -17,7 +17,7 @@ export default function Keyboard() {
   // handler helpers
 
   const isHeld = (key: string) => {
-    return keys[key].isHeld
+    return heldKeys.includes(key)
   }
    
 
