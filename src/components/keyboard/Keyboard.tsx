@@ -19,33 +19,7 @@ export default function Keyboard() {
   const isHeld = (key: string) => {
     return heldKeys.includes(key)
   }
-   
-
-  const startHold = (key: string) => {
-    if (!isHeld(key)) {
-      synth!.resume?.()
-      
-      switch(keys[key].type) {
-        case 'note':  synth.play(key); break
-        case 'octave': synth.changeOctave(keys[key].function as number); break
-        case 'waveform': synth.changeWaveform(keys[key].function as string); break
-      }
-      setHeldKeys([...heldKeysRef.current, key])
-    }
-  }
-
-
-  const endHold = (key: string) => {
-    if (isHeld(key)) {
-      
-      switch(keys[key].type) {
-        case 'note':  synth.stop(key); break
-        case 'octave': synth.changeOctave(keys[key].function as number); break
-        case 'waveform': synth.changeWaveform(keys[key].function as string); break
-      }
-      setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))    
-    }
-  }
+  
 
 
   const backgroundColour = (key: keyType) => {
@@ -54,6 +28,32 @@ export default function Keyboard() {
 
 
   useEffect(() => {  
+
+    const startHold = (key: string) => {
+      if (!isHeld(key)) {
+        synth!.resume?.()
+        
+        switch(keys[key].type) {
+          case 'note':  synth.play(key); break
+          case 'octave': synth.changeOctave(keys[key].function as number); break
+          case 'waveform': synth.changeWaveform(keys[key].function as string); break
+        }
+        setHeldKeys([...heldKeysRef.current, key])
+      }
+    }
+
+
+    const endHold = (key: string) => {
+      if (isHeld(key)) {
+        
+        switch(keys[key].type) {
+          case 'note':  synth.stop(key); break
+          case 'octave': synth.changeOctave(keys[key].function as number); break
+          case 'waveform': synth.changeWaveform(keys[key].function as string); break
+        }
+        setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))    
+      }
+    }
 
     // event handlers
 
@@ -94,7 +94,7 @@ export default function Keyboard() {
       document.removeEventListener('touchstart' , handleTouchStart  as EventListener);  
       document.removeEventListener('touchend'   , handleTouchEnd    as EventListener);  
     };  
-  }, [startHold, endHold]);
+  }, []);
 
 
 
