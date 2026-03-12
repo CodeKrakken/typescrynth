@@ -60,8 +60,10 @@ initialise(keys)
 export const synth = {
   
   play: (key: string) => {
-    
+
+    keys[key].isHeld = true
     const context = getContext()
+    
     keys[key].oscillator!.type = settings.waveform as OscillatorType
     keys[key].oscillator!.frequency.value = transpose(keys[key].function as number)
     const now = context.currentTime
@@ -71,6 +73,8 @@ export const synth = {
   },
 
   stop: (key: string) => {
+
+    keys[key].isHeld = false
 
     const context = getContext()
     const now = context.currentTime

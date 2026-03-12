@@ -23,7 +23,7 @@ export default function Keyboard() {
 
   const startHold = (key: string) => {
     if (!isHeld(key)) {
-      keys[key].isHeld = true
+      // keys[key].isHeld = true
       synth!.resume?.()
       
       switch(keys[key].type) {
@@ -38,7 +38,7 @@ export default function Keyboard() {
 
   const endHold = (key: string) => {
     if (isHeld(key)) {
-      keys[key].isHeld = false
+      // keys[key].isHeld = false
       
       switch(keys[key].type) {
         case 'note':  synth.stop(key); break
