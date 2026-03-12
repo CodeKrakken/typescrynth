@@ -12,7 +12,7 @@ export type keyType = {
   label: string
   htmlTitle?: string
   function: string | number
-  type?: string
+  type: string
   isHeld: boolean
   oscillator?: OscillatorNode
   gain?: GainNode

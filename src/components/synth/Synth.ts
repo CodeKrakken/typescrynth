@@ -1,6 +1,7 @@
 import {synthSettings} from './types'
 import { defaultSettings } from './data'
 import { keys } from '../keyboard/data'
+import { isNote } from '../keyboard/functions'
 import { keyType } from '../keyboard/types'
 import { useEffect } from 'react'
 
@@ -67,7 +68,6 @@ export const synth = {
 
     keys[key].gain!.gain.cancelScheduledValues(now)
     keys[key].gain!.gain.setTargetAtTime(1, now, 0.01)
-    keys[key].isHeld = true
   },
 
   stop: (key: string) => {
@@ -77,7 +77,6 @@ export const synth = {
 
     keys[key].gain!.gain.cancelScheduledValues(now)
     keys[key].gain!.gain.setTargetAtTime(0, now, 0.01)
-    keys[key].isHeld = false
   },
   
 
@@ -88,7 +87,7 @@ export const synth = {
     const now = context.currentTime
 
     for (let key in keys) {
-      if (keys[key].isHeld) {
+      if (keys[key].isHeld && isNote(key)) {
         keys[key].oscillator!.frequency.setValueAtTime(
           transpose(keys[key].function as number),
           now

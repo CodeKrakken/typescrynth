@@ -17,20 +17,30 @@ export default function Keyboard() {
   // handler helpers
    
 
-  const activate = (key: string) => {
+  const startHold = (key: string) => {
     if (!keys[key].isHeld) {
       keys[key].isHeld = true
       synth!.resume?.()
-      synth.play(key)
+      
+      switch(keys[key].type) {
+        case 'note':  synth.play(key); break
+        case 'octave': synth.changeOctave(keys[key].function as number); break
+        case 'waveform': synth.changeWaveform(keys[key].function as string); break
+      }
       setHeldKeys([...heldKeysRef.current, key])
     }
   }
 
 
-  const deactivate = (key: string) => {
+  const endHold = (key: string) => {
     if (keys[key].isHeld) {
       keys[key].isHeld = false
-      synth.stop(key)
+      
+      switch(keys[key].type) {
+        case 'note':  synth.stop(key); break
+        case 'octave': synth.changeOctave(keys[key].function as number); break
+        case 'waveform': synth.changeWaveform(keys[key].function as string); break
+      }
       setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))    
     }
   }
@@ -48,25 +58,25 @@ export default function Keyboard() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.repeat) return
       const key = e.key.toLowerCase()
-      activate(key)
+      startHold(key)
     }
 
 
     const handleTouchStart = (e: CustomTouchEvent) => {
       const key = e.explicitOriginalTarget.innerText
-      activate(key)
+      startHold(key)
     }
 
 
     const handleKeyUp = (e: KeyboardEvent) => {
       const releasedKey = e.key.toLowerCase()
-      deactivate(releasedKey)
+      endHold(releasedKey)
     }
         
 
     const handleTouchEnd = (e: CustomTouchEvent) => {
       const releasedKey = e.explicitOriginalTarget.innerText
-      deactivate(releasedKey)
+      endHold(releasedKey)
     }
 
     // event listeners
