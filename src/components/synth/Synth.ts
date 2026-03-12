@@ -3,7 +3,6 @@ import { defaultSettings } from './data'
 import { keys } from '../keyboard/data'
 import { isNote } from '../keyboard/functions'
 import { keyType } from '../keyboard/types'
-import { useEffect } from 'react'
 
 const settings: synthSettings = defaultSettings
 
@@ -63,7 +62,7 @@ export const synth = {
 
     keys[key].isHeld = true
     const context = getContext()
-    
+
     keys[key].oscillator!.type = settings.waveform as OscillatorType
     keys[key].oscillator!.frequency.value = transpose(keys[key].function as number)
     const now = context.currentTime

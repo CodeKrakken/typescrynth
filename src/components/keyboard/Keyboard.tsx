@@ -3,7 +3,7 @@ import { synth } from '../synth/Synth';
 import './keyboard.css'
 import { keys } from './data'
 import { CustomTouchEvent, keyType } from './types';
-import { randomColour, circleOuterClassName, isNote } from './functions';
+import { randomColour, circleOuterClassName } from './functions';
 
 export default function Keyboard() {
 
@@ -94,7 +94,7 @@ export default function Keyboard() {
       document.removeEventListener('touchstart' , handleTouchStart  as EventListener);  
       document.removeEventListener('touchend'   , handleTouchEnd    as EventListener);  
     };  
-  }, []);
+  }, [startHold, endHold]);
 
 
 
