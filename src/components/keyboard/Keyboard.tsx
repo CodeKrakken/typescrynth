@@ -94,7 +94,7 @@ export default function Keyboard() {
       document.removeEventListener('touchstart' , handleTouchStart  as EventListener);  
       document.removeEventListener('touchend'   , handleTouchEnd    as EventListener);  
     };  
-  }, []);
+  }, [isHeld]);
 
 
 
