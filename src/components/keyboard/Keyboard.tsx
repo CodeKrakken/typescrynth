@@ -7,6 +7,8 @@ import { randomColour, circleOuterClassName } from './functions';
 
 export default function Keyboard() {
 
+  // state
+
   const [heldKeys, setHeldKeys] = useState<string[]>([])
   const heldKeysRef = useRef(heldKeys)  
 
@@ -22,8 +24,8 @@ export default function Keyboard() {
   
 
 
-  const backgroundColour = (key: keyType) => {
-    return isHeld(key.label) ? {background: randomColour()} : {}
+  const backgroundColour = (key: string) => {
+    return isHeld(key) ? {background: randomColour()} : {}
   }
 
 
@@ -104,7 +106,7 @@ export default function Keyboard() {
         Object.keys(keys).map((key: string) => {
           return <span 
             className={circleOuterClassName(keys[key])} 
-            style={backgroundColour(keys[key])}
+            style={backgroundColour(key)}
             title={keys[key].htmlTitle}
           >
             <span className="circle-inner">
