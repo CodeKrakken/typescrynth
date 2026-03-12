@@ -100,7 +100,7 @@ export const synth = {
     settings.waveform = waveform
 
     for (let key in keys) {
-      if (keys[key].isHeld) {
+      if (keys[key].isHeld && isNote(key)) {
         keys[key].oscillator!.type = settings.waveform as OscillatorType
       }
     }
