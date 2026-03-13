@@ -43,6 +43,14 @@ export default function Keyboard() {
   }
 
 
+  const keyStyle = (keyName: string) => {
+    return {
+      ...keyPosition(keys[keyName]), 
+      ...backgroundColour(keyName)
+    }
+  }
+
+
   useEffect(() => {  
 
     const startHold = (key: string) => {
@@ -117,16 +125,15 @@ export default function Keyboard() {
   return (
     <div id="keyboard">
       {
-        Object.keys(keys).map((key: string) => {
+        Object.keys(keys).map((keyName: string) => {
           return <span
-            data-key={key} 
+            data-key={keyName} 
             className={`circle-outer key`} 
-            // style={backgroundColour(key)}
-            style={{...keyPosition(keys[key]), ...backgroundColour(key)}}
-            title={keys[key].htmlTitle}
+            style={keyStyle(keyName)}
+            title={keys[keyName].htmlTitle}
           >
             <span className="circle-inner">
-              {keys[key].label}
+              {keyName}
             </span>
           </span>
         })
