@@ -24,7 +24,7 @@ export default function Keyboard() {
 
   const isHeld = useCallback((key: string) => {
     return heldKeys.includes(key)
-  }, [])
+  }, [heldKeys])
   
   
 
