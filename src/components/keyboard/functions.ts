@@ -17,3 +17,7 @@ export const randomColour = () => {
 
 
 export const isEven = (n: number) => { return n % 2 === 0 }
+
+export const isHeld = (key: string, heldKeys: string[]) => {
+  return heldKeys.includes(key)
+}

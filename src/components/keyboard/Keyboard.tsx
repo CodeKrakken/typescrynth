@@ -3,7 +3,7 @@ import { synth } from '../synth/Synth';
 import './keyboard.css'
 import { keys, keySize, rowOffset } from './data'
 import { CustomTouchEvent, keyType } from './types';
-import { randomColour, isEven } from './functions';
+import { randomColour, isEven, isHeld } from './functions';
 
 export default function Keyboard() {
 
@@ -23,9 +23,7 @@ export default function Keyboard() {
   // functions
 
 
-  const isHeld = useCallback((key: string) => {
-    return heldKeys.includes(key)
-  }, [heldKeys])
+
 
 
 
@@ -40,7 +38,7 @@ export default function Keyboard() {
   
 
   const backgroundColour = (key: string) => {
-    return isHeld(key) ? {background: randomColour()} : {}
+    return isHeld(key, heldKeys) ? {background: randomColour()} : {}
   }
 
 
@@ -55,7 +53,7 @@ export default function Keyboard() {
   useEffect(() => {  
 
     const startHold = (key: string) => {
-      if (!isHeld(key)) {
+      if (!isHeld(key, heldKeys)) {
         synth!.resume?.()
         
         switch(keys[key].type) {
@@ -69,7 +67,7 @@ export default function Keyboard() {
 
 
     const endHold = (key: string) => {
-      if (isHeld(key)) {
+      if (isHeld(key, heldKeysRef.current)) {
         
         switch(keys[key].type) {
           case 'note':  synth.stop(key); break
