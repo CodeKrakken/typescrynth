@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { synth } from '../synth/Synth';
 import './keyboard.css'
 import { keys } from './data'
@@ -22,14 +22,10 @@ export default function Keyboard() {
 
   // functions
 
-  const isHeld = (key: string) => {
-    return heldKeys.includes(key)
-  }
-  
-  
+
 
   const backgroundColour = (key: string) => {
-    return isHeld(key) ? {background: randomColour()} : {}
+    return heldKeys.includes(key) ? {background: randomColour()} : {}
   }
 
 
@@ -44,7 +40,7 @@ export default function Keyboard() {
   useEffect(() => {  
 
     const startHold = (key: string) => {
-      if (!isHeld(key)) {
+      if (!heldKeys.includes(key)) {
         synth!.resume?.()
         
         switch(keys[key].type) {
@@ -58,7 +54,7 @@ export default function Keyboard() {
 
 
     const endHold = (key: string) => {
-      if (isHeld(key)) {
+      if (heldKeys.includes(key)) {
         
         switch(keys[key].type) {
           case 'note'     : synth.stop(key); break
@@ -108,7 +104,7 @@ export default function Keyboard() {
       document.removeEventListener('touchstart' , handleTouchStart  as EventListener);  
       document.removeEventListener('touchend'   , handleTouchEnd    as EventListener);  
     };  
-  }, [isHeld]);
+  }, []);
 
 
 
