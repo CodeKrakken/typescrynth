@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { synth } from '../synth/Synth';
 import './keyboard.css'
 import { keys } from './data'
@@ -22,9 +22,9 @@ export default function Keyboard() {
 
   // functions
 
-  const isHeld = (key: string) => {
+  const isHeld = useCallback((key: string) => {
     return heldKeys.includes(key)
-  }
+  }, [])
   
   
 
