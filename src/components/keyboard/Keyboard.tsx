@@ -118,11 +118,11 @@ export default function Keyboard() {
         Object.keys(keys).map((keyName: string) => {
           return <span
             data-key={keyName} 
-            className={`circle-outer`} 
+            className="key" 
             style={keyStyle(keyName)}
             title={keys[keyName].htmlTitle}
           >
-            <span className="circle-inner">
+            <span className="text">
               {keyName}
             </span>
           </span>
