@@ -1,5 +1,4 @@
 import { keys } from './data'
-import { keyType } from './types'
 
 
 export const isNote = (key: string) => {
@@ -15,5 +14,6 @@ export const randomColour = () => {
 
   return `rgba(${r}, ${g}, ${b}, ${a})`
 }
+
 
 export const isEven = (n: number) => { return n % 2 === 0 }

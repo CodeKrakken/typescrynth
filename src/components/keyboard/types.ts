@@ -8,7 +8,7 @@ export interface CustomTouchEvent extends TouchEvent {
   }
 }
 
-// Make row and col compulsory when data object finished
+// Make row and column compulsory when data object finished
 
 export type keyType = {
   label: string
@@ -16,8 +16,8 @@ export type keyType = {
   function: string | number
   type: string
   isHeld: boolean
-  row?: number
-  col?: number
+  row: number
+  column: number
   oscillator?: OscillatorNode
   gain?: GainNode
 }

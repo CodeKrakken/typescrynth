@@ -7,7 +7,9 @@ import { randomColour, isEven } from './functions';
 
 export default function Keyboard() {
 
-  // state
+
+
+  // state setup
 
   const [heldKeys, setHeldKeys] = useState<string[]>([])
   const heldKeysRef = useRef(heldKeys)  
@@ -16,17 +18,19 @@ export default function Keyboard() {
     heldKeysRef.current = heldKeys
   }, [heldKeys])
 
-  // handler helpers
 
+
+  // functions
 
   const keyPosition = (key: keyType) => {
-    const x = key.col as number * keySize + (isEven(key.row as number) ? rowOffset : 0)
+    const x = key.column as number * keySize + (isEven(key.row as number) ? rowOffset : 0)
     const y = key.row as number * keySize
 
     return {
       transform: `translate(${x}px, ${y}px)`
     }
   }
+
 
   const isHeld = useCallback((key: string) => {
     return heldKeys.includes(key)
