@@ -16,7 +16,4 @@ export const randomColour = () => {
   return `rgba(${r}, ${g}, ${b}, ${a})`
 }
 
-export const circleOuterClassName = (key: keyType) => {
-  const suffix = key.label ? '' : ' invisible'
-  return `circle-outer${suffix}`
-}
+export const isEven = (n: number) => { return n % 2 === 0 }

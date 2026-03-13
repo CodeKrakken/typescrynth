@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { synth } from '../synth/Synth';
 import './keyboard.css'
-import { keys } from './data'
-import { CustomTouchEvent } from './types';
-import { randomColour, circleOuterClassName } from './functions';
+import { keys, keySize, rowOffset } from './data'
+import { CustomTouchEvent, keyType } from './types';
+import { randomColour, isEven } from './functions';
 
 export default function Keyboard() {
 
@@ -17,6 +17,16 @@ export default function Keyboard() {
   }, [heldKeys])
 
   // handler helpers
+
+
+  const keyPosition = (key: keyType) => {
+    const x = key.col as number * keySize + (isEven(key.row as number) ? rowOffset : 0)
+    const y = key.row as number * keySize
+
+    return {
+      transform: `translate(${x}px, ${y}px)`
+    }
+  }
 
   const isHeld = useCallback((key: string) => {
     return heldKeys.includes(key)
@@ -106,8 +116,9 @@ export default function Keyboard() {
         Object.keys(keys).map((key: string) => {
           return <span
             data-key={key} 
-            className={circleOuterClassName(keys[key])} 
-            style={backgroundColour(key)}
+            className={`circle-outer key`} 
+            // style={backgroundColour(key)}
+            style={{...keyPosition(keys[key]), ...backgroundColour(key)}}
             title={keys[key].htmlTitle}
           >
             <span className="circle-inner">
