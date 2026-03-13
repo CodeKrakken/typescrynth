@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { synth } from '../synth/Synth';
 import './keyboard.css'
-import { keys, keySize, rowOffset } from './data'
-import { CustomTouchEvent, keyType } from './types';
-import { randomColour, isEven, isHeld } from './functions';
+import { keys } from './data'
+import { CustomTouchEvent } from './types';
+import { randomColour, isHeld, keyPosition } from './functions';
 
 export default function Keyboard() {
 
@@ -23,18 +23,7 @@ export default function Keyboard() {
   // functions
 
 
-
-
-
-
-  const keyPosition = (key: keyType) => {
-    const x = key.column as number * keySize + (isEven(key.row as number) ? rowOffset : 0)
-    const y = key.row as number * keySize
-
-    return {
-      transform: `translate(${x}px, ${y}px)`
-    }
-  }
+  
   
 
   const backgroundColour = (key: string) => {
