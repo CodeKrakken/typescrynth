@@ -11,7 +11,7 @@ export interface CustomTouchEvent extends TouchEvent {
 // Make row and column compulsory when data object finished
 
 export type keyType = {
-  htmlTitle?: string
+  htmlTitle: string
   function: string | number
   type: string
   isHeld: boolean
