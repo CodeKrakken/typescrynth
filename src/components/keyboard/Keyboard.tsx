@@ -113,21 +113,23 @@ export default function Keyboard() {
 
 
   return (
-    <div id="keyboard">
-      {
-        Object.keys(keys).map((keyName: string) => {
-          return <span
-            data-key={keyName} 
-            className="key" 
-            style={keyStyle(keyName)}
-            title={keys[keyName].htmlTitle}
-          >
-            <span className="text">
-              {keyName}
+    <div id="keyboard-container">
+      <div id="keyboard-inner">
+        {
+          Object.keys(keys).map((keyName: string) => {
+            return <span
+              data-key={keyName} 
+              className="key" 
+              style={keyStyle(keyName)}
+              title={keys[keyName].htmlTitle}
+            >
+              <span className="text">
+                {keyName}
+              </span>
             </span>
-          </span>
-        })
-      }
+          })
+        }
+      </div>
     </div>
   )
 }

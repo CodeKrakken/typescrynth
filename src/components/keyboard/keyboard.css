@@ -1,8 +1,12 @@
 @import '../../index.css';
 
-#keyboard {
-  position: absolute;
-  left: 25vw;
+#keyboard-container {
+  width: 50vw;
+  display: flex;
+}
+
+#keyboard-inner {
+  margin: auto auto;
 }
 
 .key {
