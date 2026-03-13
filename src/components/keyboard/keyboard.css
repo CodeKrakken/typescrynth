@@ -8,24 +8,6 @@
   align-items: center;
   display: flex;
 }
-/* 
-#keyboard {
-  position: relative;
-  width: 800px;
-  height: 300px;
-} */
-
-.key {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-}
-
-.keyboard-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
 
 .circle-outer {
   width: 50px;
@@ -34,15 +16,12 @@
   display: flex;
   justify-content: center;
   border-radius: 100%;
-  margin: 0.5vw
+  margin: 0.5vw;
+  position: absolute;
 }
 
 .circle-inner {
   width: 50px;
   margin: auto auto;
   text-align: center
-}
-
-.invisible {
-  border: none
 }

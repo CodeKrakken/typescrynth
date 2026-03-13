@@ -3,7 +3,7 @@ import { synth } from '../synth/Synth';
 import './keyboard.css'
 import { keys } from './data'
 import { CustomTouchEvent } from './types';
-import { randomColour, isHeld, keyPosition } from './functions';
+import { randomColour, position } from './functions';
 
 export default function Keyboard() {
 
@@ -22,18 +22,20 @@ export default function Keyboard() {
 
   // functions
 
-
+  const isHeld = (key: string) => {
+    return heldKeys.includes(key)
+  }
   
   
 
   const backgroundColour = (key: string) => {
-    return isHeld(key, heldKeys) ? {background: randomColour()} : {}
+    return isHeld(key) ? {background: randomColour()} : {}
   }
 
 
   const keyStyle = (keyName: string) => {
     return {
-      ...keyPosition(keys[keyName]), 
+      ...position(keys[keyName]), 
       ...backgroundColour(keyName)
     }
   }
@@ -42,13 +44,13 @@ export default function Keyboard() {
   useEffect(() => {  
 
     const startHold = (key: string) => {
-      if (!isHeld(key, heldKeys)) {
+      if (!isHeld(key)) {
         synth!.resume?.()
         
         switch(keys[key].type) {
-          case 'note':  synth.play(key); break
-          case 'octave': synth.changeOctave(keys[key].function as number); break
-          case 'waveform': synth.changeWaveform(keys[key].function as string); break
+          case 'note'     : synth.play(key); break
+          case 'octave'   : synth.changeOctave(keys[key].function as number); break
+          case 'waveform' : synth.changeWaveform(keys[key].function as string); break
         }
         setHeldKeys([...heldKeysRef.current, key])
       }
@@ -56,12 +58,12 @@ export default function Keyboard() {
 
 
     const endHold = (key: string) => {
-      if (isHeld(key, heldKeysRef.current)) {
+      if (isHeld(key)) {
         
         switch(keys[key].type) {
-          case 'note':  synth.stop(key); break
-          case 'octave': synth.changeOctave(keys[key].function as number); break
-          case 'waveform': synth.changeWaveform(keys[key].function as string); break
+          case 'note'     : synth.stop(key); break
+          case 'octave'   : synth.changeOctave(keys[key].function as number); break
+          case 'waveform' : synth.changeWaveform(keys[key].function as string); break
         }
         setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))    
       }
@@ -116,7 +118,7 @@ export default function Keyboard() {
         Object.keys(keys).map((keyName: string) => {
           return <span
             data-key={keyName} 
-            className={`circle-outer key`} 
+            className={`circle-outer`} 
             style={keyStyle(keyName)}
             title={keys[keyName].htmlTitle}
           >

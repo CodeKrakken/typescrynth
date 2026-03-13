@@ -19,11 +19,8 @@ export const randomColour = () => {
 
 export const isEven = (n: number) => { return n % 2 === 0 }
 
-export const isHeld = (key: string, heldKeys: string[]) => {
-  return heldKeys.includes(key)
-}
 
-export const keyPosition = (key: keyType) => {
+export const position = (key: keyType) => {
   const x = key.column as number * keySize + (isEven(key.row as number) ? rowOffset : 0)
   const y = key.row as number * keySize
 

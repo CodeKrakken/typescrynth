@@ -32,7 +32,7 @@ export const keys: keysType = {
   'n': {htmlTitle: 'A',         function: 27.50,      type: 'note',     isHeld: false, row: 4, column:  8},
   'm': {htmlTitle: 'B',         function: 30.87,      type: 'note',     isHeld: false, row: 4, column:  9}, 
   ',': {htmlTitle: 'C',         function: 32.70,      type: 'note',     isHeld: false, row: 4, column: 10}
-} 
+}
 
 export const keySize = 60
 export const rowOffset = keySize / 2
