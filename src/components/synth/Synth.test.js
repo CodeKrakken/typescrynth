@@ -1,5 +1,5 @@
-
 import Synth from './Synth';
+
 let synth
 
 describe('synth', function() {

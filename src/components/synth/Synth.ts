@@ -57,6 +57,8 @@ initialise(keys)
 // Synth
 
 export const synth = {
+
+  settings: settings,
   
   play: (key: string) => {
 
