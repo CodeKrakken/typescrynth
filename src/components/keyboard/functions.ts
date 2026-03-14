@@ -1,10 +1,8 @@
-import { keys, keySize, rowOffset } from './data'
-import { keyType } from './types'
+import { keySize, rowOffset } from './data'
+import { keyType } from '../types'
 
 
-export const isNote = (key: string) => {
-  return keys[key].type === 'note'
-}
+
 
 
 export const randomColour = () => {

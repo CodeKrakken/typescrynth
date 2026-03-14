@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { synth } from '../synth/Synth';
 import './keyboard.css'
-import { keys } from './data'
+import { keys } from '../data'
 import { CustomTouchEvent } from './types';
 import { randomColour, position } from './functions';
 

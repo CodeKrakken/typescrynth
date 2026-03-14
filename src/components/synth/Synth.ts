@@ -1,8 +1,8 @@
 import {synthSettings} from './types'
 import { defaultSettings } from './data'
-import { keys } from '../keyboard/data'
-import { isNote } from '../keyboard/functions'
-import { keyType } from '../keyboard/types'
+import { keys } from '../data'
+import { isNote } from '../functions'
+import { keyType } from '../types'
 
 const settings: synthSettings = defaultSettings
 
