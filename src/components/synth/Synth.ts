@@ -87,19 +87,28 @@ export const synth = {
   },
   
 
-  changeOctave: (octave: number) => {
+  addOctave: (octave: number) => {
     settings.octaves.push(octave)
 
     const context = getContext()
     const now = context.currentTime
 
     for (let key in keys) {
-      if (keys[key].isHeld && isNote(key)) {
-        keys[key].oscillator!.frequency.setValueAtTime(
-          transpose(keys[key].function as number, octave),
-          now
-        )
-      }
+      
+      synth.settings.octaves.forEach((octave: number) => {
+
+        if (keys[key].isHeld && isNote(key)) {
+
+          const oscillator = context.createOscillator()
+          oscillator!.connect(keys[key].gain as GainNode)
+          oscillator!.start(0)
+          oscillator!.frequency.setValueAtTime(
+            transpose(keys[key].function as number, octave),
+            now
+          )
+        }
+      })
+      
     }
   },
 
