@@ -32,7 +32,7 @@ export default function Keyboard() {
     if (keys[key].type === 'note') {
       return isHeld(key) ? {background: randomColour()} : {}
     } else if (keys[key].type === 'octave') {
-      return synth.settings.octave === keys[key].function ? {background: randomColour()} : {}
+      return synth.settings.octaves.includes(keys[key].function as number) ? {background: randomColour()} : {}
     } else if (keys[key].type === 'waveform') {
       return synth.settings.waveform === keys[key].function ? {background: randomColour()} : {}
     }

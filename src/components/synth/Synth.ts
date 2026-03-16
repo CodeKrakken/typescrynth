@@ -25,9 +25,9 @@ const getContext = () => {
 
 
 
-const transpose = (frequency: number) => {
+const transpose = (frequency: number, octave: number) => {
 
-  for ( let i = 0 ; i < settings.octave; i++ ) {
+  for ( let i = 0 ; i < octave; i++ ) {
     frequency *= 2
   }
 
@@ -65,12 +65,14 @@ export const synth = {
     keys[key].isHeld = true
     const context = getContext()
 
-    keys[key].oscillator!.type = settings.waveform as OscillatorType
-    keys[key].oscillator!.frequency.value = transpose(keys[key].function as number)
-    const now = context.currentTime
+    for (let octave in settings.octaves) {
+      keys[key].oscillator!.type = settings.waveform as OscillatorType
+      keys[key].oscillator!.frequency.value = transpose(keys[key].function as number, octave as unknown as number)
+      const now = context.currentTime
 
-    keys[key].gain!.gain.cancelScheduledValues(now)
-    keys[key].gain!.gain.setTargetAtTime(1, now, 0.01)
+      keys[key].gain!.gain.cancelScheduledValues(now)
+      keys[key].gain!.gain.setTargetAtTime(1, now, 0.01)
+    }
   },
 
   stop: (key: string) => {
@@ -86,7 +88,7 @@ export const synth = {
   
 
   changeOctave: (octave: number) => {
-    settings.octave = octave
+    settings.octaves.push(octave)
 
     const context = getContext()
     const now = context.currentTime
@@ -94,7 +96,7 @@ export const synth = {
     for (let key in keys) {
       if (keys[key].isHeld && isNote(key)) {
         keys[key].oscillator!.frequency.setValueAtTime(
-          transpose(keys[key].function as number),
+          transpose(keys[key].function as number, octave),
           now
         )
       }
