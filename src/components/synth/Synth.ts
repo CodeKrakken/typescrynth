@@ -39,12 +39,12 @@ const initialise = (keys: { [key: string]: keyType }) => {
   for(let key in keys) {
     if (keys[key].type === 'note') {
       const context = getContext()
-      keys[key].oscillator = context.createOscillator()
+      // keys[key].oscillator = context.createOscillator()
       keys[key].gain = context.createGain()
-      keys[key].oscillator!.connect(keys[key].gain as GainNode)
+      // keys[key].oscillator!.connect(keys[key].gain as GainNode)
       keys[key].gain!.connect(context.destination)
       keys[key].gain!.gain.value = 0
-      keys[key].oscillator!.start(0)
+      // keys[key].oscillator!.start(0)
     }
 
   }
@@ -65,14 +65,22 @@ export const synth = {
     keys[key].isHeld = true
     const context = getContext()
 
-    for (let octave in settings.octaves) {
-      keys[key].oscillator!.type = settings.waveform as OscillatorType
-      keys[key].oscillator!.frequency.value = transpose(keys[key].function as number, octave as unknown as number)
+    synth.settings.octaves.forEach((octave: number) => {
       const now = context.currentTime
+
+      const oscillator = context.createOscillator()
+      oscillator.connect(keys[key].gain as GainNode)
+      oscillator.start(0)
+      oscillator.frequency.setValueAtTime(
+        transpose(keys[key].function as number, octave),
+        now
+      )
+
+      oscillator.type = settings.waveform as OscillatorType
 
       keys[key].gain!.gain.cancelScheduledValues(now)
       keys[key].gain!.gain.setTargetAtTime(1, now, 0.01)
-    }
+    })
   },
 
   stop: (key: string) => {
@@ -87,28 +95,36 @@ export const synth = {
   },
   
 
-  addOctave: (octave: number) => {
-    settings.octaves.push(octave)
+  toggleOctave: (octave: number) => {
 
-    const context = getContext()
-    const now = context.currentTime
+    if (!settings.octaves.includes(octave)) {
+      settings.octaves.push(octave)
+      console.log(settings)
+      console.log(octave)
 
-    for (let key in keys) {
-      
-      synth.settings.octaves.forEach((octave: number) => {
+      const context = getContext()
+      const now = context.currentTime
 
-        if (keys[key].isHeld && isNote(key)) {
+      for (let key in keys) {
+        
+        synth.settings.octaves.forEach((octave: number) => {
 
-          const oscillator = context.createOscillator()
-          oscillator!.connect(keys[key].gain as GainNode)
-          oscillator!.start(0)
-          oscillator!.frequency.setValueAtTime(
-            transpose(keys[key].function as number, octave),
-            now
-          )
-        }
-      })
-      
+          if (keys[key].isHeld && isNote(key)) {
+
+            const oscillator = context.createOscillator()
+            oscillator!.connect(keys[key].gain as GainNode)
+            oscillator!.start(0)
+            oscillator!.frequency.setValueAtTime(
+              transpose(keys[key].function as number, octave),
+              now
+            )
+          }
+        })
+      } 
+    } else {
+      settings.octaves = settings.octaves.filter((oct: number) => oct !== octave)
+      console.log(settings)
+      console.log(octave)
     }
   },
 

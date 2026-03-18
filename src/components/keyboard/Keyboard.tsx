@@ -55,7 +55,7 @@ export default function Keyboard() {
         
         switch(keys[key].type) {
           case 'note'     : synth.play(key); break
-          case 'octave'   : synth.addOctave(keys[key].function as number); break
+          case 'octave'   : synth.toggleOctave(keys[key].function as number); break
           case 'waveform' : synth.changeWaveform(keys[key].function as string); break
         }
         setHeldKeys([...heldKeysRef.current, key])
@@ -68,7 +68,7 @@ export default function Keyboard() {
         
         switch(keys[key].type) {
           case 'note'     : synth.stop(key); break
-          case 'octave'   : synth.addOctave(keys[key].function as number); break
+          // case 'octave'   : synth.addOctave(keys[key].function as number); break
           case 'waveform' : synth.changeWaveform(keys[key].function as string); break
         }
         setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))    
