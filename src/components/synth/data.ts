@@ -1,4 +1,4 @@
 export const defaultSettings = {
-    octave: 4,
+    octaves: [4],
     waveform: 'sine'
 }

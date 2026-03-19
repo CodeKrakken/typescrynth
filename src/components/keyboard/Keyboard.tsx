@@ -32,7 +32,7 @@ export default function Keyboard() {
     if (keys[key].type === 'note') {
       return isHeld(key) ? {background: randomColour()} : {}
     } else if (keys[key].type === 'octave') {
-      return synth.settings.octave === keys[key].function ? {background: randomColour()} : {}
+      return synth.settings.octaves.includes(keys[key].function as number) ? {background: randomColour()} : {}
     } else if (keys[key].type === 'waveform') {
       return synth.settings.waveform === keys[key].function ? {background: randomColour()} : {}
     }
@@ -55,7 +55,7 @@ export default function Keyboard() {
         
         switch(keys[key].type) {
           case 'note'     : synth.play(key); break
-          case 'octave'   : synth.changeOctave(keys[key].function as number); break
+          case 'octave'   : synth.toggleOctave(keys[key].function as number); break
           case 'waveform' : synth.changeWaveform(keys[key].function as string); break
         }
         setHeldKeys([...heldKeysRef.current, key])
@@ -68,7 +68,7 @@ export default function Keyboard() {
         
         switch(keys[key].type) {
           case 'note'     : synth.stop(key); break
-          case 'octave'   : synth.changeOctave(keys[key].function as number); break
+          // case 'octave'   : synth.addOctave(keys[key].function as number); break
           case 'waveform' : synth.changeWaveform(keys[key].function as string); break
         }
         setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))    
