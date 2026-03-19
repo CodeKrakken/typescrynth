@@ -2,7 +2,7 @@ import {synthSettings} from './types'
 import { defaultSettings } from './data'
 import { keys } from '../data'
 import { isNote } from '../functions'
-import { keyType, nodeType } from '../types'
+import { keyType } from '../types'
 
 const settings: synthSettings = defaultSettings
 
