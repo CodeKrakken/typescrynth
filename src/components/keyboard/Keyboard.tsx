@@ -5,9 +5,13 @@ import { keys } from '../data'
 import { CustomTouchEvent } from './types';
 import { randomColour, position } from './functions';
 
+synth.settings.octaves.forEach(octave => {
+  keys[octave].colour = randomColour()
+})
+
 export default function Keyboard() {
 
-
+  console.log(synth.settings)
 
   // state setup
 
@@ -30,11 +34,12 @@ export default function Keyboard() {
 
   const backgroundColour = (key: string) => {
     if (keys[key].type === 'note') {
-      return isHeld(key) ? {background: randomColour()} : {}
+      return {background: keys[key].colour}
     } else if (keys[key].type === 'octave') {
-      return synth.settings.octaves.includes(keys[key].function as number) ? {background: randomColour()} : {}
+      console.log(synth.settings.octaves, keys[key].function)
+      return synth.settings.octaves.includes(keys[key].function as number) ? {background: keys[key].colour} : {}
     } else if (keys[key].type === 'waveform') {
-      return synth.settings.waveform === keys[key].function ? {background: randomColour()} : {}
+      return synth.settings.waveform === keys[key].function ? {background: keys[key].colour} : {}
     }
   }
 
@@ -47,15 +52,17 @@ export default function Keyboard() {
   }
 
 
-  useEffect(() => {  
+  useEffect(() => {
 
     const startHold = (key: string) => {
       if (!isHeld(key)) {
         synth!.resume?.()
+
+        
         
         switch(keys[key].type) {
-          case 'note'     : synth.play(key); break
-          case 'octave'   : synth.toggleOctave(keys[key].function as number); break
+          case 'note'     : synth.play(key); keys[key].colour = randomColour(); break
+          case 'octave'   : synth.toggleOctave(keys[key].function as number); keys[key].colour = synth.settings.octaves.includes(keys[key].function as number) ? randomColour() : ''; break
           case 'waveform' : synth.changeWaveform(keys[key].function as string); break
         }
         setHeldKeys([...heldKeysRef.current, key])
@@ -65,9 +72,9 @@ export default function Keyboard() {
 
     const endHold = (key: string) => {
       if (isHeld(key)) {
-        
+
         switch(keys[key].type) {
-          case 'note'     : synth.stop(key); break
+          case 'note'     : synth.stop(key); keys[key].colour = ''; break
           // case 'octave'   : synth.addOctave(keys[key].function as number); break
           case 'waveform' : synth.changeWaveform(keys[key].function as string); break
         }

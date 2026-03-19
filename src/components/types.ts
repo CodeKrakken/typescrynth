@@ -9,6 +9,7 @@ export type keyType = {
   isHeld: boolean
   row: number
   column: number
+  colour: string
   nodes?: nodeType[]
 }
 
