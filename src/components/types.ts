@@ -9,6 +9,8 @@ export type keyType = {
   isHeld: boolean
   row: number
   column: number
-  oscillator?: OscillatorNode
-  gain?: GainNode
+  nodes?: {
+    oscillator?: OscillatorNode
+    gain?: GainNode
+  }[]
 }

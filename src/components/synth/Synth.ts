@@ -39,14 +39,20 @@ const initialise = (keys: { [key: string]: keyType }) => {
   for(let key in keys) {
     if (keys[key].type === 'note') {
       const context = getContext()
-      keys[key].oscillator = context.createOscillator()
-      keys[key].gain = context.createGain()
-      keys[key].oscillator!.connect(keys[key].gain as GainNode)
-      keys[key].gain!.connect(context.destination)
-      keys[key].gain!.gain.value = 0
-      keys[key].oscillator!.start(0)
-    }
 
+      for (let octave = 0; octave <= 10; octave++) {
+        const oscillator = context.createOscillator()
+        const gain = context.createGain()
+        oscillator.connect(gain)
+        gain.gain.value = 0
+        gain.connect(context.destination)
+        oscillator.start(0)
+        keys[key].nodes!.push({
+          oscillator: oscillator,
+          gain: gain
+        })
+      }
+    }
   }
 }
 
