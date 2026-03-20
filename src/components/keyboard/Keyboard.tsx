@@ -56,14 +56,16 @@ export default function Keyboard() {
     }
   }
 
+  const isKey = (key: string) => {
+    return Object.keys(keys).includes(key)
+  }
+
 
   useEffect(() => {
 
     const startHold = (key: string) => {
-      if (!isHeld(key)) {
+      if (isKey(key) && !isHeld(key)) {
         synth!.resume?.()
-
-        
         
         switch(keys[key].type) {
           case 'note'     : synth.play(key); keys[key].colour = randomColour(); break
