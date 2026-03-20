@@ -80,8 +80,9 @@ export default function Keyboard() {
       if (isHeld(key) && isNote(key)) {
         synth.stop(key)
         keys[key].colour = ''
-        setHeldKeys(heldKeys =>     
-      }
+        }
+setHeldKeys(heldKeys =>     
+      
 heldKeys.filter(heldKey => heldKey !== key))
     
 }
