@@ -4,6 +4,7 @@ import './keyboard.css'
 import { keys } from '../data'
 import { CustomTouchEvent } from './types';
 import { randomColour, position } from './functions';
+import { isNote } from '../functions';
 
 synth.settings.octaves.forEach(octave => {
   keys[octave].colour = randomColour()
@@ -16,7 +17,6 @@ synth.settings.waveforms.forEach(waveform => {
 
 export default function Keyboard() {
 
-  console.log(synth.settings)
 
   // state setup
 
@@ -41,7 +41,6 @@ export default function Keyboard() {
     if (keys[key].type === 'note') {
       return {background: keys[key].colour}
     } else if (keys[key].type === 'octave') {
-      console.log(synth.settings.octaves, keys[key].function)
       return synth.settings.octaves.includes(keys[key].function as number) ? {background: keys[key].colour} : {}
     } else if (keys[key].type === 'waveform') {
       return synth.settings.waveforms.includes(keys[key].function as string) ? {background: keys[key].colour} : {}
@@ -72,19 +71,16 @@ export default function Keyboard() {
           case 'octave'   : synth.toggleOctave(keys[key].function as number); keys[key].colour = synth.settings.octaves.includes(keys[key].function as number) ? randomColour() : ''; break
           case 'waveform' : synth.toggleWaveform(keys[key].function as string); keys[key].colour = synth.settings.waveforms.includes(keys[key].function as string) ? randomColour() : ''; break
         }
-        setHeldKeys([...heldKeysRef.current, key])
+        if (isNote(key)) setHeldKeys([...heldKeysRef.current, key])
       }
     }
 
 
     const endHold = (key: string) => {
-      if (isHeld(key)) {
+      if (isHeld(key) && isNote(key)) {
 
-        switch(keys[key].type) {
-          case 'note'     : synth.stop(key); keys[key].colour = ''; break
-          // case 'octave'   : synth.addOctave(keys[key].function as number); break
-          // case 'waveform' : synth.toggleWaveform(keys[key].function as string); keys[key].colour = synth.settings.waveforms.includes(keys[key].function as string) ? randomColour() : ''; break
-        }
+        synth.stop(key)
+        keys[key].colour = ''
         setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))    
       }
     }

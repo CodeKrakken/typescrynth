@@ -68,6 +68,9 @@ const initialise = (keys: { [key: string]: keyType }) => {
 initialise(keys)
 
 
+const countHeld = (keys: { [key: string]: keyType }) => {
+  return Object.keys(keys).filter((key: string) => keys[key].isHeld).length
+}
 
 // Synth
 
@@ -78,6 +81,7 @@ export const synth = {
   play: (key: string) => {
 
     keys[key].isHeld = true
+    console.log(countHeld(keys))
     const context = getContext()
 
     settings.waveforms.forEach((waveform: string) => {
@@ -93,7 +97,7 @@ export const synth = {
 
         keys[key].nodes![waveform][octave].oscillator.type = waveform as OscillatorType
         keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-        keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1, now, 0.01)
+        keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1/countHeld(keys), now, 0.01)
 
       })
     })
@@ -138,7 +142,7 @@ export const synth = {
             )
 
             keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1, now, 0.01)
+            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1/countHeld(keys), now, 0.01)
           })
         }
       }
@@ -175,7 +179,7 @@ export const synth = {
           settings.octaves.forEach((octave: number) => {
 
             keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1, now, 0.01)
+            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1/countHeld(keys), now, 0.01)
           })
         }
       }
@@ -201,5 +205,6 @@ export const synth = {
     const context = getContext()
     context.resume()
   }
+  
 
 }
