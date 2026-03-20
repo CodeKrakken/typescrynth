@@ -159,7 +159,7 @@ export const synth = {
     }
   },
 
-    toggleWaveform: (waveform: string) => {
+  toggleWaveform: (waveform: string) => {
     
     const context = getContext()
     const now = context.currentTime
@@ -172,15 +172,11 @@ export const synth = {
 
         if (keys[key].isHeld && isNote(key)) {
 
-          settings.waveforms.forEach((waveform: string) => {
+          settings.octaves.forEach((octave: number) => {
 
-            settings.octaves.forEach((octave: number) => {
-
-              keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-              keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1, now, 0.01)
-            })
+            keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
+            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1, now, 0.01)
           })
-
         }
       }
     } else {
@@ -191,11 +187,9 @@ export const synth = {
 
         if (keys[key].isHeld && isNote(key)) {
 
-          settings.waveforms.forEach((waveform: string) => {
-            settings.octaves.forEach((octave: number) => {
-              keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-              keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(0, now, 0.01)
-            })
+          settings.octaves.forEach((octave: number) => {
+            keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
+            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(0, now, 0.01)
           })
         }
       }
