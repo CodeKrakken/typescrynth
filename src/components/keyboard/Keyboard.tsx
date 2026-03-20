@@ -84,7 +84,7 @@ export default function Keyboard() {
       
 heldKeys.filter(heldKey => heldKey !== key))
     }
-
+}
     // event handlers
 
     const handleKeyDown = (e: KeyboardEvent) => {
