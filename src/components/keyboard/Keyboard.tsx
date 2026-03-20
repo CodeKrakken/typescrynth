@@ -81,7 +81,7 @@ export default function Keyboard() {
         synth.stop(key)
         keys[key].colour = ''
         setHeldKeys(heldKeys =>     
-      }
+      
 heldKeys.filter(heldKey => heldKey !== key))
     }
 
