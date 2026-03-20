@@ -36,22 +36,31 @@ const transpose = (frequency: number, octave: number) => {
 
 const initialise = (keys: { [key: string]: keyType }) => {
 
+  // const octaves = Object.keys(keys).filter((key: string) => keys[key].type === 'octave').map((key: keyType) => key.function as number)
+  // const waveforms = keys.filter(key => key.type === 'waveform').map(key => key.function as string)
+  const waveforms = ['sine', 'triangle', 'sawtooth', 'square']
+  
   for(let key in keys) {
     if (keys[key].type === 'note') {
       const context = getContext()
 
-      for (let octave = 0; octave <= 10; octave++) {
-        const oscillator = context.createOscillator()
-        const gain = context.createGain()
-        oscillator.connect(gain)
-        gain.gain.value = 0
-        gain.connect(context.destination)
-        oscillator.start(0)
-        keys[key].nodes!.push({
-          oscillator: oscillator,
-          gain: gain
-        })
-      }
+      waveforms.forEach((waveform: string) => {
+
+        for (let octave = 0; octave <= 10; octave++) {
+          
+          const oscillator = context.createOscillator()
+          const gain = context.createGain()
+          oscillator.connect(gain)
+          oscillator.type = waveform as OscillatorType
+          gain.gain.value = 0
+          gain.connect(context.destination)
+          oscillator.start(0)
+          keys[key].nodes![waveform as string].push({
+            oscillator: oscillator,
+            gain: gain
+          })
+        }
+      })
     }
   }
 }
@@ -71,19 +80,22 @@ export const synth = {
     keys[key].isHeld = true
     const context = getContext()
 
-    settings.octaves.forEach((octave: number) => {
-    
-      const now = context.currentTime
-            
-      keys[key].nodes![octave].oscillator.frequency.setValueAtTime(
-        transpose(keys[key].function as number, octave),
-        now
-      )
+    settings.waveforms.forEach((waveform: string) => {
 
-      keys[key].nodes![octave].oscillator.type = settings.waveform as OscillatorType
-      keys[key].nodes![octave].gain.gain.cancelScheduledValues(now)
-      keys[key].nodes![octave].gain.gain.setTargetAtTime(1, now, 0.01)
+      settings.octaves.forEach((octave: number) => {
+      
+        const now = context.currentTime
+              
+        keys[key].nodes![waveform][octave].oscillator.frequency.setValueAtTime(
+          transpose(keys[key].function as number, octave),
+          now
+        )
 
+        keys[key].nodes![waveform][octave].oscillator.type = waveform as OscillatorType
+        keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
+        keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1, now, 0.01)
+
+      })
     })
   },
 
@@ -91,13 +103,16 @@ export const synth = {
 
     keys[key].isHeld = false
 
-    settings.octaves.forEach((octave: number) => {
+    settings.waveforms.forEach((waveform: string) => {
 
-      const context = getContext()
-      const now = context.currentTime
+      settings.octaves.forEach((octave: number) => {
 
-      keys[key].nodes![octave].gain.gain.cancelScheduledValues(now)
-      keys[key].nodes![octave].gain.gain.setTargetAtTime(0, now, 0.01)
+        const context = getContext()
+        const now = context.currentTime
+
+        keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
+        keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(0, now, 0.01)
+      })
     })
   },
   
@@ -115,15 +130,16 @@ export const synth = {
 
         if (keys[key].isHeld && isNote(key)) {
 
-          keys[key].nodes![octave].oscillator.type = settings.waveform as OscillatorType
-        
-          keys[key].nodes![octave].oscillator.frequency.setValueAtTime(
-            transpose(keys[key].function as number, octave),
-            now
-          )
+          settings.waveforms.forEach((waveform: string) => {
+          
+            keys[key].nodes![waveform][octave].oscillator.frequency.setValueAtTime(
+              transpose(keys[key].function as number, octave),
+              now
+            )
 
-          keys[key].nodes![octave].gain.gain.cancelScheduledValues(now)
-          keys[key].nodes![octave].gain.gain.setTargetAtTime(1, now, 0.01)
+            keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
+            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1, now, 0.01)
+          })
         }
       }
     } else {
@@ -134,24 +150,54 @@ export const synth = {
 
         if (keys[key].isHeld && isNote(key)) {
 
-          keys[key].nodes![octave].gain.gain.cancelScheduledValues(now)
-          keys[key].nodes![octave].gain.gain.setTargetAtTime(0, now, 0.01)
+          settings.waveforms.forEach((waveform: string) => {
+            keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
+            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(0, now, 0.01)
+          })
         }
       }
     }
   },
 
-  changeWaveform: (waveform: string) => {
-    settings.waveform = waveform
+    toggleWaveform: (waveform: string) => {
+    
+    const context = getContext()
+    const now = context.currentTime
 
-    for (let key in keys) {
+    if (!settings.waveforms.includes(waveform)) {
 
-      if (keys[key].isHeld && isNote(key)) {
+      settings.waveforms.push(waveform)
 
-        settings.octaves.forEach((octave: number) => {
+      for (let key in keys) {
 
-          keys[key].nodes![octave].oscillator.type = settings.waveform as OscillatorType
-        })
+        if (keys[key].isHeld && isNote(key)) {
+
+          settings.waveforms.forEach((waveform: string) => {
+
+            settings.octaves.forEach((octave: number) => {
+
+              keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
+              keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1, now, 0.01)
+            })
+          })
+
+        }
+      }
+    } else {
+
+      settings.waveforms = settings.waveforms.filter((wave: string) => wave !== waveform)
+      
+      for (let key in keys) {
+
+        if (keys[key].isHeld && isNote(key)) {
+
+          settings.waveforms.forEach((waveform: string) => {
+            settings.octaves.forEach((octave: number) => {
+              keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
+              keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(0, now, 0.01)
+            })
+          })
+        }
       }
     }
   },

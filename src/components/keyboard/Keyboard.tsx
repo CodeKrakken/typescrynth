@@ -9,6 +9,11 @@ synth.settings.octaves.forEach(octave => {
   keys[octave].colour = randomColour()
 })
 
+synth.settings.waveforms.forEach(waveform => {
+  const key = Object.keys(keys).find(key => keys[key].function === waveform) as string
+  keys[key].colour = randomColour()
+})
+
 export default function Keyboard() {
 
   console.log(synth.settings)
@@ -39,7 +44,7 @@ export default function Keyboard() {
       console.log(synth.settings.octaves, keys[key].function)
       return synth.settings.octaves.includes(keys[key].function as number) ? {background: keys[key].colour} : {}
     } else if (keys[key].type === 'waveform') {
-      return synth.settings.waveform === keys[key].function ? {background: keys[key].colour} : {}
+      return synth.settings.waveforms.includes(keys[key].function as string) ? {background: keys[key].colour} : {}
     }
   }
 
@@ -63,7 +68,7 @@ export default function Keyboard() {
         switch(keys[key].type) {
           case 'note'     : synth.play(key); keys[key].colour = randomColour(); break
           case 'octave'   : synth.toggleOctave(keys[key].function as number); keys[key].colour = synth.settings.octaves.includes(keys[key].function as number) ? randomColour() : ''; break
-          case 'waveform' : synth.changeWaveform(keys[key].function as string); break
+          case 'waveform' : synth.toggleWaveform(keys[key].function as string); keys[key].colour = synth.settings.waveforms.includes(keys[key].function as string) ? randomColour() : ''; break
         }
         setHeldKeys([...heldKeysRef.current, key])
       }
@@ -76,7 +81,7 @@ export default function Keyboard() {
         switch(keys[key].type) {
           case 'note'     : synth.stop(key); keys[key].colour = ''; break
           // case 'octave'   : synth.addOctave(keys[key].function as number); break
-          case 'waveform' : synth.changeWaveform(keys[key].function as string); break
+          // case 'waveform' : synth.toggleWaveform(keys[key].function as string); keys[key].colour = synth.settings.waveforms.includes(keys[key].function as string) ? randomColour() : ''; break
         }
         setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))    
       }

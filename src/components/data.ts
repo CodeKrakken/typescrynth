@@ -18,18 +18,18 @@ export const keys: keysType = {
   'e': {htmlTitle: 'sawtooth',  function: 'sawtooth', type: 'waveform', isHeld: false, row: 2, column:  4, colour: ''}, 
   'r': {htmlTitle: 'square',    function: 'square',   type: 'waveform', isHeld: false, row: 2, column:  5, colour: ''}, 
 
-  's': {htmlTitle: 'C#',        function: 17.32,      type: 'note',     isHeld: false, row: 3, column:  4, colour: '', nodes: []}, 
-  'd': {htmlTitle: 'D#',        function: 19.45,      type: 'note',     isHeld: false, row: 3, column:  5, colour: '', nodes: []}, 
-  'g': {htmlTitle: 'F#',        function: 23.12,      type: 'note',     isHeld: false, row: 3, column:  7, colour: '', nodes: []}, 
-  'h': {htmlTitle: 'G#',        function: 25.96,      type: 'note',     isHeld: false, row: 3, column:  8, colour: '', nodes: []}, 
-  'j': {htmlTitle: 'A#',        function: 29.14,      type: 'note',     isHeld: false, row: 3, column:  9, colour: '', nodes: []}, 
+  's': {htmlTitle: 'C#',        function: 17.32,      type: 'note',     isHeld: false, row: 3, column:  4, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'd': {htmlTitle: 'D#',        function: 19.45,      type: 'note',     isHeld: false, row: 3, column:  5, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'g': {htmlTitle: 'F#',        function: 23.12,      type: 'note',     isHeld: false, row: 3, column:  7, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'h': {htmlTitle: 'G#',        function: 25.96,      type: 'note',     isHeld: false, row: 3, column:  8, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'j': {htmlTitle: 'A#',        function: 29.14,      type: 'note',     isHeld: false, row: 3, column:  9, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
 
-  'z': {htmlTitle: 'C',         function: 16.35,      type: 'note',     isHeld: false, row: 4, column:  3, colour: '', nodes: []}, 
-  'x': {htmlTitle: 'D',         function: 18.35,      type: 'note',     isHeld: false, row: 4, column:  4, colour: '', nodes: []}, 
-  'c': {htmlTitle: 'E',         function: 20.60,      type: 'note',     isHeld: false, row: 4, column:  5, colour: '', nodes: []}, 
-  'v': {htmlTitle: 'F',         function: 21.83,      type: 'note',     isHeld: false, row: 4, column:  6, colour: '', nodes: []}, 
-  'b': {htmlTitle: 'G',         function: 24.50,      type: 'note',     isHeld: false, row: 4, column:  7, colour: '', nodes: []},
-  'n': {htmlTitle: 'A',         function: 27.50,      type: 'note',     isHeld: false, row: 4, column:  8, colour: '', nodes: []},
-  'm': {htmlTitle: 'B',         function: 30.87,      type: 'note',     isHeld: false, row: 4, column:  9, colour: '', nodes: []}, 
-  ',': {htmlTitle: 'C',         function: 32.70,      type: 'note',     isHeld: false, row: 4, column: 10, colour: '', nodes: []}
+  'z': {htmlTitle: 'C',         function: 16.35,      type: 'note',     isHeld: false, row: 4, column:  3, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'x': {htmlTitle: 'D',         function: 18.35,      type: 'note',     isHeld: false, row: 4, column:  4, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'c': {htmlTitle: 'E',         function: 20.60,      type: 'note',     isHeld: false, row: 4, column:  5, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'v': {htmlTitle: 'F',         function: 21.83,      type: 'note',     isHeld: false, row: 4, column:  6, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'b': {htmlTitle: 'G',         function: 24.50,      type: 'note',     isHeld: false, row: 4, column:  7, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}},
+  'n': {htmlTitle: 'A',         function: 27.50,      type: 'note',     isHeld: false, row: 4, column:  8, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}},
+  'm': {htmlTitle: 'B',         function: 30.87,      type: 'note',     isHeld: false, row: 4, column:  9, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  ',': {htmlTitle: 'C',         function: 32.70,      type: 'note',     isHeld: false, row: 4, column:  10, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}
 }
