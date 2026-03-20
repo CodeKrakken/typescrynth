@@ -71,18 +71,18 @@ export default function Keyboard() {
           case 'octave'   : synth.toggleOctave(keys[key].function as number); keys[key].colour = synth.settings.octaves.includes(keys[key].function as number) ? randomColour() : ''; break
           case 'waveform' : synth.toggleWaveform(keys[key].function as string); keys[key].colour = synth.settings.waveforms.includes(keys[key].function as string) ? randomColour() : ''; break
         }
-        if (isNote(key)) setHeldKeys([...heldKeysRef.current, key])
+         setHeldKeys([...heldKeysRef.current, key])
       }
     }
 
 
     const endHold = (key: string) => {
       if (isHeld(key) && isNote(key)) {
-
         synth.stop(key)
         keys[key].colour = ''
-        setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))    
+        setHeldKeys(heldKeys =>     
       }
+heldKeys.filter(heldKey => heldKey !== key))
     }
 
     // event handlers
