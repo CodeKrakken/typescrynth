@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import Keyboard from './Keyboard'
+import Keyboard from './Keyboard-working-colours'
 
 describe('keyboard', function() {
   beforeEach(function() {

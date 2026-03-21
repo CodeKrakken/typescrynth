@@ -68,8 +68,8 @@ const initialise = (keys: { [key: string]: keyType }) => {
 initialise(keys)
 
 
-const countHeld = (keys: { [key: string]: keyType }) => {
-  return Object.keys(keys).filter((key: string) => keys[key].isHeld).length
+const held = (keys: { [key: string]: keyType }) => {
+  return Object.keys(keys).filter((key: string) => keys[key].isHeld)
 }
 
 // Synth
@@ -81,7 +81,6 @@ export const synth = {
   play: (key: string) => {
 
     keys[key].isHeld = true
-    console.log(countHeld(keys))
     const context = getContext()
 
     settings.waveforms.forEach((waveform: string) => {
@@ -95,10 +94,12 @@ export const synth = {
           now
         )
 
-        keys[key].nodes![waveform][octave].oscillator.type = waveform as OscillatorType
-        keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-        keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1/countHeld(keys)/settings.waveforms.length/settings.octaves.length, now, 0.01)
+        held(keys).forEach((key: string) => {
 
+          const gain = 1/held(keys).length/settings.waveforms.length/settings.octaves.length
+          keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
+          keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(gain, now, 0.01)
+        })
       })
     })
   },
@@ -142,7 +143,7 @@ export const synth = {
             )
 
             keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1/countHeld(keys)/settings.waveforms.length/settings.octaves.length, now, 0.01)
+            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1/held(keys).length/settings.waveforms.length/settings.octaves.length, now, 0.01)
           })
         }
       }
@@ -179,7 +180,7 @@ export const synth = {
           settings.octaves.forEach((octave: number) => {
 
             keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1/countHeld(keys)/settings.waveforms.length/settings.octaves.length, now, 0.01)
+            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1/held(keys).length/settings.waveforms.length/settings.octaves.length, now, 0.01)
           })
         }
       }

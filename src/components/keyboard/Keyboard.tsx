@@ -80,12 +80,11 @@ export default function Keyboard() {
       if (isHeld(key) && isNote(key)) {
         synth.stop(key)
         keys[key].colour = ''
-        }
-setHeldKeys(heldKeys =>     
-      
-heldKeys.filter(heldKey => heldKey !== key))
+      }
+      setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))
     
-}
+    }
+    
     // event handlers
 
     const handleKeyDown = (e: KeyboardEvent) => {
