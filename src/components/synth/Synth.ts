@@ -72,6 +72,14 @@ const held = (keys: { [key: string]: keyType }) => {
   return Object.keys(keys).filter((key: string) => keys[key].isHeld)
 }
 
+const setGains = (waveform: string, octave: number, now: number) => {
+  held(keys).forEach((key: string) => {
+    const gain = 1/held(keys).length/settings.waveforms.length/settings.octaves.length
+    keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
+    keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(gain, now, 0.01)
+  })
+}
+
 // Synth
 
 export const synth = {
@@ -117,7 +125,11 @@ export const synth = {
 
         keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
         keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(0, now, 0.01)
+
+        setGains(waveform, octave, now)
       })
+
+      
     })
   },
   
