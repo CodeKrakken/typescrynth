@@ -102,12 +102,7 @@ export const synth = {
           now
         )
 
-        held(keys).forEach((key: string) => {
-
-          const gain = 1/held(keys).length/settings.waveforms.length/settings.octaves.length
-          keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-          keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(gain, now, 0.01)
-        })
+        setGains(waveform, octave, now)
       })
     })
   },
@@ -156,6 +151,7 @@ export const synth = {
 
             keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
             keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(1/held(keys).length/settings.waveforms.length/settings.octaves.length, now, 0.01)
+          
           })
         }
       }
