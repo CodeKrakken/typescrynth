@@ -59,10 +59,7 @@ export default function Keyboard() {
     return Object.keys(keys).includes(key)
   }
 
-
-  useEffect(() => {
-
-    const startHold = (key: string) => {
+      const startHold = (key: string) => {
       if (isKey(key) && !isHeld(key)) {
         synth!.resume?.()
         
@@ -84,6 +81,11 @@ export default function Keyboard() {
       setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))
     
     }
+
+
+  useEffect(() => {
+
+
     
     // event handlers
 
