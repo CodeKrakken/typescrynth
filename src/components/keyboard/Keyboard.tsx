@@ -59,28 +59,28 @@ export default function Keyboard() {
     return Object.keys(keys).includes(key)
   }
 
-      const startHold = (key: string) => {
-      if (isKey(key) && !isHeld(key)) {
-        synth!.resume?.()
-        
-        switch(keys[key].type) {
-          case 'note'     : synth.play(key); keys[key].colour = randomColour(); break
-          case 'octave'   : synth.toggleOctave(keys[key].function as number); keys[key].colour = synth.settings.octaves.includes(keys[key].function as number) ? randomColour() : ''; break
-          case 'waveform' : synth.toggleWaveform(keys[key].function as string); keys[key].colour = synth.settings.waveforms.includes(keys[key].function as string) ? randomColour() : ''; break
-        }
-         setHeldKeys([...heldKeysRef.current, key])
+  const startHold = (key: string) => {
+    if (isKey(key) && !isHeld(key)) {
+      synth!.resume?.()
+      
+      switch(keys[key].type) {
+        case 'note'     : synth.play(key); keys[key].colour = randomColour(); break
+        case 'octave'   : synth.toggleOctave(keys[key].function as number); keys[key].colour = synth.settings.octaves.includes(keys[key].function as number) ? randomColour() : ''; break
+        case 'waveform' : synth.toggleWaveform(keys[key].function as string); keys[key].colour = synth.settings.waveforms.includes(keys[key].function as string) ? randomColour() : ''; break
       }
+        setHeldKeys([...heldKeysRef.current, key])
     }
+  }
 
 
-    const endHold = (key: string) => {
-      if (isHeld(key) && isNote(key)) {
-        synth.stop(key)
-        keys[key].colour = ''
-      }
-      setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))
-    
+  const endHold = (key: string) => {
+    if (isHeld(key) && isNote(key)) {
+      synth.stop(key)
+      keys[key].colour = ''
     }
+    setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))
+  
+  }
 
 
   useEffect(() => {
