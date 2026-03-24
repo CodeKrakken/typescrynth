@@ -96,14 +96,14 @@ export default function Keyboard() {
 
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      const releasedKey = e.key.toLowerCase()
-      endHold(releasedKey)
+      const key = e.key.toLowerCase()
+      endHold(key)
     }
         
 
     const handleTouchEnd = (e: CustomTouchEvent) => {
-      const releasedKey = (e.target as HTMLElement).innerText.toLowerCase()
-      endHold(releasedKey)
+      const key = (e.target as HTMLElement).innerText.toLowerCase()
+      endHold(key)
     }
 
     // event listeners
@@ -128,11 +128,15 @@ export default function Keyboard() {
       <div id="keyboard-inner">
         {
           Object.keys(keys).map((keyName: string) => {
+
+            const style = keyStyle(keyName)
+            const title = keys[keyName].htmlTitle
+
             return <span
-              data-key={keyName} 
-              className="key" 
-              style={keyStyle(keyName)}
-              title={keys[keyName].htmlTitle}
+              data-key  = {keyName} 
+              className = "key" 
+              style     = {style}
+              title     = {title}
             >
               <span className="text">
                 {keyName}
