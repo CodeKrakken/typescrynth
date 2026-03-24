@@ -6,6 +6,8 @@ import { CustomTouchEvent } from './types';
 import { randomColour, position } from './functions';
 import { isNote } from '../functions';
 
+// Set up button colours
+
 synth.settings.octaves.forEach(octave => {
   keys[octave].colour = randomColour()
 })
@@ -16,7 +18,6 @@ synth.settings.waveforms.forEach(waveform => {
 })
 
 export default function Keyboard() {
-
 
   // state setup
 
@@ -35,23 +36,13 @@ export default function Keyboard() {
     return heldKeys.includes(key)
   }, [heldKeys])
   
-  
-
-  const backgroundColour = (key: string) => {
-    if (keys[key].type === 'note') {
-      return {background: keys[key].colour}
-    } else if (keys[key].type === 'octave') {
-      return synth.settings.octaves.includes(keys[key].function as number) ? {background: keys[key].colour} : {}
-    } else if (keys[key].type === 'waveform') {
-      return synth.settings.waveforms.includes(keys[key].function as string) ? {background: keys[key].colour} : {}
-    }
-  }
 
 
   const keyStyle = (keyName: string) => {
     return {
       ...position(keys[keyName]), 
-      ...backgroundColour(keyName)
+      // ...backgroundColour(keyName)
+      background: keys[keyName].colour
     }
   }
 
@@ -73,7 +64,7 @@ export default function Keyboard() {
           case 'octave'   : synth.toggleOctave(keys[key].function as number); keys[key].colour = synth.settings.octaves.includes(keys[key].function as number) ? randomColour() : ''; break
           case 'waveform' : synth.toggleWaveform(keys[key].function as string); keys[key].colour = synth.settings.waveforms.includes(keys[key].function as string) ? randomColour() : ''; break
         }
-          setHeldKeys([...heldKeysRef.current, key])
+        setHeldKeys([...heldKeysRef.current, key])
       }
     }
 
