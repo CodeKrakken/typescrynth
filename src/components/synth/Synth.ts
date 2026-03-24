@@ -36,8 +36,6 @@ const transpose = (frequency: number, octave: number) => {
 
 const initialise = (keys: { [key: string]: keyType }) => {
 
-  // const octaves = Object.keys(keys).filter((key: string) => keys[key].type === 'octave').map((key: keyType) => key.function as number)
-  // const waveforms = keys.filter(key => key.type === 'waveform').map(key => key.function as string)
   const waveforms = ['sine', 'triangle', 'sawtooth', 'square']
   
   for(let key in keys) {
@@ -147,11 +145,6 @@ export const synth = {
         if (keys[key].isHeld && isNote(key)) {
 
           settings.waveforms.forEach((waveform: string) => {
-          
-            // keys[key].nodes![waveform][octave].oscillator.frequency.setValueAtTime(
-            //   transpose(keys[key].function as number, octave),
-            //   now
-            // )
 
             settings.octaves.forEach((octave: number) => {
               setGains(waveform, octave, now)
@@ -229,6 +222,4 @@ export const synth = {
     const context = getContext()
     context.resume()
   }
-  
-
 }

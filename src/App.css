@@ -5,15 +5,13 @@ body {
   font-family: 'Josefin Sans', sans-serif;
 }
 
-/* 
+
 @media screen and (orientation: portrait) {
   html {
     transform: rotate(-90deg);
-    transform-origin: left top;
-    width: 100vh;
-    height: 100vw;
+    transform-origin: bottom;
     position: absolute;
-    top: 100%;
-    left: 0;
+    top: 25vh;
+    right: 10vw;
   }
-} */
+}
