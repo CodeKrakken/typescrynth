@@ -6,14 +6,14 @@ import { CustomTouchEvent } from './types';
 import { randomColour, position } from './functions';
 import { isNote } from '../functions';
 
-synth.settings.octaves.forEach(octave => {
-  keys[octave].colour = randomColour()
-})
+// synth.settings.octaves.forEach(octave => {
+//   keys[octave].colour = randomColour()
+// })
 
-synth.settings.waveforms.forEach(waveform => {
-  const key = Object.keys(keys).find(key => keys[key].function === waveform) as string
-  keys[key].colour = randomColour()
-})
+// synth.settings.waveforms.forEach(waveform => {
+//   const key = Object.keys(keys).find(key => keys[key].function === waveform) as string
+//   keys[key].colour = randomColour()
+// })
 
 export default function Keyboard() {
 

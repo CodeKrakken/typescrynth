@@ -1,12 +1,12 @@
-@import '../../index.css';
+/* @import '../../index.css';*/
 
 #keyboard-container {
-  width: 59vw;
   display: flex;
 }
 
 #keyboard-inner {
   margin: auto auto;
+  border: thin solid white;
 }
 
 .key {
@@ -20,4 +20,4 @@
 
 .text {
   margin: auto auto;
-}
+} 
