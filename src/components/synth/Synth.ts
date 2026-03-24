@@ -3,6 +3,7 @@ import { defaultSettings } from './data'
 import { keys } from '../data'
 import { isNote } from '../functions'
 import { keyType } from '../types'
+import { Context } from 'vm'
 
 const settings: synthSettings = defaultSettings
 
@@ -132,6 +133,25 @@ export const synth = {
       })
     })
   },
+
+  newNode: (key: string, context: Context, now: number, waveform: string, octave: number) => {
+
+    const oscillator = context.createOscillator()
+    const gain = context.createGain()
+    oscillator.connect(gain)
+    oscillator.type = waveform as OscillatorType
+    oscillator.frequency.setValueAtTime(
+      transpose(keys[key].function as number, octave),
+      now
+    )
+    gain.connect(context.destination)
+    oscillator.start(0)
+
+    return {
+      oscillator: oscillator,
+      gain: gain
+    }
+  },
   
 
   toggleOctave: (octave: number) => {
@@ -148,20 +168,8 @@ export const synth = {
         if (keys[key].isHeld && isNote(key)) {
 
           settings.waveforms.forEach((waveform: string) => {
-            const oscillator = context.createOscillator()
-            const gain = context.createGain()
-            oscillator.connect(gain)
-            oscillator.type = waveform as OscillatorType
-            oscillator.frequency.setValueAtTime(
-              transpose(keys[key].function as number, octave),
-              now
-            )
-            gain.connect(context.destination)
-            oscillator.start(0)
-            keys[key].nodes![waveform as string][octave] = {
-              oscillator: oscillator,
-              gain: gain
-            }
+
+            keys[key].nodes![waveform as string][octave] = synth.newNode(key, context, now, waveform, octave)
             settings.octaves.forEach((octave: number) => {
 
               setGains(waveform, octave, now)
