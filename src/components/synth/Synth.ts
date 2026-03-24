@@ -50,8 +50,13 @@ const initialise = (keys: { [key: string]: keyType }) => {
           
           const oscillator = context.createOscillator()
           const gain = context.createGain()
+          const now = context.currentTime
           oscillator.connect(gain)
           oscillator.type = waveform as OscillatorType
+          oscillator.frequency.setValueAtTime(
+            transpose(keys[key].function as number, octave),
+            now
+          )
           gain.gain.value = 0
           gain.connect(context.destination)
           oscillator.start(0)
@@ -191,6 +196,7 @@ export const synth = {
         if (keys[key].isHeld && isNote(key)) {
 
           settings.octaves.forEach((octave: number) => {
+
             settings.waveforms.forEach((waveform: string) => {
               setGains(waveform, octave, now)
             })
