@@ -10,7 +10,11 @@ export type keyType = {
   row: number
   column: number
   colour: string
-  nodes?: { [key: string]: nodeType[] }
+  nodes?: { 
+    [key: string]: {
+      [key:number]: nodeType 
+    }
+  }
 }
 
 export type nodeType = {

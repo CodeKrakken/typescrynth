@@ -34,41 +34,41 @@ const transpose = (frequency: number, octave: number) => {
   return +frequency.toFixed(2)
 }
 
-const initialise = (keys: { [key: string]: keyType }) => {
+// const initialise = (keys: { [key: string]: keyType }) => {
 
-  const waveforms = ['sine', 'triangle', 'sawtooth', 'square']
+//   const waveforms = ['sine', 'triangle', 'sawtooth', 'square']
   
-  for(let key in keys) {
-    if (keys[key].type === 'note') {
-      const context = getContext()
+//   for(let key in keys) {
+//     if (keys[key].type === 'note') {
+//       const context = getContext()
 
-      waveforms.forEach((waveform: string) => {
+//       waveforms.forEach((waveform: string) => {
 
-        for (let octave = 0; octave <= 10; octave++) {
+//         for (let octave = 0; octave <= 10; octave++) {
           
-          const oscillator = context.createOscillator()
-          const gain = context.createGain()
-          const now = context.currentTime
-          oscillator.connect(gain)
-          oscillator.type = waveform as OscillatorType
-          oscillator.frequency.setValueAtTime(
-            transpose(keys[key].function as number, octave),
-            now
-          )
-          gain.gain.value = 0
-          gain.connect(context.destination)
-          oscillator.start(0)
-          keys[key].nodes![waveform as string].push({
-            oscillator: oscillator,
-            gain: gain
-          })
-        }
-      })
-    }
-  }
-}
+//           const oscillator = context.createOscillator()
+//           const gain = context.createGain()
+//           const now = context.currentTime
+//           oscillator.connect(gain)
+//           oscillator.type = waveform as OscillatorType
+//           oscillator.frequency.setValueAtTime(
+//             transpose(keys[key].function as number, octave),
+//             now
+//           )
+//           gain.gain.value = 0
+//           gain.connect(context.destination)
+//           oscillator.start(0)
+//           keys[key].nodes![waveform as string].push({
+//             oscillator: oscillator,
+//             gain: gain
+//           })
+//         }
+//       })
+//     }
+//   }
+// }
 
-initialise(keys)
+// initialise(keys)
 
 
 const held = (keys: { [key: string]: keyType }) => {
@@ -78,6 +78,7 @@ const held = (keys: { [key: string]: keyType }) => {
 const setGains = (waveform: string, octave: number, now: number) => {
   held(keys).forEach((key: string) => {
     const gain = 1/held(keys).length/settings.waveforms.length/settings.octaves.length
+    console.log(keys)
     keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
     keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(gain, now, 0.01)
   })
@@ -96,15 +97,21 @@ export const synth = {
     const now = context.currentTime
 
     settings.waveforms.forEach((waveform: string) => {
-
       settings.octaves.forEach((octave: number) => {
-      
-              
-        // keys[key].nodes![waveform][octave].oscillator.frequency.setValueAtTime(
-        //   transpose(keys[key].function as number, octave),
-        //   now
-        // )
-
+        const oscillator = context.createOscillator()
+        const gain = context.createGain()
+        oscillator.connect(gain)
+        oscillator.type = waveform as OscillatorType
+        oscillator.frequency.setValueAtTime(
+          transpose(keys[key].function as number, octave),
+          now
+        )
+        gain.connect(context.destination)
+        oscillator.start(0)
+        keys[key].nodes![waveform as string][octave] = {
+          oscillator: oscillator,
+          gain: gain
+        }
         setGains(waveform, octave, now)
       })
     })
@@ -117,7 +124,6 @@ export const synth = {
     const now = context.currentTime
 
     settings.waveforms.forEach((waveform: string) => {
-
       settings.octaves.forEach((octave: number) => {
 
         keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
@@ -125,8 +131,6 @@ export const synth = {
 
         setGains(waveform, octave, now)
       })
-
-      
     })
   },
   
@@ -145,7 +149,6 @@ export const synth = {
         if (keys[key].isHeld && isNote(key)) {
 
           settings.waveforms.forEach((waveform: string) => {
-
             settings.octaves.forEach((octave: number) => {
               setGains(waveform, octave, now)
             })
