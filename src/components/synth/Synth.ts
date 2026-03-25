@@ -42,13 +42,14 @@ const held = (keys: { [key: string]: keyType }) => {
 const setGains = (waveform: string, octave: number, now: number) => {
   held(keys).forEach((key: string) => {
     const targetGain = 1/held(keys).length/settings.waveforms.length/settings.octaves.length
-    setGain(key, waveform, octave, now, targetGain, 0)
+    const releaseTime = 0
+    setGain(key, waveform, octave, now, targetGain, releaseTime)
   })
 }
 
-const setGain = (key: string, waveform: string, octave: number, now: number, targetGain: number, delay: number = 0) => {
+const setGain = (key: string, waveform: string, octave: number, now: number, targetGain: number, releaseTime: number = 0) => {
   keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-  keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(targetGain, now, delay)
+  keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(targetGain, now, releaseTime)
 }
 
 // Synth
@@ -81,8 +82,11 @@ export const synth = {
     settings.waveforms.forEach((waveform: string) => {
       settings.octaves.forEach((octave: number) => {
 
-        setGain(key, waveform, octave, now, 0, 0.05)
-        keys[key].nodes![waveform][octave].oscillator.stop(now + 0.05)
+        const targetGain = 0
+        const release = 0.05
+
+        setGain(key, waveform, octave, now, targetGain, release)
+        keys[key].nodes![waveform][octave].oscillator.stop(now + release)
 
         setGains(waveform, octave, now)
       })
@@ -146,8 +150,12 @@ export const synth = {
         if (keys[key].isHeld && isNote(key)) {
 
           settings.waveforms.forEach((waveform: string) => {
-            setGain(key, waveform, octave, now, 0, 0.05)
-            keys[key].nodes![waveform][octave].oscillator.stop(now + 0.05)
+
+            const targetGain = 0
+            const releaseTime = 0.05
+
+            setGain(key, waveform, octave, now, targetGain, releaseTime)
+            keys[key].nodes![waveform][octave].oscillator.stop(now + releaseTime)
           })
         }
       }
@@ -192,7 +200,11 @@ export const synth = {
         if (keys[key].isHeld && isNote(key)) {
 
           settings.octaves.forEach((octave: number) => {
-            setGain(key, waveform, octave, now, 0, 0.05)
+
+            const targetGain = 0
+            const release = 0.05
+
+            setGain(key, waveform, octave, now, targetGain, release)
             keys[key].nodes![waveform][octave].oscillator.stop(now + 0.05)
           })
         }
