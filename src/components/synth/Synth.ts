@@ -154,23 +154,22 @@ export const synth = {
     const now = context.currentTime
 
     if (!settings.octaves.includes(octave)) {
-
       settings.octaves.push(octave)
 
       for (let key in keys) {
-
         if (keys[key].isHeld && isNote(key)) {
 
           settings.waveforms.forEach((waveform: string) => {
-
             keys[key].nodes![waveform as string][octave] = synth.newNode(key, context, now, waveform, octave)
-            settings.octaves.forEach((octave: number) => {
-
-              setGains(waveform, octave, now)
-            })
           })
+          
         }
       }
+      settings.waveforms.forEach((waveform: string) => {
+        settings.octaves.forEach((octave: number) => {
+          setGains(waveform, octave, now)
+        })
+      })  
     } else {
 
       settings.octaves = settings.octaves.filter((oct: number) => oct !== octave)
