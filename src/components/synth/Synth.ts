@@ -42,9 +42,13 @@ const held = (keys: { [key: string]: keyType }) => {
 const setGains = (waveform: string, octave: number, now: number) => {
   held(keys).forEach((key: string) => {
     const gain = 1/held(keys).length/settings.waveforms.length/settings.octaves.length
-    keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-    keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(gain, now, 0.01)
+    setGain(key, waveform, octave, now, gain, 0)
   })
+}
+
+const setGain = (key: string, waveform: string, octave: number, now: number, gain: number, delay: number = 0) => {
+  keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
+  keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(gain, now, delay)
 }
 
 // Synth
@@ -77,9 +81,7 @@ export const synth = {
     settings.waveforms.forEach((waveform: string) => {
       settings.octaves.forEach((octave: number) => {
 
-        keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-        keys[key].nodes![waveform][octave].gain.gain.setValueAtTime(keys[key].nodes![waveform][octave].gain.gain.value, now)
-        keys[key].nodes![waveform][octave].gain.gain.linearRampToValueAtTime(0, now + 0.05)
+        setGain(key, waveform, octave, now, 0, 0.05)
         keys[key].nodes![waveform][octave].oscillator.stop(now + 0.05)
 
         setGains(waveform, octave, now)
@@ -144,8 +146,8 @@ export const synth = {
         if (keys[key].isHeld && isNote(key)) {
 
           settings.waveforms.forEach((waveform: string) => {
-            keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(0, now, 0.01)
+            setGain(key, waveform, octave, now, 0, 0.05)
+            keys[key].nodes![waveform][octave].oscillator.stop(now + 0.05)
           })
         }
       }
@@ -190,8 +192,8 @@ export const synth = {
         if (keys[key].isHeld && isNote(key)) {
 
           settings.octaves.forEach((octave: number) => {
-            keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-            keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(0, now, 0.01)
+            setGain(key, waveform, octave, now, 0, 0.05)
+            keys[key].nodes![waveform][octave].oscillator.stop(now + 0.05)
           })
         }
       }
