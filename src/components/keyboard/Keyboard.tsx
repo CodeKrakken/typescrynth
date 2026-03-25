@@ -32,12 +32,6 @@ export default function Keyboard() {
 
   // functions
 
-  const isHeld = useCallback((key: string) => {
-    return heldKeys.includes(key)
-  }, [heldKeys])
-  
-
-
   const keyStyle = (keyName: string) => {
     return {
       ...position(keys[keyName]), 
@@ -56,7 +50,7 @@ export default function Keyboard() {
   useEffect(() => {
 
     const startHold = (key: string) => {
-      if (isKey(key) && !isHeld(key)) {
+      if (isKey(key) && !heldKeys.includes(key)) {
         synth!.resume?.()
         
         switch(keys[key].type) {
@@ -70,7 +64,7 @@ export default function Keyboard() {
 
 
     const endHold = (key: string) => {
-      if (isHeld(key) && isNote(key)) {
+      if (heldKeys.includes(key) && isNote(key)) {
         synth.stop(key)
         keys[key].colour = ''
       }
@@ -119,7 +113,7 @@ export default function Keyboard() {
       document.removeEventListener('touchstart' , handleTouchStart  as EventListener);  
       document.removeEventListener('touchend'   , handleTouchEnd    as EventListener);  
     };  
-  }, [isHeld]);
+  }, [heldKeys]);
 
 
 
