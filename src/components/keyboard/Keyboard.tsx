@@ -54,7 +54,7 @@ export default function Keyboard() {
         synth!.resume?.()
         
         switch(keys[key].type) {
-          case 'note'     : synth.play(key); keys[key].colour = randomColour(); break
+          case 'note'     : synth.startNote(key); keys[key].colour = randomColour(); break
           case 'octave'   : synth.toggleOctave(keys[key].function as number); keys[key].colour = synth.settings.octaves.includes(keys[key].function as number) ? randomColour() : ''; break
           case 'waveform' : synth.toggleWaveform(keys[key].function as string); keys[key].colour = synth.settings.waveforms.includes(keys[key].function as string) ? randomColour() : ''; break
         }
@@ -65,7 +65,7 @@ export default function Keyboard() {
 
     const endHold = (key: string) => {
       if (heldKeys.includes(key) && isNote(key)) {
-        synth.stop(key)
+        synth.stopNote(key)
         keys[key].colour = ''
       }
       setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))

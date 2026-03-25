@@ -53,7 +53,7 @@ export const synth = {
 
   settings: settings,
   
-  play: (key: string) => {
+  startNote: (key: string) => {
 
     keys[key].isHeld = true
     const context = getContext()
@@ -68,7 +68,7 @@ export const synth = {
     })
   },
 
-  stop: (key: string) => {
+  stopNote: (key: string) => {
 
     keys[key].isHeld = false
     const context = getContext()
