@@ -20,7 +20,6 @@ const getContext = () => {
   if (context.state === 'suspended') {
     context.resume()
   }
-
   return context
 }
 
@@ -31,50 +30,14 @@ const transpose = (frequency: number, octave: number) => {
   for ( let i = 0 ; i < octave; i++ ) {
     frequency *= 2
   }
-
   return +frequency.toFixed(2)
 }
-
-// const initialise = (keys: { [key: string]: keyType }) => {
-
-//   const waveforms = ['sine', 'triangle', 'sawtooth', 'square']
-  
-//   for(let key in keys) {
-//     if (keys[key].type === 'note') {
-//       const context = getContext()
-
-//       waveforms.forEach((waveform: string) => {
-
-//         for (let octave = 0; octave <= 10; octave++) {
-          
-//           const oscillator = context.createOscillator()
-//           const gain = context.createGain()
-//           const now = context.currentTime
-//           oscillator.connect(gain)
-//           oscillator.type = waveform as OscillatorType
-//           oscillator.frequency.setValueAtTime(
-//             transpose(keys[key].function as number, octave),
-//             now
-//           )
-//           gain.gain.value = 0
-//           gain.connect(context.destination)
-//           oscillator.start(0)
-//           keys[key].nodes![waveform as string].push({
-//             oscillator: oscillator,
-//             gain: gain
-//           })
-//         }
-//       })
-//     }
-//   }
-// }
-
-// initialise(keys)
 
 
 const held = (keys: { [key: string]: keyType }) => {
   return Object.keys(keys).filter((key: string) => keys[key].isHeld)
 }
+
 
 const setGains = (waveform: string, octave: number, now: number) => {
   held(keys).forEach((key: string) => {
