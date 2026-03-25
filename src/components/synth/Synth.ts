@@ -41,14 +41,14 @@ const held = (keys: { [key: string]: keyType }) => {
 
 const setGains = (waveform: string, octave: number, now: number) => {
   held(keys).forEach((key: string) => {
-    const gain = 1/held(keys).length/settings.waveforms.length/settings.octaves.length
-    setGain(key, waveform, octave, now, gain, 0)
+    const targetGain = 1/held(keys).length/settings.waveforms.length/settings.octaves.length
+    setGain(key, waveform, octave, now, targetGain, 0)
   })
 }
 
-const setGain = (key: string, waveform: string, octave: number, now: number, gain: number, delay: number = 0) => {
+const setGain = (key: string, waveform: string, octave: number, now: number, targetGain: number, delay: number = 0) => {
   keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-  keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(gain, now, delay)
+  keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(targetGain, now, delay)
 }
 
 // Synth
