@@ -115,7 +115,9 @@ export const synth = {
       settings.octaves.forEach((octave: number) => {
 
         keys[key].nodes![waveform][octave].gain.gain.cancelScheduledValues(now)
-        keys[key].nodes![waveform][octave].gain.gain.setTargetAtTime(0, now, 0.01)
+        keys[key].nodes![waveform][octave].gain.gain.setValueAtTime(keys[key].nodes![waveform][octave].gain.gain.value, now)
+        keys[key].nodes![waveform][octave].gain.gain.linearRampToValueAtTime(0, now + 0.05)
+        keys[key].nodes![waveform][octave].oscillator.stop(now + 0.05)
 
         setGains(waveform, octave, now)
       })
