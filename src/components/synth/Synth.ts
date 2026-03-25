@@ -207,7 +207,7 @@ export const synth = {
         if (keys[key].isHeld && isNote(key)) {
 
           settings.octaves.forEach((octave: number) => {
-
+            keys[key].nodes![waveform as string][octave] = synth.newNode(key, context, now, waveform, octave)
             settings.waveforms.forEach((waveform: string) => {
               setGains(waveform, octave, now)
             })
