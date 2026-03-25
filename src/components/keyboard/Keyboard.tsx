@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { synth } from '../synth/Synth';
 import './keyboard.css'
 import { keys } from '../data'
