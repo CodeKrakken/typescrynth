@@ -98,20 +98,8 @@ export const synth = {
 
     settings.waveforms.forEach((waveform: string) => {
       settings.octaves.forEach((octave: number) => {
-        const oscillator = context.createOscillator()
-        const gain = context.createGain()
-        oscillator.connect(gain)
-        oscillator.type = waveform as OscillatorType
-        oscillator.frequency.setValueAtTime(
-          transpose(keys[key].function as number, octave),
-          now
-        )
-        gain.connect(context.destination)
-        oscillator.start(0)
-        keys[key].nodes![waveform as string][octave] = {
-          oscillator: oscillator,
-          gain: gain
-        }
+
+        keys[key].nodes![waveform as string][octave] = synth.newNode(key, context, now, waveform, octave)
         setGains(waveform, octave, now)
       })
     })
@@ -134,7 +122,13 @@ export const synth = {
     })
   },
 
-  newNode: (key: string, context: Context, now: number, waveform: string, octave: number) => {
+  newNode: (
+    key: string, 
+    context: Context, 
+    now: number, 
+    waveform: string, 
+    octave: number
+  ) => {
 
     const oscillator = context.createOscillator()
     const gain = context.createGain()
