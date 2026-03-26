@@ -8,6 +8,7 @@ import { Context } from 'vm'
 const settings: synthSettings = defaultSettings
 
 let context: AudioContext | null = null
+let heldKeys: string[] = []
 
 // Helper functions
 
@@ -35,7 +36,7 @@ const transpose = (frequency: number, octave: number) => {
 
 
 const held = (keys: { [key: string]: keyType }) => {
-  return Object.keys(keys).filter((key: string) => keys[key].isHeld)
+  return Object.keys(keys).filter((key: string) => heldKeys.includes(key))
 }
 
 
@@ -60,7 +61,7 @@ export const synth = {
   
   startNote: (key: string) => {
 
-    keys[key].isHeld = true
+    heldKeys.push(key)
     const context = getContext()
     const now = context.currentTime
 
@@ -75,7 +76,7 @@ export const synth = {
 
   stopNote: (key: string) => {
 
-    keys[key].isHeld = false
+    heldKeys = heldKeys.filter((heldKey: string) => heldKey !== key)
     const context = getContext()
     const now = context.currentTime
 
@@ -128,7 +129,7 @@ export const synth = {
       settings.octaves.push(octave)
 
       for (let key in keys) {
-        if (keys[key].isHeld && isNote(key)) {
+        if (heldKeys.includes(key) && isNote(key)) {
 
           settings.waveforms.forEach((waveform: string) => {
             keys[key].nodes![waveform as string][octave] = synth.newNode(key, context, now, waveform, octave)
@@ -147,7 +148,7 @@ export const synth = {
       
       for (let key in keys) {
 
-        if (keys[key].isHeld && isNote(key)) {
+        if (heldKeys.includes(key) && isNote(key)) {
 
           settings.waveforms.forEach((waveform: string) => {
 
@@ -178,7 +179,7 @@ export const synth = {
 
       for (let key in keys) {
 
-        if (keys[key].isHeld && isNote(key)) {
+        if (heldKeys.includes(key) && isNote(key)) {
 
           settings.octaves.forEach((octave: number) => {
             keys[key].nodes![waveform as string][octave] = synth.newNode(key, context, now, waveform, octave)
@@ -197,7 +198,7 @@ export const synth = {
       
       for (let key in keys) {
 
-        if (keys[key].isHeld && isNote(key)) {
+        if (heldKeys.includes(key) && isNote(key)) {
 
           settings.octaves.forEach((octave: number) => {
 
