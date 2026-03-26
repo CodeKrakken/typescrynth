@@ -5,7 +5,7 @@ import { Context } from 'vm'
 import { getFrequency } from './functions'
 
 const settings: synthSettings = defaultSettings
-let context: AudioContext | null = null
+let context: AudioContext
 
 
 const getContext = () => {
@@ -19,6 +19,8 @@ const getContext = () => {
   }
   return context
 }
+
+context = getContext()
 
 
 const setGains = (waveform: string, octave: number, now: number) => {
@@ -79,7 +81,7 @@ export const synth = {
   startNote: (key: string) => {
 
     settings.heldKeys.push(key)
-    const context = getContext()
+    // const context = getContext()
     const now = context.currentTime
 
     settings.waveforms.forEach((waveform: string) => {
@@ -95,7 +97,7 @@ export const synth = {
   stopNote: (key: string) => {
 
     settings.heldKeys = settings.heldKeys.filter((heldKey: string) => heldKey !== key)
-    const context = getContext()
+    // const context = getContext()
     const now = context.currentTime
 
     settings.waveforms.forEach((waveform: string) => {
@@ -114,7 +116,7 @@ export const synth = {
 
   toggleOctave: (octave: number) => {
     
-    const context = getContext()
+    // const context = getContext()
     const now = context.currentTime
 
     if (!settings.octaves.includes(octave)) {
@@ -158,7 +160,7 @@ export const synth = {
 
   toggleWaveform: (waveform: string) => {
     
-    const context = getContext()
+    // const context = getContext()
     const now = context.currentTime
 
     if (!settings.waveforms.includes(waveform)) {
@@ -203,7 +205,7 @@ export const synth = {
 
   resume: () => {
 
-    const context = getContext()
+    // const context = getContext()
     context.resume()
   }
 }
