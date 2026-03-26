@@ -122,7 +122,9 @@ export const synth = {
     const now = context.currentTime
 
     if (!selectedOctaves.includes(octave)) {
+
       selectedOctaves.push(octave)
+      console.log(selectedOctaves)
 
       heldKeys.forEach((key: string) => {
         selectedWaveforms.forEach((waveform: string) => {
@@ -132,7 +134,9 @@ export const synth = {
       setGains(now)
 
     } else {
-      
+      selectedOctaves = selectedOctaves.filter((oct: number) => oct !== octave)
+      console.log(selectedOctaves)
+
       activeNodes.filter((node: node) => node.octave === octave).forEach((node: node) => {
 
         const targetGain = 0
@@ -142,7 +146,6 @@ export const synth = {
         node.oscillator.stop(now + releaseTime)
       })
 
-      selectedOctaves = selectedOctaves.filter((oct: number) => oct !== octave)
       setGains(now)
     }
   },
@@ -164,6 +167,7 @@ export const synth = {
       setGains(now)
 
     } else {
+      selectedWaveforms = selectedWaveforms.filter((wave: string) => wave !== waveform)
 
       activeNodes.filter((node: node) => node.oscillator.type === waveform).forEach((node: node) => {
 
@@ -173,8 +177,6 @@ export const synth = {
         setGain(node, now, targetGain, releaseTime)
         node.oscillator.stop(now + releaseTime)
       })
-
-      selectedWaveforms = selectedWaveforms.filter((wave: string) => wave !== waveform)
       setGains(now)
     }
   },
