@@ -1,5 +1,5 @@
 export type synthSettings = {
-  octaves: number[]
-  waveforms: string[]
+  selectedOctaves: number[]
+  selectedWaveforms: string[]
   heldKeys: string[]
 }

@@ -4,9 +4,8 @@ import { keys } from '../data'
 import { Context } from 'vm'
 import { getFrequency } from './functions'
 
-const settings: synthSettings = defaultSettings
 let context: AudioContext
-
+let { heldKeys, selectedOctaves, selectedWaveforms }: synthSettings = defaultSettings
 
 const getContext = () => {
   
@@ -25,9 +24,9 @@ context = getContext()
 
 const setGains = (waveform: string, octave: number, now: number) => {
 
-  settings.heldKeys.forEach((key: string) => {
+  heldKeys.forEach((key: string) => {
 
-    const targetGain = 1/settings.heldKeys.length/settings.waveforms.length/settings.octaves.length
+    const targetGain = 1/heldKeys.length/selectedWaveforms.length/selectedOctaves.length
     const releaseTime = 0
 
     setGain(key, waveform, octave, now, targetGain, releaseTime)
@@ -76,16 +75,16 @@ const newNode = (
 
 export const synth = {
 
-  settings: settings,
+  selectedOctaves: selectedOctaves,
+  selectedWaveforms: selectedWaveforms,
   
   startNote: (key: string) => {
 
-    settings.heldKeys.push(key)
-    // const context = getContext()
+    heldKeys.push(key)
     const now = context.currentTime
 
-    settings.waveforms.forEach((waveform: string) => {
-      settings.octaves.forEach((octave: number) => {
+    selectedWaveforms.forEach((waveform: string) => {
+      selectedOctaves.forEach((octave: number) => {
 
         keys[key].nodes![waveform as string][octave] = newNode(key, context, now, waveform, octave)
         setGains(waveform, octave, now)
@@ -96,12 +95,11 @@ export const synth = {
 
   stopNote: (key: string) => {
 
-    settings.heldKeys = settings.heldKeys.filter((heldKey: string) => heldKey !== key)
-    // const context = getContext()
+    heldKeys = heldKeys.filter((heldKey: string) => heldKey !== key)
     const now = context.currentTime
 
-    settings.waveforms.forEach((waveform: string) => {
-      settings.octaves.forEach((octave: number) => {
+    selectedWaveforms.forEach((waveform: string) => {
+      selectedOctaves.forEach((octave: number) => {
 
         const targetGain = 0
         const release = 0.05
@@ -116,30 +114,29 @@ export const synth = {
 
   toggleOctave: (octave: number) => {
     
-    // const context = getContext()
     const now = context.currentTime
 
-    if (!settings.octaves.includes(octave)) {
-      settings.octaves.push(octave)
+    if (!selectedOctaves.includes(octave)) {
+      selectedOctaves.push(octave)
 
-      settings.heldKeys.forEach((key: string) => {
-        settings.waveforms.forEach((waveform: string) => {
+      heldKeys.forEach((key: string) => {
+        selectedWaveforms.forEach((waveform: string) => {
 
           keys[key].nodes![waveform as string][octave] = newNode(key, context, now, waveform, octave)
         })
       })
       
-      settings.waveforms.forEach((waveform: string) => {
-        settings.octaves.forEach((octave: number) => {
+      selectedWaveforms.forEach((waveform: string) => {
+        selectedOctaves.forEach((octave: number) => {
 
           setGains(waveform, octave, now)
         })
       })  
     } else {
-      settings.octaves = settings.octaves.filter((oct: number) => oct !== octave)
+      selectedOctaves = selectedOctaves.filter((oct: number) => oct !== octave)
       
-      settings.heldKeys.forEach((key: string) => {
-        settings.waveforms.forEach((waveform: string) => {
+      heldKeys.forEach((key: string) => {
+        selectedWaveforms.forEach((waveform: string) => {
 
           const targetGain = 0
           const releaseTime = 0.05
@@ -149,8 +146,8 @@ export const synth = {
         })
       })
 
-      settings.waveforms.forEach((waveform: string) => {
-        settings.octaves.forEach((octave: number) => {
+      selectedWaveforms.forEach((waveform: string) => {
+        selectedOctaves.forEach((octave: number) => {
           setGains(waveform, octave, now)
         })
       })
@@ -160,31 +157,30 @@ export const synth = {
 
   toggleWaveform: (waveform: string) => {
     
-    // const context = getContext()
     const now = context.currentTime
 
-    if (!settings.waveforms.includes(waveform)) {
+    if (!selectedWaveforms.includes(waveform)) {
 
-      settings.waveforms.push(waveform)
+      selectedWaveforms.push(waveform)
 
-      settings.heldKeys.forEach((key: string) => {
+      heldKeys.forEach((key: string) => {
 
-        settings.octaves.forEach((octave: number) => {
+        selectedOctaves.forEach((octave: number) => {
           keys[key].nodes![waveform as string][octave] = newNode(key, context, now, waveform, octave)
         })
       })
 
-      settings.octaves.forEach((octave: number) => {
-        settings.waveforms.forEach((waveform: string) => {
+      selectedOctaves.forEach((octave: number) => {
+        selectedWaveforms.forEach((waveform: string) => {
           setGains(waveform, octave, now)
         })
       })
     } else {
 
-      settings.waveforms = settings.waveforms.filter((wave: string) => wave !== waveform)
+      selectedWaveforms = selectedWaveforms.filter((wave: string) => wave !== waveform)
       
-      settings.heldKeys.forEach((key: string) => {
-        settings.octaves.forEach((octave: number) => {
+      heldKeys.forEach((key: string) => {
+        selectedOctaves.forEach((octave: number) => {
 
           const targetGain = 0
           const release = 0.05
@@ -194,8 +190,8 @@ export const synth = {
         })
       })
 
-      settings.waveforms.forEach((waveform: string) => {
-        settings.octaves.forEach((octave: number) => {
+      selectedWaveforms.forEach((waveform: string) => {
+        selectedOctaves.forEach((octave: number) => {
           setGains(waveform, octave, now)
         })
       })
@@ -205,7 +201,6 @@ export const synth = {
 
   resume: () => {
 
-    // const context = getContext()
     context.resume()
   }
 }
