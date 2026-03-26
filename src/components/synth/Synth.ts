@@ -2,7 +2,7 @@ import { synthSettings } from './types'
 import { defaultSettings } from './data'
 import { keys } from '../data'
 import { Context } from 'vm'
-import { transpose } from './functions'
+import { getFrequency } from './functions'
 
 const settings: synthSettings = defaultSettings
 let context: AudioContext | null = null
@@ -59,7 +59,7 @@ const newNode = (
   oscillator.connect(gain)
   oscillator.type = waveform as OscillatorType
   oscillator.frequency.setValueAtTime(
-    transpose(keys[key].function as number, octave),
+    getFrequency(keys[key].function as number, octave),
     now
   )
   gain.connect(context.destination)

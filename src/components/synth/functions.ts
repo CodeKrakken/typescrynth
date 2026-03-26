@@ -1,4 +1,4 @@
-export const transpose = (frequency: number, octave: number) => {
+export const getFrequency = (frequency: number, octave: number) => {
 
   for ( let i = 0 ; i < octave; i++ ) {
     frequency *= 2
