@@ -35,14 +35,9 @@ const transpose = (frequency: number, octave: number) => {
 }
 
 
-const held = (keys: { [key: string]: keyType }) => {
-  return Object.keys(keys).filter((key: string) => heldKeys.includes(key))
-}
-
-
 const setGains = (waveform: string, octave: number, now: number) => {
-  held(keys).forEach((key: string) => {
-    const targetGain = 1/held(keys).length/settings.waveforms.length/settings.octaves.length
+  heldKeys.forEach((key: string) => {
+    const targetGain = 1/heldKeys.length/settings.waveforms.length/settings.octaves.length
     const releaseTime = 0
     setGain(key, waveform, octave, now, targetGain, releaseTime)
   })
