@@ -5,7 +5,7 @@ import { Context } from 'vm'
 import { getFrequency } from './functions'
 
 let context: AudioContext
-let { heldKeys, selectedOctaves, selectedWaveforms, activeNodes }: synthSettings = defaultSettings
+let settings: synthSettings = defaultSettings
 
 const getContext = () => {
   
@@ -24,9 +24,9 @@ context = getContext()
 
 const setGains = (now: number) => {
 
-  activeNodes.forEach((node: node) => {
+  settings.activeNodes.forEach((node: node) => {
 
-    const targetGain = 1/heldKeys.length/selectedWaveforms.length/selectedOctaves.length
+    const targetGain = 1/settings.heldKeys.length/settings.selectedWaveforms.length/settings.selectedOctaves.length
     const releaseTime = 0
 
     setGain(node, now, targetGain, releaseTime)
@@ -79,17 +79,16 @@ const newNode = (
 
 export const synth = {
 
-  selectedOctaves: selectedOctaves,
-  selectedWaveforms: selectedWaveforms,
+  settings: settings,
   
   startNote: (key: string) => {
 
-    heldKeys.push(key)
+    settings.heldKeys.push(key)
     const now = context.currentTime
 
-    selectedWaveforms.forEach((waveform: string) => {
-      selectedOctaves.forEach((octave: number) => {
-        activeNodes.push(newNode(key, context, now, waveform, octave))
+    settings.selectedWaveforms.forEach((waveform: string) => {
+      settings.selectedOctaves.forEach((octave: number) => {
+        settings.activeNodes.push(newNode(key, context, now, waveform, octave))
       })
     })
 
@@ -101,7 +100,7 @@ export const synth = {
 
     const now = context.currentTime
 
-    activeNodes.filter((node: node) => node.key === key).forEach((node: node) => {
+    settings.activeNodes.filter((node: node) => node.key === key).forEach((node: node) => {
 
       const targetGain = 0
       const release = 0.05
@@ -110,8 +109,8 @@ export const synth = {
       node.oscillator.stop(now + release)
     })
 
-    heldKeys = heldKeys.filter((heldKey: string) => heldKey !== key)
-    activeNodes = activeNodes.filter((node: node) => node.key !== key)
+    settings.heldKeys = settings.heldKeys.filter((heldKey: string) => heldKey !== key)
+    settings.activeNodes = settings.activeNodes.filter((node: node) => node.key !== key)
 
     setGains(now)
   },
@@ -121,23 +120,23 @@ export const synth = {
     
     const now = context.currentTime
 
-    if (!selectedOctaves.includes(octave)) {
+    if (!settings.selectedOctaves.includes(octave)) {
 
-      selectedOctaves.push(octave)
-      console.log(selectedOctaves)
+      settings.selectedOctaves.push(octave)
+      console.log(settings.selectedOctaves)
 
-      heldKeys.forEach((key: string) => {
-        selectedWaveforms.forEach((waveform: string) => {
-          activeNodes.push(newNode(key, context, now, waveform, octave))
+      settings.heldKeys.forEach((key: string) => {
+        settings.selectedWaveforms.forEach((waveform: string) => {
+          settings.activeNodes.push(newNode(key, context, now, waveform, octave))
         })
       })
       setGains(now)
 
     } else {
-      selectedOctaves = selectedOctaves.filter((oct: number) => oct !== octave)
-      console.log(selectedOctaves)
+      settings.selectedOctaves = settings.selectedOctaves.filter((oct: number) => oct !== octave)
+      console.log(settings.selectedOctaves)
 
-      activeNodes.filter((node: node) => node.octave === octave).forEach((node: node) => {
+      settings.activeNodes.filter((node: node) => node.octave === octave).forEach((node: node) => {
 
         const targetGain = 0
         const releaseTime = 0.05
@@ -155,21 +154,21 @@ export const synth = {
     
     const now = context.currentTime
 
-    if (!selectedWaveforms.includes(waveform)) {
-      selectedWaveforms.push(waveform)
+    if (!settings.selectedWaveforms.includes(waveform)) {
+      settings.selectedWaveforms.push(waveform)
 
-      heldKeys.forEach((key: string) => {
+      settings.heldKeys.forEach((key: string) => {
 
-        selectedOctaves.forEach((octave: number) => {
-          activeNodes.push(newNode(key, context, now, waveform, octave))
+        settings.selectedOctaves.forEach((octave: number) => {
+          settings.activeNodes.push(newNode(key, context, now, waveform, octave))
         })
       })
       setGains(now)
 
     } else {
-      selectedWaveforms = selectedWaveforms.filter((wave: string) => wave !== waveform)
+      settings.selectedWaveforms = settings.selectedWaveforms.filter((wave: string) => wave !== waveform)
 
-      activeNodes.filter((node: node) => node.oscillator.type === waveform).forEach((node: node) => {
+      settings.activeNodes.filter((node: node) => node.oscillator.type === waveform).forEach((node: node) => {
 
         const targetGain = 0
         const releaseTime = 0.05
