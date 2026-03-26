@@ -2,6 +2,7 @@ import { synthSettings } from './types'
 import { defaultSettings } from './data'
 import { keys } from '../data'
 import { Context } from 'vm'
+import { transpose } from './functions'
 
 const settings: synthSettings = defaultSettings
 let context: AudioContext | null = null
@@ -17,15 +18,6 @@ const getContext = () => {
     context.resume()
   }
   return context
-}
-
-
-const transpose = (frequency: number, octave: number) => {
-
-  for ( let i = 0 ; i < octave; i++ ) {
-    frequency *= 2
-  }
-  return +frequency.toFixed(2)
 }
 
 
