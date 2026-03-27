@@ -74,6 +74,25 @@ const setGain = (
 }
 
 
+const stopNodes = (now: number, attr: nodeAttribute, value: string) => {
+  const targetGain = 0
+  const releaseTime = 0.05
+  
+  settings.activeNodes.filter((node: node) => node[attr] === value).forEach((node: node) => {
+
+    setGain(node, now, targetGain, releaseTime)
+    node.oscillator.stop(now + releaseTime)
+  })
+
+  const attrKey = `${attr}s` as settingsAttribute
+
+  settings[attrKey] = (settings[attrKey]).filter((attr: string) => attr !== value)
+  settings.activeNodes = settings.activeNodes.filter((node: node) => node[attr] !== value)
+
+  balanceGains(now)
+}
+
+
 export const synth = {
 
   settings: settings,
@@ -111,25 +130,6 @@ export const synth = {
     balanceGains(now)
   },
 
-
-
-  stopNodes: (now: number, attr: nodeAttribute, value: string) => {
-    const targetGain = 0
-    const releaseTime = 0.05
-    
-    settings.activeNodes.filter((node: node) => node[attr] === value).forEach((node: node) => {
-
-      setGain(node, now, targetGain, releaseTime)
-      node.oscillator.stop(now + releaseTime)
-    })
-
-    const attrKey = `${attr}s` as settingsAttribute
-
-    settings[attrKey] = (settings[attrKey]).filter((attr: string) => attr !== value)
-    settings.activeNodes = settings.activeNodes.filter((node: node) => node[attr] !== value)
-
-    balanceGains(now)
-  },
   
 
   toggleOctave: (octave: string) => {
@@ -149,19 +149,7 @@ export const synth = {
 
     } else {
 
-      const targetGain = 0
-      const releaseTime = 0.05
-      
-      settings.activeNodes.filter((node: node) => node.octave === octave).forEach((node: node) => {
-
-        setGain(node, now, targetGain, releaseTime)
-        node.oscillator.stop(now + releaseTime)
-      })
-
-      settings.octaves = settings.octaves.filter((thisOctave: string) => thisOctave !== octave)
-      settings.activeNodes = settings.activeNodes.filter((node: node) => node.octave !== octave)
-
-      balanceGains(now)
+      stopNodes(now, 'octave', octave)
     }
   },
 
