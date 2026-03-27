@@ -128,17 +128,18 @@ export const synth = {
       balanceGains(now)
 
     } else {
+
+      const targetGain = 0
+      const releaseTime = 0.05
       
-      settings.selectedOctaves = settings.selectedOctaves.filter((thisOctave: number) => thisOctave !== octave)
-
       settings.activeNodes.filter((node: node) => node.octave === octave).forEach((node: node) => {
-
-        const targetGain = 0
-        const releaseTime = 0.05
 
         setGain(node, now, targetGain, releaseTime)
         node.oscillator.stop(now + releaseTime)
       })
+
+      settings.selectedOctaves = settings.selectedOctaves.filter((thisOctave: number) => thisOctave !== octave)
+      settings.activeNodes = settings.activeNodes.filter((node: node) => node.octave !== octave)
 
       balanceGains(now)
     }
