@@ -4,8 +4,8 @@ import { keys } from '../data'
 import { Context } from 'vm'
 import { getFrequency } from './functions'
 
-let context: AudioContext
 let settings: synthSettings = defaultSettings
+let context: AudioContext
 
 const getContext = () => {
   
@@ -22,14 +22,12 @@ const getContext = () => {
 context = getContext()
 
 
-const setGains = (now: number) => {
+const balanceGains = (now: number) => {
+  const balancedGain = 1/settings.heldKeys.length/settings.selectedWaveforms.length/settings.selectedOctaves.length
 
   settings.activeNodes.forEach((node: node) => {
-
-    const targetGain = 1/settings.heldKeys.length/settings.selectedWaveforms.length/settings.selectedOctaves.length
-    const releaseTime = 0
-
-    setGain(node, now, targetGain, releaseTime)
+    
+    setGain(node, now, balancedGain)
   })
 }
 
@@ -92,7 +90,7 @@ export const synth = {
       })
     })
 
-    setGains(now)
+    balanceGains(now)
   },
 
 
@@ -112,7 +110,7 @@ export const synth = {
     settings.heldKeys = settings.heldKeys.filter((heldKey: string) => heldKey !== key)
     settings.activeNodes = settings.activeNodes.filter((node: node) => node.key !== key)
 
-    setGains(now)
+    balanceGains(now)
   },
   
 
@@ -130,7 +128,7 @@ export const synth = {
           settings.activeNodes.push(newNode(key, context, now, waveform, octave))
         })
       })
-      setGains(now)
+      balanceGains(now)
 
     } else {
       settings.selectedOctaves = settings.selectedOctaves.filter((oct: number) => oct !== octave)
@@ -145,7 +143,7 @@ export const synth = {
         node.oscillator.stop(now + releaseTime)
       })
 
-      setGains(now)
+      balanceGains(now)
     }
   },
 
@@ -163,7 +161,7 @@ export const synth = {
           settings.activeNodes.push(newNode(key, context, now, waveform, octave))
         })
       })
-      setGains(now)
+      balanceGains(now)
 
     } else {
       settings.selectedWaveforms = settings.selectedWaveforms.filter((wave: string) => wave !== waveform)
@@ -176,7 +174,7 @@ export const synth = {
         setGain(node, now, targetGain, releaseTime)
         node.oscillator.stop(now + releaseTime)
       })
-      setGains(now)
+      balanceGains(now)
     }
   },
 
