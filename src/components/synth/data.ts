@@ -1,6 +1,6 @@
 export const defaultSettings = {
-  selectedOctaves: [4],
-  selectedWaveforms: ['sine'],
-  heldKeys: [],
+  octaves: [4],
+  waveforms: ['sine'],
+  keys: [],
   activeNodes: []
 }

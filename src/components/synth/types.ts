@@ -7,8 +7,8 @@ export type node = {
 }
 
 export type synthSettings = {
-  selectedOctaves: number[]
-  selectedWaveforms: string[]
-  heldKeys: string[]
+  octaves: number[]
+  waveforms: string[]
+  keys: string[]
   activeNodes: node[]
 }
