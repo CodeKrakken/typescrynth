@@ -7,26 +7,57 @@ import { getFrequency } from './functions'
 let settings: synthSettings = defaultSettings
 let context: AudioContext
 
+
+// set up context
+
 const getContext = () => {
   
-  if (!context) {
-    context = new AudioContext()
-  }
-
-  if (context.state === 'suspended') {
-    context.resume()
-  }
+  if (!context) { context = new AudioContext() }
+  if (context.state === 'suspended') { context.resume() }
+  
   return context
 }
 
 context = getContext()
 
 
+// private functions
+
+const newNode = (
+  key: string, 
+  waveform: string, 
+  octave: number,
+  now: number
+) => {
+
+  const oscillator = context.createOscillator()
+  oscillator.type = waveform as OscillatorType
+  oscillator.start(0)
+
+  oscillator.frequency.setValueAtTime(
+    getFrequency(keys[key].function as number, octave),
+    now
+  )
+
+  const gain = context.createGain()
+  gain.connect(context.destination)
+
+  oscillator.connect(gain)
+  
+  return {
+    oscillator: oscillator,
+    gain: gain,
+    key: key,
+    octave: octave
+  }
+}
+
+
 const balanceGains = (now: number) => {
-  const balancedGain = 1/settings.heldKeys.length/settings.selectedWaveforms.length/settings.selectedOctaves.length
+
+  const balancedGain = 1/settings.activeNodes.length
 
   settings.activeNodes.forEach((node: node) => {
-    
     setGain(node, now, balancedGain)
   })
 }
@@ -39,39 +70,7 @@ const setGain = (
   releaseTime: number = 0
 ) => {
   node.gain.gain.cancelScheduledValues(now)
-  try {
-    node.gain.gain.setTargetAtTime(targetGain, now, releaseTime)
-  } catch (error) {
-    console.log(targetGain)
-  }
-}
-
-
-const newNode = (
-  key: string, 
-  context: Context, 
-  now: number, 
-  waveform: string, 
-  octave: number
-) => {
-
-  const oscillator = context.createOscillator()
-  const gain = context.createGain()
-  oscillator.connect(gain)
-  oscillator.type = waveform as OscillatorType
-  oscillator.frequency.setValueAtTime(
-    getFrequency(keys[key].function as number, octave),
-    now
-  )
-  gain.connect(context.destination)
-  oscillator.start(0)
-
-  return {
-    oscillator: oscillator,
-    gain: gain,
-    key: key,
-    octave: octave
-  }
+  node.gain.gain.setTargetAtTime(targetGain, now, releaseTime)
 }
 
 
@@ -86,7 +85,7 @@ export const synth = {
 
     settings.selectedWaveforms.forEach((waveform: string) => {
       settings.selectedOctaves.forEach((octave: number) => {
-        settings.activeNodes.push(newNode(key, context, now, waveform, octave))
+        settings.activeNodes.push(newNode(key, waveform, octave, now))
       })
     })
 
@@ -121,18 +120,16 @@ export const synth = {
     if (!settings.selectedOctaves.includes(octave)) {
 
       settings.selectedOctaves.push(octave)
-      console.log(settings.selectedOctaves)
 
       settings.heldKeys.forEach((key: string) => {
         settings.selectedWaveforms.forEach((waveform: string) => {
-          settings.activeNodes.push(newNode(key, context, now, waveform, octave))
+          settings.activeNodes.push(newNode(key, waveform, octave, now))
         })
       })
       balanceGains(now)
 
     } else {
       settings.selectedOctaves = settings.selectedOctaves.filter((oct: number) => oct !== octave)
-      console.log(settings.selectedOctaves)
 
       settings.activeNodes.filter((node: node) => node.octave === octave).forEach((node: node) => {
 
@@ -156,16 +153,16 @@ export const synth = {
       settings.selectedWaveforms.push(waveform)
 
       settings.heldKeys.forEach((key: string) => {
-
         settings.selectedOctaves.forEach((octave: number) => {
-          settings.activeNodes.push(newNode(key, context, now, waveform, octave))
+
+          settings.activeNodes.push(newNode(key, waveform, octave, now))
         })
       })
       balanceGains(now)
 
     } else {
-      settings.selectedWaveforms = settings.selectedWaveforms.filter((wave: string) => wave !== waveform)
 
+      settings.selectedWaveforms = settings.selectedWaveforms.filter((wave: string) => wave !== waveform)
       settings.activeNodes.filter((node: node) => node.oscillator.type === waveform).forEach((node: node) => {
 
         const targetGain = 0
