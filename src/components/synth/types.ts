@@ -2,13 +2,17 @@ export type node = {
   oscillator: OscillatorNode,
   waveform: string,
   gain: GainNode,
-  octave: number,
+  octave: string,
   key: string
 }
 
 export type synthSettings = {
-  octaves: number[]
+  octaves: string[]
   waveforms: string[]
   keys: string[]
   activeNodes: node[]
 }
+
+export type nodeAttribute = 'octave' | 'waveform' | 'key'
+
+export type settingsAttribute = 'octaves' | 'waveforms' | 'keys'

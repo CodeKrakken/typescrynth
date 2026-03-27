@@ -1,6 +1,6 @@
-export const getFrequency = (frequency: number, octave: number) => {
+export const getFrequency = (frequency: number, octave: string) => {
 
-  for ( let i = 0 ; i < octave; i++ ) {
+  for ( let i = 0 ; i < +octave; i++ ) {
     frequency *= 2
   }
   return +frequency.toFixed(2)

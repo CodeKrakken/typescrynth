@@ -1,4 +1,4 @@
-import { synthSettings, node } from './types'
+import { synthSettings, node, nodeAttribute, settingsAttribute } from './types'
 import { defaultSettings } from './data'
 import { keys } from '../data'
 import { getFrequency } from './functions'
@@ -25,7 +25,7 @@ context = getContext()
 const newNode = (
   key: string, 
   waveform: string, 
-  octave: number,
+  octave: string,
   now: number
 ) => {
 
@@ -84,7 +84,7 @@ export const synth = {
     const now = context.currentTime
 
     settings.waveforms.forEach((waveform: string) => {
-      settings.octaves.forEach((octave: number) => {
+      settings.octaves.forEach((octave: string) => {
         settings.activeNodes.push(newNode(key, waveform, octave, now))
       })
     })
@@ -113,24 +113,26 @@ export const synth = {
 
 
 
-  // stopNodes: (now: number, attr: string, value: string | number) => {
-  //   const targetGain = 0
-  //   const releaseTime = 0.05
+  stopNodes: (now: number, attr: nodeAttribute, value: string) => {
+    const targetGain = 0
+    const releaseTime = 0.05
     
-  //   settings.activeNodes.filter((node: node) => node[attr] === value).forEach((node: node) => {
+    settings.activeNodes.filter((node: node) => node[attr] === value).forEach((node: node) => {
 
-  //     setGain(node, now, targetGain, releaseTime)
-  //     node.oscillator.stop(now + releaseTime)
-  //   })
+      setGain(node, now, targetGain, releaseTime)
+      node.oscillator.stop(now + releaseTime)
+    })
 
-  //   settings[`${attr}s`] = settings[`${attr}s`].filter((attr: string | number) => attr !== value)
-  //   settings.activeNodes = settings.activeNodes.filter((node: node) => node[attr] !== value)
+    const attrKey = `${attr}s` as settingsAttribute
 
-  //   balanceGains(now)
-  // },
+    settings[attrKey] = (settings[attrKey]).filter((attr: string) => attr !== value)
+    settings.activeNodes = settings.activeNodes.filter((node: node) => node[attr] !== value)
+
+    balanceGains(now)
+  },
   
 
-  toggleOctave: (octave: number) => {
+  toggleOctave: (octave: string) => {
     
     const now = context.currentTime
 
@@ -156,7 +158,7 @@ export const synth = {
         node.oscillator.stop(now + releaseTime)
       })
 
-      settings.octaves = settings.octaves.filter((thisOctave: number) => thisOctave !== octave)
+      settings.octaves = settings.octaves.filter((thisOctave: string) => thisOctave !== octave)
       settings.activeNodes = settings.activeNodes.filter((node: node) => node.octave !== octave)
 
       balanceGains(now)
@@ -173,7 +175,7 @@ export const synth = {
       settings.waveforms.push(waveform)
 
       settings.keys.forEach((key: string) => {
-        settings.octaves.forEach((octave: number) => {
+        settings.octaves.forEach((octave: string) => {
           settings.activeNodes.push(newNode(key, waveform, octave, now))
         })
       })

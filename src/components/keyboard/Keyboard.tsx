@@ -53,11 +53,15 @@ export default function Keyboard() {
       if (isKey(key) && !heldKeys.includes(key)) {
         synth!.resume?.()
         
+
         switch(keys[key].type) {
           case 'note'     : synth.startNote(key); keys[key].colour = randomColour(); break
+          
+          // Make these into one generic one
+        
           case 'octave'   : {
-            synth.toggleOctave(keys[key].function as number); 
-            keys[key].colour = synth.settings.octaves.includes(keys[key].function as number) ? randomColour() : ''; 
+            synth.toggleOctave(keys[key].function as string); 
+            keys[key].colour = synth.settings.octaves.includes(keys[key].function as string) ? randomColour() : ''; 
             break
           }
           case 'waveform' : {

@@ -1,17 +1,17 @@
 import { keysType } from './types'
 
 export const keys: keysType = {
-  '`': {htmlTitle:  '0',        function:  0,         type: 'octave',   isHeld: false, row: 0, column: -6, colour: ''}, 
-  '1': {htmlTitle:  '1',        function:  1,         type: 'octave',   isHeld: false, row: 0, column: -5, colour: ''}, 
-  '2': {htmlTitle:  '2',        function:  2,         type: 'octave',   isHeld: false, row: 0, column: -4, colour: ''}, 
-  '3': {htmlTitle:  '3',        function:  3,         type: 'octave',   isHeld: false, row: 0, column: -3, colour: ''}, 
-  '4': {htmlTitle:  '4',        function:  4,         type: 'octave',   isHeld: false, row: 0, column: -2, colour: ''}, 
-  '5': {htmlTitle:  '5',        function:  5,         type: 'octave',   isHeld: false, row: 0, column: -1, colour: ''},
-  '6': {htmlTitle:  '6',        function:  6,         type: 'octave',   isHeld: false, row: 0, column:  0, colour: ''}, 
-  '7': {htmlTitle:  '7',        function:  7,         type: 'octave',   isHeld: false, row: 0, column:  1, colour: ''}, 
-  '8': {htmlTitle:  '8',        function:  8,         type: 'octave',   isHeld: false, row: 0, column:  2, colour: ''}, 
-  '9': {htmlTitle:  '9',        function:  9,         type: 'octave',   isHeld: false, row: 0, column:  3, colour: ''}, 
-  '0': {htmlTitle: '10',        function: 10,         type: 'octave',   isHeld: false, row: 0, column:  4, colour: ''},
+  '`': {htmlTitle:  '0',        function:  '0',         type: 'octave',   isHeld: false, row: 0, column: -6, colour: ''}, 
+  '1': {htmlTitle:  '1',        function:  '1',         type: 'octave',   isHeld: false, row: 0, column: -5, colour: ''}, 
+  '2': {htmlTitle:  '2',        function:  '2',         type: 'octave',   isHeld: false, row: 0, column: -4, colour: ''}, 
+  '3': {htmlTitle:  '3',        function:  '3',         type: 'octave',   isHeld: false, row: 0, column: -3, colour: ''}, 
+  '4': {htmlTitle:  '4',        function:  '4',         type: 'octave',   isHeld: false, row: 0, column: -2, colour: ''}, 
+  '5': {htmlTitle:  '5',        function:  '5',         type: 'octave',   isHeld: false, row: 0, column: -1, colour: ''},
+  '6': {htmlTitle:  '6',        function:  '6',         type: 'octave',   isHeld: false, row: 0, column:  0, colour: ''}, 
+  '7': {htmlTitle:  '7',        function:  '7',         type: 'octave',   isHeld: false, row: 0, column:  1, colour: ''}, 
+  '8': {htmlTitle:  '8',        function:  '8',         type: 'octave',   isHeld: false, row: 0, column:  2, colour: ''}, 
+  '9': {htmlTitle:  '9',        function:  '9',         type: 'octave',   isHeld: false, row: 0, column:  3, colour: ''}, 
+  '0': {htmlTitle: '10',        function: '10',         type: 'octave',   isHeld: false, row: 0, column:  4, colour: ''},
 
   'q': {htmlTitle: 'sine',      function: 'sine',     type: 'waveform', isHeld: false, row: 1, column: -4, colour: ''}, 
   'w': {htmlTitle: 'triangle',  function: 'triangle', type: 'waveform', isHeld: false, row: 1, column: -3, colour: ''}, 
