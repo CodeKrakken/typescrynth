@@ -163,6 +163,22 @@ export const synth = {
     }
   },
 
+  // createNodes: (now: number, attr: nodeAttribute, value: string) => {
+
+  //   const attrKey = `${attr}s` as settingsAttribute
+
+  //   settings[attrKey].push(value)
+
+  //   const attrs = ['keys', 'waveforms', 'octaves'].filter((thisAttr: string) => thisAttr !== attr)
+
+  //     settings.keys.forEach((key: string) => {
+  //       settings.octaves.forEach((octave: string) => {
+  //         settings.activeNodes.push(newNode(key, waveform, octave, now))
+  //       })
+  //     })
+  //     balanceGains(now)
+  // }
+
 
   resume: () => { context.resume() }
 }
