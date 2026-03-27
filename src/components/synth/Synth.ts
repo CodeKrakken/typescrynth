@@ -1,10 +1,18 @@
-import { synthSettings, node, nodeAttribute, settingsAttribute } from './types'
+import { synthSettings, node, settingsAttribute } from './types'
 import { defaultSettings } from './data'
 import { keys } from '../data'
 import { getFrequency } from './functions'
 
 let settings: synthSettings = defaultSettings
 let context: AudioContext
+
+type nodeAttribute = 'key' | 'waveform' | 'octave'
+
+  const attrMap = {
+    key: 'keys',
+    waveform: 'waveforms',
+    octave: 'octaves'
+  } as const
 
 
 // set up context
@@ -23,9 +31,7 @@ context = getContext()
 // private functions
 
 const newNode = (
-  key: string, 
-  waveform: string, 
-  octave: string,
+  { key, waveform, octave }: { key: string; waveform: string; octave: string },
   now: number
 ) => {
 
@@ -99,16 +105,19 @@ export const synth = {
   
   startNote: (key: string) => {
 
-    settings.keys.push(key)
     const now = context.currentTime
 
-    settings.waveforms.forEach((waveform: string) => {
-      settings.octaves.forEach((octave: string) => {
-        settings.activeNodes.push(newNode(key, waveform, octave, now))
-      })
-    })
+    synth.createNodes(now, 'key', key)
 
-    balanceGains(now)
+    // settings.keys.push(key)
+
+    // settings.waveforms.forEach((waveform: string) => {
+    //   settings.octaves.forEach((octave: string) => {
+    //     settings.activeNodes.push(newNode({key, waveform, octave}, now))
+    //   })
+    // })
+
+    // balanceGains(now)
   },
 
 
@@ -126,14 +135,16 @@ export const synth = {
 
     if (!settings.octaves.includes(octave)) {
 
-      settings.octaves.push(octave)
+      synth.createNodes(now, 'octave', octave)
 
-      settings.keys.forEach((key: string) => {
-        settings.waveforms.forEach((waveform: string) => {
-          settings.activeNodes.push(newNode(key, waveform, octave, now))
-        })
-      })
-      balanceGains(now)
+      // settings.octaves.push(octave)
+
+      // settings.keys.forEach((key: string) => {
+      //   settings.waveforms.forEach((waveform: string) => {
+      //     settings.activeNodes.push(newNode(key, waveform, octave, now))
+      //   })
+      // })
+      // balanceGains(now)
 
     } else {
 
@@ -148,14 +159,17 @@ export const synth = {
 
     if (!settings.waveforms.includes(waveform)) {
 
-      settings.waveforms.push(waveform)
+      synth.createNodes(now, 'waveform', waveform)
 
-      settings.keys.forEach((key: string) => {
-        settings.octaves.forEach((octave: string) => {
-          settings.activeNodes.push(newNode(key, waveform, octave, now))
-        })
-      })
-      balanceGains(now)
+
+      // settings.waveforms.push(waveform)
+
+      // settings.keys.forEach((key: string) => {
+      //   settings.octaves.forEach((octave: string) => {
+      //     settings.activeNodes.push(newNode({key, waveform, octave}, now))
+      //   })
+      // })
+      // balanceGains(now)
 
     } else {
 
@@ -177,7 +191,46 @@ export const synth = {
   //       })
   //     })
   //     balanceGains(now)
-  // }
+  // },
+
+  createNodes: (
+    now: number,
+    attr: nodeAttribute,
+    value: string
+  ) => {
+
+    const attrKey = attrMap[attr]
+
+    // avoid duplicates
+    if (!settings[attrKey].includes(value)) {
+      settings[attrKey].push(value)
+    }
+
+    // get the OTHER two attributes
+    const otherAttrs = (Object.keys(attrMap) as nodeAttribute[])
+      .filter(a => a !== attr)
+
+    const [attrA, attrB] = otherAttrs
+
+    settings[attrMap[attrA]].forEach(valA => {
+      settings[attrMap[attrB]].forEach(valB => {
+
+        const nodeParams = {
+          key: '',
+          waveform: '',
+          octave: ''
+        }
+
+        nodeParams[attr] = value
+        nodeParams[attrA] = valA
+        nodeParams[attrB] = valB
+
+        settings.activeNodes.push(newNode(nodeParams, now))
+      })
+    })
+
+    balanceGains(now)
+  },
 
 
   resume: () => { context.resume() }
