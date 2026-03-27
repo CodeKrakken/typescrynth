@@ -8,11 +8,11 @@ import { isNote } from '../functions';
 
 // Set up button colours
 
-synth.settings.octaves.forEach(octave => {
+synth.settings.attributes.octaves.forEach(octave => {
   keys[octave].colour = randomColour()
 })
 
-synth.settings.waveforms.forEach(waveform => {
+synth.settings.attributes.waveforms.forEach(waveform => {
   const key = Object.keys(keys).find(key => keys[key].function === waveform) as string
   keys[key].colour = randomColour()
 })
@@ -55,18 +55,18 @@ export default function Keyboard() {
         
 
         switch(keys[key].type) {
-          case 'note'     : synth.startNote(key); keys[key].colour = randomColour(); break
+          case 'note'     : synth.toggleNote(key); keys[key].colour = randomColour(); break
           
           // Make these into one generic one
         
           case 'octave'   : {
             synth.toggleOctave(keys[key].function as string); 
-            keys[key].colour = synth.settings.octaves.includes(keys[key].function as string) ? randomColour() : ''; 
+            keys[key].colour = synth.settings.attributes.octaves.includes(keys[key].function as string) ? randomColour() : ''; 
             break
           }
           case 'waveform' : {
             synth.toggleWaveform(keys[key].function as string); 
-            keys[key].colour = synth.settings.waveforms.includes(keys[key].function as string) ? randomColour() : ''; 
+            keys[key].colour = synth.settings.attributes.waveforms.includes(keys[key].function as string) ? randomColour() : ''; 
             break
           }
         }
@@ -77,7 +77,7 @@ export default function Keyboard() {
 
     const endHold = (key: string) => {
       if (heldKeys.includes(key) && isNote(key)) {
-        synth.stopNote(key)
+        synth.toggleNote(key)
         keys[key].colour = ''
       }
       setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))

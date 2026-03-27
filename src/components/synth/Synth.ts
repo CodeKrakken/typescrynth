@@ -30,7 +30,7 @@ const createNodes = (
 
   const attrKey = `${attr}s` as settingsAttribute
 
-  settings[attrKey].push(value)
+  settings.attributes[attrKey].push(value)
 
   const allAttrs: nodeAttribute[] = ['key', 'waveform', 'octave']    
   const otherAttrs = allAttrs.filter(a => a !== attr)
@@ -38,8 +38,8 @@ const createNodes = (
   const attrAKey = `${attrA}s` as settingsAttribute
   const attrBKey = `${attrB}s` as settingsAttribute
 
-  settings[attrAKey].forEach(valA => {
-    settings[attrBKey].forEach(valB => {
+  settings.attributes[attrAKey].forEach(valA => {
+    settings.attributes[attrBKey].forEach(valB => {
 
       const nodeParams = {
         key: '',
@@ -57,6 +57,8 @@ const createNodes = (
 
   balanceGains(now)
 }
+
+
 
 const newNode = (
   { key, waveform, octave }: { key: string; waveform: string; octave: string },
@@ -120,7 +122,7 @@ const stopNodes = (now: number, attr: nodeAttribute, value: string) => {
 
   const attrKey = `${attr}s` as settingsAttribute
 
-  settings[attrKey] = (settings[attrKey]).filter((attr: string) => attr !== value)
+  settings.attributes[attrKey] = (settings.attributes[attrKey]).filter((attr: string) => attr !== value)
   settings.activeNodes = settings.activeNodes.filter((node: node) => node[attr] !== value)
 
   balanceGains(now)
@@ -130,27 +132,27 @@ const stopNodes = (now: number, attr: nodeAttribute, value: string) => {
 export const synth = {
 
   settings: settings,
+
+    // Refactor these three toggle functions into one generic one that takes the attribute as an argument
   
-  startNote: (key: string) => {
-
+  toggleNote: (key: string) => {
+  
     const now = context.currentTime
-    createNodes(now, 'key', key)
+
+    if (!settings.attributes.keys.includes(key)) {
+      createNodes(now, 'key', key)
+    } else {
+      stopNodes(now, 'key', key)
+    }
+  
   },
 
-
-  stopNote: (key: string) => {
-
-    const now = context.currentTime
-    stopNodes(now, 'key', key)
-  },
-
-  // Refactor these two toggle functions into one generic one that takes the attribute as an argument
 
   toggleOctave: (octave: string) => {
     
     const now = context.currentTime
 
-    if (!settings.octaves.includes(octave)) {
+    if (!settings.attributes.octaves.includes(octave)) {
       createNodes(now, 'octave', octave)
 
     } else {
@@ -163,13 +165,26 @@ export const synth = {
     
     const now = context.currentTime
 
-    if (!settings.waveforms.includes(waveform)) {
+    if (!settings.attributes.waveforms.includes(waveform)) {
       createNodes(now, 'waveform', waveform)
 
     } else {
       stopNodes(now, 'waveform', waveform)
     }
   },
+
+  
+  // toggleAttribute: (attribute: nodeAttribute) => {
+  //   const now = context.currentTime
+
+  //   if (!settings.attributes.[].includes(octave)) {
+  //     createNodes(now, 'octave', octave)
+
+  //   } else {
+  //     stopNodes(now, 'octave', octave)
+  //   }
+
+  // }
 
   resume: () => { context.resume() }
 }

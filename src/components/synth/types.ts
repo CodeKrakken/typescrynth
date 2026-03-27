@@ -7,9 +7,11 @@ export type node = {
 }
 
 export type synthSettings = {
-  octaves: string[]
-  waveforms: string[]
-  keys: string[]
+  attributes: {
+    octaves: string[]
+    waveforms: string[]
+    keys: string[]
+  }
   activeNodes: node[]
 }
 
