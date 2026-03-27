@@ -48,7 +48,8 @@ const newNode = (
     oscillator: oscillator,
     gain: gain,
     key: key,
-    octave: octave
+    octave: octave,
+    waveform: waveform
   }
 }
 
@@ -110,6 +111,24 @@ export const synth = {
 
     balanceGains(now)
   },
+
+
+
+  // stopNodes: (now: number, attr: string, value: string | number) => {
+  //   const targetGain = 0
+  //   const releaseTime = 0.05
+    
+  //   settings.activeNodes.filter((node: node) => node[attr] === value).forEach((node: node) => {
+
+  //     setGain(node, now, targetGain, releaseTime)
+  //     node.oscillator.stop(now + releaseTime)
+  //   })
+
+  //   settings.selectedOctaves = settings.selectedOctaves.filter((attr: string | number) => attr !== value)
+  //   settings.activeNodes = settings.activeNodes.filter((node: node) => node[attr] !== value)
+
+  //   balanceGains(now)
+  // },
   
 
   toggleOctave: (octave: number) => {
