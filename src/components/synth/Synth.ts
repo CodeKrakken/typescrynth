@@ -151,11 +151,11 @@ export const synth = {
     const now = context.currentTime
 
     if (!settings.selectedWaveforms.includes(waveform)) {
+
       settings.selectedWaveforms.push(waveform)
 
       settings.heldKeys.forEach((key: string) => {
         settings.selectedOctaves.forEach((octave: number) => {
-
           settings.activeNodes.push(newNode(key, waveform, octave, now))
         })
       })
@@ -163,21 +163,22 @@ export const synth = {
 
     } else {
 
-      settings.selectedWaveforms = settings.selectedWaveforms.filter((wave: string) => wave !== waveform)
+      const targetGain = 0
+      const releaseTime = 0.05
+      
       settings.activeNodes.filter((node: node) => node.oscillator.type === waveform).forEach((node: node) => {
-
-        const targetGain = 0
-        const releaseTime = 0.05
 
         setGain(node, now, targetGain, releaseTime)
         node.oscillator.stop(now + releaseTime)
       })
+
+      settings.selectedWaveforms = settings.selectedWaveforms.filter((thisWaveform: string) => thisWaveform !== waveform)
+      settings.activeNodes = settings.activeNodes.filter((node: node) => node.oscillator.type !== waveform)
+
       balanceGains(now)
     }
   },
 
 
-  resume: () => {
-    context.resume()
-  }
+  resume: () => { context.resume() }
 }
