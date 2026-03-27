@@ -96,11 +96,10 @@ export const synth = {
   stopNote: (key: string) => {
 
     const now = context.currentTime
+    const targetGain = 0
+    const release = 0.05
 
     settings.activeNodes.filter((node: node) => node.key === key).forEach((node: node) => {
-
-      const targetGain = 0
-      const release = 0.05
 
       setGain(node, now, targetGain, release)
       node.oscillator.stop(now + release)
@@ -129,7 +128,8 @@ export const synth = {
       balanceGains(now)
 
     } else {
-      settings.selectedOctaves = settings.selectedOctaves.filter((oct: number) => oct !== octave)
+      
+      settings.selectedOctaves = settings.selectedOctaves.filter((thisOctave: number) => thisOctave !== octave)
 
       settings.activeNodes.filter((node: node) => node.octave === octave).forEach((node: node) => {
 
