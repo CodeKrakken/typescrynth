@@ -115,19 +115,7 @@ export const synth = {
   stopNote: (key: string) => {
 
     const now = context.currentTime
-    const targetGain = 0
-    const release = 0.05
-
-    settings.activeNodes.filter((node: node) => node.key === key).forEach((node: node) => {
-
-      setGain(node, now, targetGain, release)
-      node.oscillator.stop(now + release)
-    })
-
-    settings.keys = settings.keys.filter((heldKey: string) => heldKey !== key)
-    settings.activeNodes = settings.activeNodes.filter((node: node) => node.key !== key)
-
-    balanceGains(now)
+    stopNodes(now, 'key', key)
   },
 
   
