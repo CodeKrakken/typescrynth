@@ -171,19 +171,7 @@ export const synth = {
 
     } else {
 
-      const targetGain = 0
-      const releaseTime = 0.05
-      
-      settings.activeNodes.filter((node: node) => node.oscillator.type === waveform).forEach((node: node) => {
-
-        setGain(node, now, targetGain, releaseTime)
-        node.oscillator.stop(now + releaseTime)
-      })
-
-      settings.waveforms = settings.waveforms.filter((thisWaveform: string) => thisWaveform !== waveform)
-      settings.activeNodes = settings.activeNodes.filter((node: node) => node.oscillator.type !== waveform)
-
-      balanceGains(now)
+      stopNodes(now, 'waveform', waveform)
     }
   },
 
