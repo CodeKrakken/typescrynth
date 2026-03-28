@@ -1,3 +1,5 @@
+import { nodeAttribute } from "./types"
+
 export const defaultSettings = {
   attributes: {
     octaves: ['4'],
@@ -6,3 +8,5 @@ export const defaultSettings = {
   },
   activeNodes: []
 }
+
+export const nodeAttrs: nodeAttribute[] = ['key', 'waveform', 'octave']    

@@ -33,3 +33,5 @@ export const keys: keysType = {
   'm': {htmlTitle: 'B',         function: 30.87,      type: 'note',     isHeld: false, row: 3, column:  3, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
   ',': {htmlTitle: 'C',         function: 32.70,      type: 'note',     isHeld: false, row: 3, column:  4, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}
 }
+
+export const nodeAttributes = ['key', 'waveform', 'octave']

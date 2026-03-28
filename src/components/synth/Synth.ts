@@ -2,6 +2,7 @@ import { synthSettings, node, nodeAttribute, settingsAttribute } from './types'
 import { defaultSettings } from './data'
 import { keys } from '../data'
 import { getFrequency } from './functions'
+import { nodeAttrs } from './data'
 
 let settings: synthSettings = defaultSettings
 let context: AudioContext
@@ -24,34 +25,33 @@ context = getContext()
 
 const createNodes = (
   now: number,
-  attr: nodeAttribute,
+  changedAttr: nodeAttribute,
   value: string
 ) => {
 
-  const attrKey = `${attr}s` as settingsAttribute
+  const attrKey = `${changedAttr}s` as settingsAttribute
 
   settings.attributes[attrKey].push(value)
 
-  const allAttrs: nodeAttribute[] = ['key', 'waveform', 'octave']    
-  const otherAttrs = allAttrs.filter(a => a !== attr)
-  const [attrA, attrB] = otherAttrs    
+  const unchangedAttrs = nodeAttrs.filter(attr => attr !== changedAttr)
+  const [attrA, attrB] = unchangedAttrs    
   const attrAKey = `${attrA}s` as settingsAttribute
   const attrBKey = `${attrB}s` as settingsAttribute
 
-  settings.attributes[attrAKey].forEach(valA => {
-    settings.attributes[attrBKey].forEach(valB => {
+  settings.attributes[attrAKey].forEach(valueA => {
+    settings.attributes[attrBKey].forEach(valueB => {
 
-      const nodeParams = {
+      const nodeAttrs = {
         key: '',
         waveform: '',
         octave: ''
       }
 
-      nodeParams[attr] = value
-      nodeParams[attrA] = valA
-      nodeParams[attrB] = valB
+      nodeAttrs[changedAttr] = value
+      nodeAttrs[attrA] = valueA
+      nodeAttrs[attrB] = valueB
 
-      settings.activeNodes.push(newNode(nodeParams, now))
+      settings.activeNodes.push(newNode(nodeAttrs, now))
     })
   })
 
@@ -59,9 +59,16 @@ const createNodes = (
 }
 
 
-
 const newNode = (
-  { key, waveform, octave }: { key: string; waveform: string; octave: string },
+  { 
+    key, 
+    waveform, 
+    octave 
+  }: { 
+    key: string; 
+    waveform: string; 
+    octave: string 
+  },
   now: number
 ) => {
 
@@ -90,7 +97,6 @@ const newNode = (
 
 
 const balanceGains = (now: number) => {
-
   const balancedGain = 1/settings.activeNodes.length
 
   settings.activeNodes.forEach((node: node) => {
@@ -136,11 +142,10 @@ export const synth = {
   toggleAttribute: (attribute: nodeAttribute, value: string) => {
     const now = context.currentTime
 
-    if (!settings.attributes[`${attribute}s`].includes(value)) {
-      createNodes(now, attribute, value)
-    } else {
-      stopNodes(now, attribute, value)
-    }
+    !settings.attributes[`${attribute}s`].includes(value) ? 
+    createNodes(now, attribute, value) : 
+    stopNodes(now, attribute, value)
+    
   },
 
   resume: () => { context.resume() }
