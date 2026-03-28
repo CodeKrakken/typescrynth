@@ -5,6 +5,7 @@ import { CustomTouchEvent } from './types';
 import { randomColour, position } from './functions';
 import { isNote } from '../functions';
 import './keyboard.css'
+import { nodeAttribute } from '../synth/types';
 
 // Set up button colours
 
@@ -50,17 +51,9 @@ export default function Keyboard() {
         
           switch(keys[key].type) {
             case 'note'     : synth.toggleAttribute('key', key); keys[key].colour = randomColour(); break
-            
-            // Make these into one generic one
-          
-            case 'octave'   : {
-              synth.toggleAttribute('octave',keys[key].function as string); 
-              keys[key].colour = synth.settings.attributes.octaves.includes(keys[key].function as string) ? randomColour() : ''; 
-              break
-            }
-            case 'waveform' : {
-              synth.toggleAttribute('waveform', keys[key].function as string); 
-              keys[key].colour = synth.settings.attributes.waveforms.includes(keys[key].function as string) ? randomColour() : ''; 
+            default: {
+              synth.toggleAttribute(keys[key].type as nodeAttribute, keys[key].function as string); 
+              keys[key].colour = synth.settings.attributes[`${keys[key].type}s` as keyof typeof synth.settings.attributes]?.includes(keys[key].function as string) ? randomColour() : ''; 
               break
             }
           }
