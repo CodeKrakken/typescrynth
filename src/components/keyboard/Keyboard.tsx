@@ -81,7 +81,6 @@ export default function Keyboard() {
         keys[key].colour = ''
       }
       setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))
-    
     }
 
 

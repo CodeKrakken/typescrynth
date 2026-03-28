@@ -132,56 +132,13 @@ const stopNodes = (now: number, attr: nodeAttribute, value: string) => {
 export const synth = {
 
   settings: settings,
-
-    // Refactor these three toggle functions into one generic one that takes the attribute as an argument
-  
-  toggleNote: (key: string) => {
-  
-    const now = context.currentTime
-
-    if (!settings.attributes.keys.includes(key)) {
-      createNodes(now, 'key', key)
-    } else {
-      stopNodes(now, 'key', key)
-    }
-  
-  },
-
-
-  toggleOctave: (octave: string) => {
-    
-    const now = context.currentTime
-
-    if (!settings.attributes.octaves.includes(octave)) {
-      createNodes(now, 'octave', octave)
-
-    } else {
-      stopNodes(now, 'octave', octave)
-    }
-  },
-
-
-  toggleWaveform: (waveform: string) => {
-    
-    const now = context.currentTime
-
-    if (!settings.attributes.waveforms.includes(waveform)) {
-      createNodes(now, 'waveform', waveform)
-
-    } else {
-      stopNodes(now, 'waveform', waveform)
-    }
-  },
-
   
   toggleAttribute: (attribute: nodeAttribute, value: string) => {
     const now = context.currentTime
 
     if (!settings.attributes[`${attribute}s`].includes(value)) {
-      console.log(settings.attributes)
       createNodes(now, attribute, value)
     } else {
-      console.log(settings.attributes)
       stopNodes(now, attribute, value)
     }
   },
