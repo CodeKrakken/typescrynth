@@ -149,10 +149,8 @@ export const synth = {
 
 
   toggleOctave: (octave: string) => {
-
     
     const now = context.currentTime
-
 
     if (!settings.attributes.octaves.includes(octave)) {
       createNodes(now, 'octave', octave)

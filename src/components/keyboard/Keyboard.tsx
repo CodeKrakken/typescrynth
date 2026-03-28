@@ -60,7 +60,7 @@ export default function Keyboard() {
           // Make these into one generic one
         
           case 'octave'   : {
-            synth.toggleOctave(keys[key].function as string); 
+            synth.toggleAttribute('octave',keys[key].function as string); 
             keys[key].colour = synth.settings.attributes.octaves.includes(keys[key].function as string) ? randomColour() : ''; 
             break
           }
