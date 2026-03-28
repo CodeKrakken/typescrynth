@@ -55,7 +55,7 @@ export default function Keyboard() {
         
 
         switch(keys[key].type) {
-          case 'note'     : synth.toggleNote(key); keys[key].colour = randomColour(); break
+          case 'note'     : synth.toggleAttribute('key', key); keys[key].colour = randomColour(); break
           
           // Make these into one generic one
         
