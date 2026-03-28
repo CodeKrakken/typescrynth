@@ -174,17 +174,17 @@ export const synth = {
   },
 
   
-  // toggleAttribute: (attribute: nodeAttribute) => {
-  //   const now = context.currentTime
+  toggleAttribute: (attribute: nodeAttribute, value: string) => {
+    const now = context.currentTime
 
-  //   if (!settings.attributes.[].includes(octave)) {
-  //     createNodes(now, 'octave', octave)
-
-  //   } else {
-  //     stopNodes(now, 'octave', octave)
-  //   }
-
-  // }
+    if (!settings.attributes[`${attribute}s`].includes(value)) {
+      console.log(settings.attributes)
+      createNodes(now, attribute, value)
+    } else {
+      console.log(settings.attributes)
+      stopNodes(now, attribute, value)
+    }
+  },
 
   resume: () => { context.resume() }
 }
