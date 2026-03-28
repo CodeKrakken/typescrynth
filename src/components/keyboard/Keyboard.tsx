@@ -65,7 +65,7 @@ export default function Keyboard() {
             break
           }
           case 'waveform' : {
-            synth.toggleWaveform(keys[key].function as string); 
+            synth.toggleAttribute('waveform', keys[key].function as string); 
             keys[key].colour = synth.settings.attributes.waveforms.includes(keys[key].function as string) ? randomColour() : ''; 
             break
           }
