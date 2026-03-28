@@ -77,7 +77,7 @@ export default function Keyboard() {
 
     const endHold = (key: string) => {
       if (heldKeys.includes(key) && isNote(key)) {
-        synth.toggleNote(key)
+        synth.toggleAttribute('key', key);
         keys[key].colour = ''
       }
       setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))
