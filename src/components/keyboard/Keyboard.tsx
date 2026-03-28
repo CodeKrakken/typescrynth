@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { synth } from '../synth/Synth';
-import './keyboard.css'
 import { keys } from '../data'
 import { CustomTouchEvent } from './types';
 import { randomColour, position } from './functions';
 import { isNote } from '../functions';
+import './keyboard.css'
 
 // Set up button colours
 
@@ -35,7 +35,6 @@ export default function Keyboard() {
   const keyStyle = (keyName: string) => {
     return {
       ...position(keys[keyName]), 
-      // ...backgroundColour(keyName)
       background: keys[keyName].colour
     }
   }
@@ -50,7 +49,10 @@ export default function Keyboard() {
   useEffect(() => {
 
     const startHold = (key: string) => {
-      if (isKey(key) && !heldKeys.includes(key)) {
+      if (!heldKeys.includes(key)) {
+        try {
+          
+        
         synth!.resume?.()
         
 
@@ -71,7 +73,9 @@ export default function Keyboard() {
           }
         }
         setHeldKeys([...heldKeysRef.current, key])
-      }
+      } catch (error) {
+          console.log(key)
+        }}
     }
 
 
