@@ -39,43 +39,36 @@ export default function Keyboard() {
     }
   }
 
-  const isKey = (key: string) => {
-    return Object.keys(keys).includes(key)
-  }
-
-  
-
 
   useEffect(() => {
 
     const startHold = (key: string) => {
       if (!heldKeys.includes(key)) {
-        try {
-          
-        
-        synth!.resume?.()
-        
 
-        switch(keys[key].type) {
-          case 'note'     : synth.toggleAttribute('key', key); keys[key].colour = randomColour(); break
-          
-          // Make these into one generic one
+        try {
+          synth!.resume?.()
         
-          case 'octave'   : {
-            synth.toggleAttribute('octave',keys[key].function as string); 
-            keys[key].colour = synth.settings.attributes.octaves.includes(keys[key].function as string) ? randomColour() : ''; 
-            break
+          switch(keys[key].type) {
+            case 'note'     : synth.toggleAttribute('key', key); keys[key].colour = randomColour(); break
+            
+            // Make these into one generic one
+          
+            case 'octave'   : {
+              synth.toggleAttribute('octave',keys[key].function as string); 
+              keys[key].colour = synth.settings.attributes.octaves.includes(keys[key].function as string) ? randomColour() : ''; 
+              break
+            }
+            case 'waveform' : {
+              synth.toggleAttribute('waveform', keys[key].function as string); 
+              keys[key].colour = synth.settings.attributes.waveforms.includes(keys[key].function as string) ? randomColour() : ''; 
+              break
+            }
           }
-          case 'waveform' : {
-            synth.toggleAttribute('waveform', keys[key].function as string); 
-            keys[key].colour = synth.settings.attributes.waveforms.includes(keys[key].function as string) ? randomColour() : ''; 
-            break
-          }
-        }
-        setHeldKeys([...heldKeysRef.current, key])
-      } catch (error) {
+          setHeldKeys([...heldKeysRef.current, key])
+        } catch (error) {
           console.log(key)
-        }}
+        }
+      }
     }
 
 
