@@ -5,7 +5,7 @@ import { CustomTouchEvent } from './types';
 import { randomColour, position } from './functions';
 import { isNote } from '../functions';
 import './keyboard.css'
-import { nodeAttribute } from '../synth/types';
+import { nodeAttribute, settingsAttribute } from '../synth/types';
 
 // Set up button colours
 
@@ -46,21 +46,21 @@ export default function Keyboard() {
     const startHold = (key: string) => {
       if (!heldKeys.includes(key)) {
 
-        try {
-          synth!.resume?.()
-          synth.toggleAttribute(keys[key].type as nodeAttribute, keys[key].function as string)
+        synth!.resume?.()
+        synth.toggleAttribute(keys[key].type as nodeAttribute, keys[key].function as string)
 
-          if (keys[key].type === 'baseFreq') {
-            keys[key].colour = randomColour()
-          } else {
-            keys[key].colour = synth.settings.attributes[`${keys[key].type}s` as keyof typeof synth.settings.attributes]?.includes(keys[key].function as string) ? randomColour() : ''; 
-          }
-
-            
-          setHeldKeys([...heldKeysRef.current, key])
-        } catch (error) {
-          console.log(key)
+        if (keys[key].type === 'baseFreq') { 
+          keys[key].colour = randomColour()
+        } else if (
+          synth.settings.attributes[`${keys[key].type}s` as settingsAttribute]?.
+          includes(keys[key].function as string)
+        ) {
+          keys[key].colour = randomColour()
+        } else {
+          keys[key].colour = ''
         }
+
+        setHeldKeys([...heldKeysRef.current, key])
       }
     }
 
