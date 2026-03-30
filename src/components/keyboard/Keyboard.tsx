@@ -48,15 +48,18 @@ export default function Keyboard() {
 
         try {
           synth!.resume?.()
-        
-          switch(keys[key].type) {
-            case 'noteKey'     : synth.toggleAttribute('noteKey', key); keys[key].colour = randomColour(); break
-            default: {
-              synth.toggleAttribute(keys[key].type as nodeAttribute, keys[key].function as string); 
-              keys[key].colour = synth.settings.attributes[`${keys[key].type}s` as keyof typeof synth.settings.attributes]?.includes(keys[key].function as string) ? randomColour() : ''; 
-              break
-            }
+
+          if (keys[key].type === 'baseFreq') {
+            keys[key].colour = randomColour()
+          } else {
+            console.log(synth.settings.attributes[`${keys[key].type}s` as keyof typeof synth.settings.attributes]?.includes(keys[key].function as string))
+            console.log(keys[key].colour)
+            keys[key].colour = synth.settings.attributes[`${keys[key].type}s` as keyof typeof synth.settings.attributes]?.includes(keys[key].function as string) ? randomColour() : ''; 
+            console.log(keys[key].colour)
           }
+
+          synth.toggleAttribute(keys[key].type as nodeAttribute, keys[key].function as string)
+            
           setHeldKeys([...heldKeysRef.current, key])
         } catch (error) {
           console.log(key)
@@ -67,7 +70,7 @@ export default function Keyboard() {
 
     const endHold = (key: string) => {
       if (heldKeys.includes(key) && isNote(key)) {
-        synth.toggleAttribute('noteKey', key);
+        synth.toggleAttribute('baseFreq', keys[key].function as string);
         keys[key].colour = ''
       }
       setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))

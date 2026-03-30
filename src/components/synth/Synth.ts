@@ -42,7 +42,7 @@ const createNodes = (
     settings.attributes[attrBKey].forEach(valueB => {
 
       const nodeAttrs = {
-        noteKey: '',
+        baseFreq: '',
         waveform: '',
         octave: ''
       }
@@ -61,11 +61,11 @@ const createNodes = (
 
 const newNode = (
   { 
-    noteKey, 
+    baseFreq, 
     waveform, 
     octave 
   }: { 
-    noteKey: string; 
+    baseFreq: string; 
     waveform: string; 
     octave: string 
   },
@@ -77,7 +77,7 @@ const newNode = (
   oscillator.start(0)
 
   oscillator.frequency.setValueAtTime(
-    calculateFrequency(keys[noteKey].function as number, octave),
+    calculateFrequency(+baseFreq as number, octave),
     now
   )
 
@@ -89,7 +89,7 @@ const newNode = (
   return {
     oscillator: oscillator,
     gain: gain,
-    noteKey: noteKey,
+    baseFreq: baseFreq,
     octave: octave,
     waveform: waveform
   }

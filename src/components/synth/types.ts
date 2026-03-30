@@ -3,18 +3,18 @@ export type node = {
   waveform: string,
   gain: GainNode,
   octave: string,
-  noteKey: string
+  baseFreq: string
 }
 
 export type synthSettings = {
   attributes: {
     octaves: string[]
     waveforms: string[]
-    noteKeys: string[]
+    baseFreqs: string[]
   }
   activeNodes: node[]
 }
 
-export type nodeAttribute = 'octave' | 'waveform' | 'noteKey'
+export type nodeAttribute = 'octave' | 'waveform' | 'baseFreq'
 
-export type settingsAttribute = 'octaves' | 'waveforms' | 'noteKeys'
+export type settingsAttribute = 'octaves' | 'waveforms' | 'baseFreqs'

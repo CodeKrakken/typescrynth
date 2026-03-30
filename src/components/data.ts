@@ -18,20 +18,20 @@ export const keys: keysType = {
   'e': {htmlTitle: 'sawtooth',  function: 'sawtooth', type: 'waveform', isHeld: false, row: 1, column: -2, colour: ''}, 
   'r': {htmlTitle: 'square',    function: 'square',   type: 'waveform', isHeld: false, row: 1, column: -1, colour: ''}, 
 
-  's': {htmlTitle: 'C#',        function: 17.32,      type: 'noteKey',     isHeld: false, row: 2, column: -3, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
-  'd': {htmlTitle: 'D#',        function: 19.45,      type: 'noteKey',     isHeld: false, row: 2, column: -2, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
-  'g': {htmlTitle: 'F#',        function: 23.12,      type: 'noteKey',     isHeld: false, row: 2, column:  0, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
-  'h': {htmlTitle: 'G#',        function: 25.96,      type: 'noteKey',     isHeld: false, row: 2, column:  1, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
-  'j': {htmlTitle: 'A#',        function: 29.14,      type: 'noteKey',     isHeld: false, row: 2, column:  2, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  's': {htmlTitle: 'C#',        function: '17.32',      type: 'baseFreq',     isHeld: false, row: 2, column: -3, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'd': {htmlTitle: 'D#',        function: '19.45',      type: 'baseFreq',     isHeld: false, row: 2, column: -2, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'g': {htmlTitle: 'F#',        function: '23.12',      type: 'baseFreq',     isHeld: false, row: 2, column:  0, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'h': {htmlTitle: 'G#',        function: '25.96',      type: 'baseFreq',     isHeld: false, row: 2, column:  1, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'j': {htmlTitle: 'A#',        function: '29.14',      type: 'baseFreq',     isHeld: false, row: 2, column:  2, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
 
-  'z': {htmlTitle: 'C',         function: 16.35,      type: 'noteKey',     isHeld: false, row: 3, column: -3, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
-  'x': {htmlTitle: 'D',         function: 18.35,      type: 'noteKey',     isHeld: false, row: 3, column: -2, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
-  'c': {htmlTitle: 'E',         function: 20.60,      type: 'noteKey',     isHeld: false, row: 3, column: -1, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
-  'v': {htmlTitle: 'F',         function: 21.83,      type: 'noteKey',     isHeld: false, row: 3, column:  0, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
-  'b': {htmlTitle: 'G',         function: 24.50,      type: 'noteKey',     isHeld: false, row: 3, column:  1, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}},
-  'n': {htmlTitle: 'A',         function: 27.50,      type: 'noteKey',     isHeld: false, row: 3, column:  2, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}},
-  'm': {htmlTitle: 'B',         function: 30.87,      type: 'noteKey',     isHeld: false, row: 3, column:  3, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
-  ',': {htmlTitle: 'C',         function: 32.70,      type: 'noteKey',     isHeld: false, row: 3, column:  4, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}
+  'z': {htmlTitle: 'C',         function: '16.35',      type: 'baseFreq',     isHeld: false, row: 3, column: -3, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'x': {htmlTitle: 'D',         function: '18.35',      type: 'baseFreq',     isHeld: false, row: 3, column: -2, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'c': {htmlTitle: 'E',         function: '20.60',      type: 'baseFreq',     isHeld: false, row: 3, column: -1, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'v': {htmlTitle: 'F',         function: '21.83',      type: 'baseFreq',     isHeld: false, row: 3, column:  0, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  'b': {htmlTitle: 'G',         function: '24.50',      type: 'baseFreq',     isHeld: false, row: 3, column:  1, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}},
+  'n': {htmlTitle: 'A',         function: '27.50',      type: 'baseFreq',     isHeld: false, row: 3, column:  2, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}},
+  'm': {htmlTitle: 'B',         function: '30.87',      type: 'baseFreq',     isHeld: false, row: 3, column:  3, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
+  ',': {htmlTitle: 'C',         function: '32.70',      type: 'baseFreq',     isHeld: false, row: 3, column:  4, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}
 }
 
-export const nodeAttributes = ['key', 'waveform', 'octave']
+export const nodeAttributes = ['baseFreq', 'waveform', 'octave']
