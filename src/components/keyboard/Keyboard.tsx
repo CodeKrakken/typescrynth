@@ -48,17 +48,14 @@ export default function Keyboard() {
 
         try {
           synth!.resume?.()
+          synth.toggleAttribute(keys[key].type as nodeAttribute, keys[key].function as string)
 
           if (keys[key].type === 'baseFreq') {
             keys[key].colour = randomColour()
           } else {
-            console.log(synth.settings.attributes[`${keys[key].type}s` as keyof typeof synth.settings.attributes]?.includes(keys[key].function as string))
-            console.log(keys[key].colour)
             keys[key].colour = synth.settings.attributes[`${keys[key].type}s` as keyof typeof synth.settings.attributes]?.includes(keys[key].function as string) ? randomColour() : ''; 
-            console.log(keys[key].colour)
           }
 
-          synth.toggleAttribute(keys[key].type as nodeAttribute, keys[key].function as string)
             
           setHeldKeys([...heldKeysRef.current, key])
         } catch (error) {
