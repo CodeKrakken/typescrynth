@@ -4,9 +4,9 @@ export const defaultSettings = {
   attributes: {
     octaves: ['4'],
     waveforms: ['sine'],
-    keys: []
+    noteKeys: []
   },
   activeNodes: []
 }
 
-export const nodeAttrs: nodeAttribute[] = ['key', 'waveform', 'octave']    
+export const nodeAttrs: nodeAttribute[] = ['noteKey', 'waveform', 'octave']    

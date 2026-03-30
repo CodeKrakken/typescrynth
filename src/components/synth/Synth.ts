@@ -1,7 +1,7 @@
 import { synthSettings, node, nodeAttribute, settingsAttribute } from './types'
 import { defaultSettings } from './data'
 import { keys } from '../data'
-import { getFrequency } from './functions'
+import { calculateFrequency } from './functions'
 import { nodeAttrs } from './data'
 
 let settings: synthSettings = defaultSettings
@@ -25,16 +25,16 @@ context = getContext()
 
 const createNodes = (
   now: number,
-  changedAttr: nodeAttribute,
+  updatedAttr: nodeAttribute,
   value: string
 ) => {
 
-  const attrKey = `${changedAttr}s` as settingsAttribute
+  const attrKey = `${updatedAttr}s` as settingsAttribute
 
   settings.attributes[attrKey].push(value)
 
-  const unchangedAttrs = nodeAttrs.filter(attr => attr !== changedAttr)
-  const [attrA, attrB] = unchangedAttrs    
+  const retainedAttrs = nodeAttrs.filter(attr => attr !== updatedAttr)
+  const [attrA, attrB] = retainedAttrs    
   const attrAKey = `${attrA}s` as settingsAttribute
   const attrBKey = `${attrB}s` as settingsAttribute
 
@@ -42,12 +42,12 @@ const createNodes = (
     settings.attributes[attrBKey].forEach(valueB => {
 
       const nodeAttrs = {
-        key: '',
+        noteKey: '',
         waveform: '',
         octave: ''
       }
 
-      nodeAttrs[changedAttr] = value
+      nodeAttrs[updatedAttr] = value
       nodeAttrs[attrA] = valueA
       nodeAttrs[attrB] = valueB
 
@@ -61,11 +61,11 @@ const createNodes = (
 
 const newNode = (
   { 
-    key, 
+    noteKey, 
     waveform, 
     octave 
   }: { 
-    key: string; 
+    noteKey: string; 
     waveform: string; 
     octave: string 
   },
@@ -77,7 +77,7 @@ const newNode = (
   oscillator.start(0)
 
   oscillator.frequency.setValueAtTime(
-    getFrequency(keys[key].function as number, octave),
+    calculateFrequency(keys[noteKey].function as number, octave),
     now
   )
 
@@ -89,7 +89,7 @@ const newNode = (
   return {
     oscillator: oscillator,
     gain: gain,
-    key: key,
+    noteKey: noteKey,
     octave: octave,
     waveform: waveform
   }
