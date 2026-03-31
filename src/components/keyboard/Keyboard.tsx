@@ -3,7 +3,6 @@ import { synth } from '../synth/Synth';
 import { keys } from '../data'
 import { CustomTouchEvent } from './types';
 import { randomColour, position } from './functions';
-import { isNote } from '../functions';
 import './keyboard.css'
 import { nodeAttribute, settingsAttribute } from '../synth/types';
 
@@ -66,7 +65,7 @@ export default function Keyboard() {
 
 
     const endHold = (key: string) => {
-      if (heldKeysRef.current.includes(key) && isNote(key)) {
+      if (heldKeysRef.current.includes(key) && keys[key].type === 'baseFreq') {
         synth.toggleAttribute('baseFreq', keys[key].function as string);
         keys[key].colour = ''
       }
