@@ -52,8 +52,9 @@ export default function Keyboard() {
         if (keys[key].type === 'baseFreq') { 
           keys[key].colour = randomColour()
         } else if (
-          synth.settings.attributes[`${keys[key].type}s` as settingsAttribute]?.
-          includes(keys[key].function as string)
+          synth.settings.attributes[
+            `${keys[key].type}s` as settingsAttribute
+          ]?.includes(keys[key].function as string)
         ) {
           keys[key].colour = randomColour()
         } else {
