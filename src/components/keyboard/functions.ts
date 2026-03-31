@@ -1,5 +1,5 @@
-import { keySize, rowOffset } from './data'
-import { keyType } from '../types'
+import { keysType, keyType } from '../types'
+import { synthType } from '../synth/types'
 
 
 export const randomColour = () => {
@@ -14,11 +14,26 @@ export const randomColour = () => {
 export const isEven = (n: number) => { return n % 2 === 0 }
 
 
-export const position = (key: keyType) => {
+export const position = (key: keyType, keySize: number, rowOffset: number) => {
   const x = key.column as number * keySize + (isEven(key.row as number) ? rowOffset : 0)
   const y = key.row as number * keySize
 
   return {
     transform: `translate(${x}px, ${y}px)`
   }
+}
+
+
+export const defaultColours = (
+  synth: synthType,
+  keys: keysType
+) => {
+  synth.settings.attributes.octaves.forEach(octave => {
+    keys[octave].colour = randomColour()
+  })
+
+  synth.settings.attributes.waveforms.forEach(waveform => {
+    const key = Object.keys(keys).find(key => keys[key].function === waveform) as string
+    keys[key].colour = randomColour()
+  })
 }

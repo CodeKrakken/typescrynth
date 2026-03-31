@@ -2,30 +2,22 @@ import { useEffect, useRef, useState } from 'react';
 import { synth } from '../synth/Synth';
 import { keys } from '../data'
 import { CustomTouchEvent } from './types';
-import { randomColour, position } from './functions';
+import { randomColour, position, defaultColours } from './functions';
 import './keyboard.css'
 import { nodeAttribute, settingsAttribute } from '../synth/types';
+import { keySize, rowOffset } from './data';
 
 // Set up button colours
 
-const defaultColours = () => {
-  synth.settings.attributes.octaves.forEach(octave => {
-    keys[octave].colour = randomColour()
-  })
 
-  synth.settings.attributes.waveforms.forEach(waveform => {
-    const key = Object.keys(keys).find(key => keys[key].function === waveform) as string
-    keys[key].colour = randomColour()
-  })
-}
 
-defaultColours()
+defaultColours(synth, keys)
 
 // functions
 
 const keyStyle = (keyName: string) => {
   return {
-    ...position(keys[keyName]), 
+    ...position(keys[keyName], keySize, rowOffset), 
     background: keys[keyName].colour
   }
 }

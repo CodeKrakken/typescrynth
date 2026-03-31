@@ -6,6 +6,11 @@ export type node = {
   baseFreq: string
 }
 
+export type synthType = {
+  settings: synthSettings
+}
+
+
 export type synthSettings = {
   attributes: {
     octaves: string[]
