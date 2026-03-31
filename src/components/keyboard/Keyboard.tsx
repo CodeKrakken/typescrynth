@@ -18,6 +18,15 @@ synth.settings.attributes.waveforms.forEach(waveform => {
   keys[key].colour = randomColour()
 })
 
+// functions
+
+const keyStyle = (keyName: string) => {
+  return {
+    ...position(keys[keyName]), 
+    background: keys[keyName].colour
+  }
+}
+
 export default function Keyboard() {
 
   // state setup
@@ -29,19 +38,9 @@ export default function Keyboard() {
     heldKeysRef.current = heldKeys
   }, [heldKeys])
 
-
-
-  // functions
-
-  const keyStyle = (keyName: string) => {
-    return {
-      ...position(keys[keyName]), 
-      background: keys[keyName].colour
-    }
-  }
-
-
   useEffect(() => {
+
+    // executive functions
 
     const startHold = (key: string) => {
       if (Object.keys(keys).includes(key) && !heldKeysRef.current.includes(key)) {
@@ -74,7 +73,6 @@ export default function Keyboard() {
       setHeldKeys(heldKeys => heldKeys.filter(heldKey => heldKey !== key))
     }
 
-
     
     // event handlers
 
@@ -102,6 +100,7 @@ export default function Keyboard() {
       endHold(key)
     }
 
+
     // event listeners
 
     document.addEventListener     ('keydown'    , handleKeyDown     as EventListener);  
@@ -116,7 +115,6 @@ export default function Keyboard() {
       document.removeEventListener('touchend'   , handleTouchEnd    as EventListener);  
     };  
   }, []);
-
 
 
   return (
