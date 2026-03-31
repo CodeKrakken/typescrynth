@@ -44,7 +44,7 @@ export default function Keyboard() {
   useEffect(() => {
 
     const startHold = (key: string) => {
-      if (!heldKeys.includes(key)) {
+      if (Object.keys(keys).includes(key) && !heldKeysRef.current.includes(key)) {
 
         synth!.resume?.()
         synth.toggleAttribute(keys[key].type as nodeAttribute, keys[key].function as string)
@@ -66,7 +66,7 @@ export default function Keyboard() {
 
 
     const endHold = (key: string) => {
-      if (heldKeys.includes(key) && isNote(key)) {
+      if (heldKeysRef.current.includes(key) && isNote(key)) {
         synth.toggleAttribute('baseFreq', keys[key].function as string);
         keys[key].colour = ''
       }
@@ -114,7 +114,7 @@ export default function Keyboard() {
       document.removeEventListener('touchstart' , handleTouchStart  as EventListener);  
       document.removeEventListener('touchend'   , handleTouchEnd    as EventListener);  
     };  
-  }, [heldKeys]);
+  }, []);
 
 
 
