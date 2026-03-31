@@ -8,14 +8,18 @@ import { nodeAttribute, settingsAttribute } from '../synth/types';
 
 // Set up button colours
 
-synth.settings.attributes.octaves.forEach(octave => {
-  keys[octave].colour = randomColour()
-})
+const defaultColours = () => {
+  synth.settings.attributes.octaves.forEach(octave => {
+    keys[octave].colour = randomColour()
+  })
 
-synth.settings.attributes.waveforms.forEach(waveform => {
-  const key = Object.keys(keys).find(key => keys[key].function === waveform) as string
-  keys[key].colour = randomColour()
-})
+  synth.settings.attributes.waveforms.forEach(waveform => {
+    const key = Object.keys(keys).find(key => keys[key].function === waveform) as string
+    keys[key].colour = randomColour()
+  })
+}
+
+defaultColours()
 
 // functions
 
