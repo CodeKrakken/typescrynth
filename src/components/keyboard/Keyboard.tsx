@@ -2,25 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import { synth } from '../synth/Synth';
 import { keys } from '../data'
 import { CustomTouchEvent } from './types';
-import { randomColour, position, defaultColours } from './functions';
+import { randomColour, keyStyle, generateKeyColours } from './functions';
 import './keyboard.css'
 import { nodeAttribute, settingsAttribute } from '../synth/types';
 import { keySize, rowOffset } from './data';
 
 // Set up button colours
 
-
-
-defaultColours(synth, keys)
+generateKeyColours(synth, keys)
 
 // functions
-
-const keyStyle = (keyName: string) => {
-  return {
-    ...position(keys[keyName], keySize, rowOffset), 
-    background: keys[keyName].colour
-  }
-}
 
 export default function Keyboard() {
 
@@ -118,7 +109,7 @@ export default function Keyboard() {
         {
           Object.keys(keys).map((keyName: string) => {
 
-            const style = keyStyle(keyName)
+            const style = keyStyle(keySize, rowOffset, keys, keyName)
             const title = keys[keyName].htmlTitle
 
             return <span
