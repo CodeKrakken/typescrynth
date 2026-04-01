@@ -1,12 +1,29 @@
 /* @import '../../index.css';*/
 
-#keyboard-container {
+/* #keyboard-container {
   display: flex;
+  -webkit-user-drag: none;
+} */
+
+#keyboard-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#keyboard-inner {
+/* #keyboard-inner {
   margin: auto auto;
+} */
+
+#keyboard-inner {
+  position: relative;
+  width: min(95vw, 600px);   /* 👈 key line */
+  height: auto;
 }
+
+
 
 .key {
   width: 50px;
