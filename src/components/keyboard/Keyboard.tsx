@@ -21,6 +21,12 @@ const isNote = (key: string) => {
   return keys[key].type === 'baseFreq'
 }
 
+const isActive = (key: string) => {
+  return synth.settings.attributes[
+    `${keys[key].type}s` as settingsAttribute
+  ]?.includes(keys[key].function as string)
+}
+
 
 export default function Keyboard() {
 
@@ -43,15 +49,15 @@ export default function Keyboard() {
       return heldKeysRef.current.includes(key)
     }
 
-    const isActive = (key: string) => {
-      return synth.settings.attributes[`${keys[key].type}s` as settingsAttribute]?.includes(keys[key].function as string)
-    }
-
     const startHold = (key: string) => {
       if (isKey(key) && !isHeld(key)) {
 
         synth!.resume?.()
-        synth.toggleAttribute(keys[key].type as nodeAttribute, keys[key].function as string)
+        
+        synth.toggleAttribute(
+          keys[key].type as nodeAttribute, 
+          keys[key].function as string
+        )
 
         if (isNote(key) || isActive(key))  { 
           keys[key].colour = randomColour() 
