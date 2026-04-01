@@ -107,19 +107,27 @@ export default function Keyboard() {
       endHold(key)
     }
 
+    const preventZoom = (e: TouchEvent) => {
+    if (e.touches.length > 1) {
+      e.preventDefault()
+    }
+  }
+
 
     // attach event listeners
 
     document.addEventListener     ('keydown'    , handleKeyDown     as EventListener);  
     document.addEventListener     ('keyup'      , handleKeyUp       as EventListener);  
-    document.addEventListener     ('touchstart' , handleTouchStart  as EventListener);  
-    document.addEventListener     ('touchend'   , handleTouchEnd    as EventListener);  
-      
+    document.addEventListener     ('touchstart' , handleTouchStart  as EventListener, { passive: false });  
+    document.addEventListener     ('touchend'   , handleTouchEnd    as EventListener, { passive: false });  
+    document.addEventListener     ('touchmove'  , preventZoom       as EventListener, { passive: false })  
+
     return () => {  
       document.removeEventListener('keydown'    , handleKeyDown     as EventListener);  
       document.removeEventListener('keyup'      , handleKeyUp       as EventListener);  
       document.removeEventListener('touchstart' , handleTouchStart  as EventListener);  
-      document.removeEventListener('touchend'   , handleTouchEnd    as EventListener);  
+      document.removeEventListener('touchend'   , handleTouchEnd    as EventListener);
+      document.removeEventListener('touchmove'  , preventZoom       as EventListener);
     };  
   }, []);
 

@@ -2,6 +2,7 @@
 
 #keyboard-container {
   display: flex;
+  -webkit-user-drag: none;
 }
 
 #keyboard-inner {
