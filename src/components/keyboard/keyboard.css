@@ -24,6 +24,7 @@
 
 .text {
   margin: auto auto;
+  pointer-events: none;
 }
 
 @media (pointer:fine) {
