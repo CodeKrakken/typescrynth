@@ -7,15 +7,14 @@ import './keyboard.css'
 import { nodeAttribute, settingsAttribute } from '../synth/types';
 import { keySize, rowOffset } from './data';
 
-// Set up button colours
+// set up button colours
 
 generateKeyColours(synth, keys)
 
-// functions
 
 export default function Keyboard() {
 
-  // state setup
+  // set up state
 
   const [heldKeys, setHeldKeys] = useState<string[]>([])
   const heldKeysRef = useRef(heldKeys)  
@@ -24,26 +23,38 @@ export default function Keyboard() {
     heldKeysRef.current = heldKeys
   }, [heldKeys])
 
+  // set up event listeners and handlers
+
   useEffect(() => {
 
-    // executive functions
+    // functions
+
+    const isKey = (key: string) => {
+      return Object.keys(keys).includes(key)
+    }
+
+    const isHeld = (key: string) => {
+      return heldKeysRef.current.includes(key)
+    }
+
+    const isNote = (key: string) => {
+      return keys[key].type === 'baseFreq'
+    }
+
+    const isActive = (key: string) => {
+      return synth.settings.attributes[`${keys[key].type}s` as settingsAttribute]?.includes(keys[key].function as string)
+    }
 
     const startHold = (key: string) => {
-      if (Object.keys(keys).includes(key) && !heldKeysRef.current.includes(key)) {
+      if (isKey(key) && !isHeld(key)) {
 
         synth!.resume?.()
         synth.toggleAttribute(keys[key].type as nodeAttribute, keys[key].function as string)
 
-        if (keys[key].type === 'baseFreq') { 
-          keys[key].colour = randomColour()
-        } else if (
-          synth.settings.attributes[
-            `${keys[key].type}s` as settingsAttribute
-          ]?.includes(keys[key].function as string)
-        ) {
-          keys[key].colour = randomColour()
-        } else {
-          keys[key].colour = ''
+        if (isNote(key) || isActive(key))  { 
+          keys[key].colour = randomColour() 
+        } else { 
+          keys[key].colour = '' 
         }
 
         setHeldKeys([...heldKeysRef.current, key])
@@ -52,7 +63,8 @@ export default function Keyboard() {
 
 
     const endHold = (key: string) => {
-      if (heldKeysRef.current.includes(key) && keys[key].type === 'baseFreq') {
+        if (isHeld(key) && isNote(key)) {
+
         synth.toggleAttribute('baseFreq', keys[key].function as string);
         keys[key].colour = ''
       }
@@ -68,19 +80,16 @@ export default function Keyboard() {
       startHold(key)
     }
 
+    const handleKeyUp = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase()
+      endHold(key)
+    }
 
     const handleTouchStart = (e: CustomTouchEvent) => {
     const key = (e.target as HTMLElement).dataset.key
     if (!key) return      
     startHold(key)
-    }
-
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-      const key = e.key.toLowerCase()
-      endHold(key)
-    }
-        
+    } 
 
     const handleTouchEnd = (e: CustomTouchEvent) => {
       const key = (e.target as HTMLElement).dataset.key
@@ -89,7 +98,7 @@ export default function Keyboard() {
     }
 
 
-    // event listeners
+    // attach event listeners
 
     document.addEventListener     ('keydown'    , handleKeyDown     as EventListener);  
     document.addEventListener     ('keyup'      , handleKeyUp       as EventListener);  
