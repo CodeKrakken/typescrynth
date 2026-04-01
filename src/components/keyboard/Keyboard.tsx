@@ -17,6 +17,10 @@ const isKey = (key: string) => {
   return Object.keys(keys).includes(key)
 }
 
+const isNote = (key: string) => {
+  return keys[key].type === 'baseFreq'
+}
+
 
 export default function Keyboard() {
 
@@ -37,10 +41,6 @@ export default function Keyboard() {
 
     const isHeld = (key: string) => {
       return heldKeysRef.current.includes(key)
-    }
-
-    const isNote = (key: string) => {
-      return keys[key].type === 'baseFreq'
     }
 
     const isActive = (key: string) => {
