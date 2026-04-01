@@ -2,7 +2,6 @@
 
 #keyboard-container {
   display: flex;
-  touch-action: none;
 }
 
 #keyboard-inner {
