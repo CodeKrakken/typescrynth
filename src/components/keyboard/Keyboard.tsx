@@ -94,9 +94,9 @@ export default function Keyboard() {
     }
 
     const handleTouchStart = (e: CustomTouchEvent) => {
-    const key = (e.target as HTMLElement).dataset.key
-    if (!key) return      
-    startHold(key)
+      const key = (e.target as HTMLElement).dataset.key
+      if (!key) return      
+      startHold(key)
     } 
 
     const handleTouchEnd = (e: CustomTouchEvent) => {
