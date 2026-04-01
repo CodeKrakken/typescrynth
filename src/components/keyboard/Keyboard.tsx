@@ -11,6 +11,12 @@ import { keySize, rowOffset } from './data';
 
 generateKeyColours(synth, keys)
 
+// functions
+
+const isKey = (key: string) => {
+  return Object.keys(keys).includes(key)
+}
+
 
 export default function Keyboard() {
 
@@ -28,10 +34,6 @@ export default function Keyboard() {
   useEffect(() => {
 
     // functions
-
-    const isKey = (key: string) => {
-      return Object.keys(keys).includes(key)
-    }
 
     const isHeld = (key: string) => {
       return heldKeysRef.current.includes(key)
