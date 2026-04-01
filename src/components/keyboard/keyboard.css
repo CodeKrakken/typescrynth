@@ -15,14 +15,25 @@
   display: flex;
   border-radius: 100%;
   position: absolute;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .text {
   margin: auto auto;
-} 
+}
+
+@media (pointer:fine) {
+  .touchscreen {
+    display: none;
+  }
+}
 
 @media (pointer:coarse) {
-  .text {
-    display: none
+  .computer {
+    display: none;
   }
 }

@@ -15,6 +15,7 @@ export type keyType = {
       [key:number]: nodeType 
     }
   }
+  touchTitle?: string
 }
 
 export type nodeType = {

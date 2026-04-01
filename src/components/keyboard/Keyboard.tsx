@@ -129,7 +129,7 @@ export default function Keyboard() {
           Object.keys(keys).map((keyName: string) => {
 
             const style = keyStyle(keySize, rowOffset, keys, keyName)
-            const title = keys[keyName].htmlTitle
+            const title = keys[keyName].touchTitle || keys[keyName].htmlTitle 
 
             return <span
               data-key  = {keyName} 
@@ -137,9 +137,8 @@ export default function Keyboard() {
               style     = {style}
               title     = {title}
             >
-              <span className="text">
-                {keyName}
-              </span>
+              <span className="computer text">{keyName}</span>
+              <span className="touchscreen text">{title}</span>
             </span>
           })
         }

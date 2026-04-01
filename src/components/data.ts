@@ -13,10 +13,10 @@ export const keys: keysType = {
   '9': {htmlTitle:  '9',        function:  '9',         type: 'octave',   isHeld: false, row: 0, column:  3, colour: ''}, 
   '0': {htmlTitle: '10',        function: '10',         type: 'octave',   isHeld: false, row: 0, column:  4, colour: ''},
 
-  'q': {htmlTitle: 'sine',      function: 'sine',       type: 'waveform', isHeld: false, row: 1, column: -4, colour: ''}, 
-  'w': {htmlTitle: 'triangle',  function: 'triangle',   type: 'waveform', isHeld: false, row: 1, column: -3, colour: ''}, 
-  'e': {htmlTitle: 'sawtooth',  function: 'sawtooth',   type: 'waveform', isHeld: false, row: 1, column: -2, colour: ''}, 
-  'r': {htmlTitle: 'square',    function: 'square',     type: 'waveform', isHeld: false, row: 1, column: -1, colour: ''}, 
+  'q': {htmlTitle: 'sine',      function: 'sine',       type: 'waveform', isHeld: false, row: 1, column: -4, colour: '', touchTitle:  'SIN'}, 
+  'w': {htmlTitle: 'triangle',  function: 'triangle',   type: 'waveform', isHeld: false, row: 1, column: -3, colour: '', touchTitle:  'TRI'}, 
+  'e': {htmlTitle: 'sawtooth',  function: 'sawtooth',   type: 'waveform', isHeld: false, row: 1, column: -2, colour: '', touchTitle:  'SAW'}, 
+  'r': {htmlTitle: 'square',    function: 'square',     type: 'waveform', isHeld: false, row: 1, column: -1, colour: '', touchTitle:  'SQU'}, 
 
   's': {htmlTitle: 'C#',        function: '17.32',      type: 'baseFreq', isHeld: false, row: 2, column: -3, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
   'd': {htmlTitle: 'D#',        function: '19.45',      type: 'baseFreq', isHeld: false, row: 2, column: -2, colour: '', nodes: {'sine': [], 'triangle': [], 'sawtooth': [], 'square': []}}, 
