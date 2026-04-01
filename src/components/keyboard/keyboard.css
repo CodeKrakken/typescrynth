@@ -20,3 +20,9 @@
 .text {
   margin: auto auto;
 } 
+
+@media (pointer:coarse) {
+  .text {
+    display: none
+  }
+}
