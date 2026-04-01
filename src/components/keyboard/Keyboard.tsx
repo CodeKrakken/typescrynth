@@ -71,7 +71,7 @@ export default function Keyboard() {
 
 
     const endHold = (key: string) => {
-        if (isHeld(key) && isNote(key)) {
+      if (isHeld(key) && isNote(key)) {
 
         synth.toggleAttribute('baseFreq', keys[key].function as string);
         keys[key].colour = ''
