@@ -121,9 +121,6 @@ export default function Keyboard() {
     document.addEventListener     ('touchstart' , handleTouchStart  as EventListener, { passive: false });  
     document.addEventListener     ('touchend'   , handleTouchEnd    as EventListener, { passive: false });  
     document.addEventListener     ('touchmove'  , preventZoom       as EventListener, { passive: false });
-    
-    window.addEventListener("load",function() {setTimeout(function(){window.scrollTo(0, 1);}, 0);
-});  
 
     return () => {  
       document.removeEventListener('keydown'    , handleKeyDown     as EventListener);  
