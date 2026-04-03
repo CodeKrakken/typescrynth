@@ -2,23 +2,23 @@
 
 @media (pointer:fine) {
   .header {
-    font-size: 10lvh;
-    padding: 5lvh
+    font-size: 10dvh;
+    padding: 5dvh
   }
 }
 
 @media (pointer:coarse) {
   @media screen and (orientation:portrait) {
     .header {
-      font-size: 10lvw;
-      padding: 5lvw
+      font-size: 10dvw;
+      padding: 5dvw
     }
   }
 
   @media screen and (orientation:landscape) {
     .header {
-      font-size: 10lvh;
-      padding: 5lvh
+      font-size: 10dvh;
+      padding: 5dvh
     }
   }
 }
