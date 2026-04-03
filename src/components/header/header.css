@@ -1,6 +1,24 @@
 @import '../../index.css';
 
-.header {
-  /* font-size: 10vh; */
-  /* padding: 5vh */
+@media (pointer:fine) {
+  .header {
+    font-size: 10vh;
+    padding: 5vh
+  }
+}
+
+@media (pointer:coarse) {
+  @media screen and (orientation:portrait) {
+    .header {
+      font-size: 10vw;
+      padding: 5vw
+    }
+  }
+
+  @media screen and (orientation:landscape) {
+    .header {
+      font-size: 10vh;
+      padding: 5vh
+    }
+  }
 }
