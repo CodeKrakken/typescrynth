@@ -11,10 +11,10 @@
     -ms-transform: rotate(90deg); 
     -webkit-transform: rotate(90deg); 
     transform-origin: bottom left;
-    height: 100lvw;
+    height: 100svw;
     width: 100svh;
     position: absolute;
-    top: -100lvw;
+    top: -100svw;
   }
 }
 
