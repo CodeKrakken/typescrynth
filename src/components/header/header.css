@@ -10,8 +10,8 @@
 @media (pointer:coarse) {
   @media screen and (orientation:portrait) {
     .header {
-      font-size: 10svw;
-      padding: 5svw
+      font-size: 10lvw;
+      padding: 5lvw
     }
   }
 
