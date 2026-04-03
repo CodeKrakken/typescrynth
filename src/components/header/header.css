@@ -1,15 +1,33 @@
 @import '../../index.css';
 
-@media screen and (orientation:portrait) {
-  .header {
-    font-size: 10dvw;
-    padding: 2dvw
+@media (pointer: fine) {
+  @media screen and (orientation:portrait) {
+    .header {
+      font-size: 10dvw;
+      padding: 2dvw
+    }
+  }
+
+  @media screen and (orientation:landscape) {
+    .header {
+      font-size: 10dvh;
+      padding: 2dvh
+    }
   }
 }
 
-@media screen and (orientation:landscape) {
-  .header {
-    font-size: 10dvh;
-    padding: 2dvh
+@media (pointer: coarse) {
+  @media screen and (orientation:portrait) {
+    .header {
+      font-size: 48px;
+      padding: 2dvw
+    }
+  }
+
+  @media screen and (orientation:landscape) {
+    .header {
+      font-size: 48px;
+      padding: 2dvh
+    }
   }
 }
