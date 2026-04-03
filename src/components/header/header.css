@@ -19,14 +19,14 @@
 @media (pointer: coarse) {
   @media screen and (orientation:portrait) {
     .header {
-      font-size: 38px;
+      font-size: 33px;
       padding: 2dvw
     }
   }
 
   @media screen and (orientation:landscape) {
     .header {
-      font-size: 38px;
+      font-size: 33px;
       padding: 2dvh
     }
   }
