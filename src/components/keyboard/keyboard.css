@@ -2,7 +2,7 @@
 
 #keyboard-container {
   display: flex;
-  -webkit-user-drag: none;
+  /* -webkit-user-drag: none; */
 }
 
 #keyboard-inner {
@@ -16,16 +16,16 @@
   display: flex;
   border-radius: 100%;
   position: absolute;
-  user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
+  /* user-select: none; */
+  /* -webkit-user-select: none; */
+  /* -ms-user-select: none; */
+  /* -webkit-tap-highlight-color: transparent; */
+  /* touch-action: manipulation; */
 }
 
 .text {
   margin: auto auto;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 @media (pointer:fine) {

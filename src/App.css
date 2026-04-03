@@ -1,25 +1,39 @@
+/* @media screen and (orientation:landscape) {
+  html {
+    padding-left: 50px;
+    padding-top: 50px;
+  }
+} */
+
+@media screen and (orientation:portrait) {
+  html {
+    transform: rotate(90deg);
+    -ms-transform: rotate(90deg); 
+    -webkit-transform: rotate(90deg); 
+    transform-origin: bottom left;
+    height: 100vw;
+    width: 100vh;
+    position: absolute;
+    top: -100vw;
+  }
+}
+
+
+
 body {
   background: black;
   color: white;
-  text-align: center;
+  /* text-align: center; */
   font-family: 'Josefin Sans', sans-serif;
-  touch-action: none;
-  overscroll-behavior: none;
+  /* touch-action: none; */
+  /* overscroll-behavior: none; */
 }
 
 html, body {
-  position: fixed;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
+  /* position: fixed; */
+  /* overflow: hidden; */
+  /* width: 100%; */
+  /* height: 100%; */
 }
 
-@media screen and (orientation: portrait) {
-  html {
-    transform: rotate(-90deg);
-    transform-origin: bottom;
-    position: absolute;
-    top: 25vh;
-    right: 10vw;
-  }
-}
+
