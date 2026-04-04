@@ -1,4 +1,3 @@
-import './header.css'
 import {title} from './data'
 
 export default function Header() {

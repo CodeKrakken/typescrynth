@@ -3,7 +3,6 @@ import { synth } from '../synth/Synth';
 import { keys } from '../data'
 import { CustomTouchEvent } from './types';
 import { randomColour, keyStyle, generateKeyColours } from './functions';
-import './keyboard.css'
 import { nodeAttribute, settingsAttribute } from '../synth/types';
 import { keySize, rowOffset } from './data';
 
