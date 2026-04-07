@@ -61,6 +61,14 @@ describe('synth', () => {
     expect(synth.settings.activeNodes.length).toBe(0)
   })
 
+  it('creates nodes for all attribute combinations', () => {
+    synth.toggleAttribute('waveform', 'square')
+    synth.toggleAttribute('baseFreq', '440')
+
+    // 2 waveforms × 1 octave × 1 freq = 2 nodes
+    expect(synth.settings.activeNodes.length).toBe(2)
+  })
+
   it('creates oscillator and gain nodes', () => {
     synth.toggleAttribute('baseFreq', '440')
 
