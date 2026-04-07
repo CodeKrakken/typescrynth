@@ -39,9 +39,11 @@ describe('synth', () => {
     jest.clearAllMocks()
 
     synth.settings.attributes.baseFreqs = []
-    synth.settings.attributes.waveforms = ['sine']
-    synth.settings.attributes.octaves = ['4']
+    synth.settings.attributes.waveforms = []
+    synth.settings.attributes.octaves = []
     synth.settings.activeNodes = []
+    synth.toggleAttribute('waveform', 'sine')
+    synth.toggleAttribute('octave', '4')
   })
 
   it('adds attribute and creates nodes on toggle on', () => {
