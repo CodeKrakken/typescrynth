@@ -20,14 +20,20 @@ const mockGain = () => ({
   }
 })
 
+let lastContextInstance: any
+
 class MockAudioContext {
   currentTime = 0
   destination = {}
-  state = 'running'
+  state: 'running' | 'suspended' = 'running'
 
   createOscillator = jest.fn(() => mockOscillator())
   createGain = jest.fn(() => mockGain())
   resume = jest.fn()
+
+  constructor() {
+    lastContextInstance = this
+  }
 }
 
 // @ts-ignore
@@ -37,6 +43,7 @@ describe('synth', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.resetModules()
 
     synth.settings.attributes.baseFreqs = []
     synth.settings.attributes.waveforms = []
@@ -81,7 +88,6 @@ describe('synth', () => {
     synth.toggleAttribute('baseFreq', '16.35')
     synth.toggleAttribute('baseFreq', '18.35')
 
-
     // 2 waveforms × 1 octave × 1 freq = 2 nodes
     expect(synth.settings.activeNodes.length).toBe(2)
   })
@@ -112,10 +118,34 @@ describe('synth', () => {
     })
   })
 
-  it('resume calls audio context resume', () => {
+  it('resume function calls audio context resume', () => {
     synth.resume()
 
-    const ctx = new AudioContext()
-    expect(ctx.resume).toBeDefined()
+    const audioContext = new AudioContext()
+    expect(audioContext.resume).toBeDefined()
+  })  
+})
+
+describe('synth - getContext', () => {
+
+  beforeEach(() => {
+    jest.resetModules() // 🔑 resets module-level `context`
+  })
+
+  it('resumes context if suspended', async () => {
+    jest.resetModules()
+
+    const { synth } = await import('./Synth')
+
+    // first call creates context
+    synth.resume()
+
+    // force suspended
+    lastContextInstance.state = 'suspended'
+
+    // second call should trigger resume
+    synth.resume()
+
+    expect(lastContextInstance.resume).toHaveBeenCalled()
   })
 })
