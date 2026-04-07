@@ -17,9 +17,6 @@ const getContext = () => {
   return context
 }
 
-context = getContext()
-
-
 // private functions
 
 const createNodes = (
@@ -71,6 +68,7 @@ const newNode = (
   now: number
 ) => {
 
+  context = getContext()
   const oscillator = context.createOscillator()
   oscillator.type = waveform as OscillatorType
   oscillator.start(0)
@@ -139,13 +137,17 @@ export const synth = {
   settings: settings,
   
   toggleAttribute: (attribute: nodeAttribute, value: string) => {
+
+    context = getContext()
     const now = context.currentTime
 
     !settings.attributes[`${attribute}s`].includes(value) ? 
     createNodes(now, attribute, value) : 
     stopNodes(now, attribute, value)
-    
   },
 
-  resume: () => { context.resume() }
+  resume: () => { 
+    context = getContext()
+    context.resume() 
+  }
 }
