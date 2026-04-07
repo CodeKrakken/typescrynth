@@ -108,10 +108,10 @@ export default function Keyboard() {
     }
 
     const preventZoom = (e: TouchEvent) => {
-    if (e.touches.length > 1) {
-      e.preventDefault()
+      if (e.touches.length > 1) {
+        e.preventDefault()
+      }
     }
-  }
 
 
     // attach event listeners

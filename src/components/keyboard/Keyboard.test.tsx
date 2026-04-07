@@ -135,4 +135,30 @@ describe('Keyboard', () => {
 
     expect(randomColour).toHaveBeenCalled()
   })
+
+  it('prevents zoom when multiple touches', () => {
+    render(<Keyboard />)
+
+    const event = new Event('touchmove') as any
+
+    event.touches = [{}, {}] // 2 touches
+    event.preventDefault = jest.fn()
+
+    document.dispatchEvent(event)
+
+    expect(event.preventDefault).toHaveBeenCalled()
+  })
+
+  it('does not prevent zoom for single touch', () => {
+    render(<Keyboard />)
+
+    const event = new Event('touchmove') as any
+
+    event.touches = [{}] // 1 touch
+    event.preventDefault = jest.fn()
+
+    document.dispatchEvent(event)
+
+    expect(event.preventDefault).not.toHaveBeenCalled()
+  })
 })
