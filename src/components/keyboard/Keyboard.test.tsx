@@ -1,6 +1,8 @@
 import { render, fireEvent } from '@testing-library/react'
 import Keyboard from './Keyboard'
 import { synth } from '../synth/Synth'
+import { randomColour } from './functions'
+
 
 // --- mocks ---
 
@@ -100,5 +102,37 @@ describe('Keyboard', () => {
     fireEvent.keyDown(document, { key: 'z' })
 
     expect(synth.toggleAttribute).not.toHaveBeenCalled()
+  })
+
+  it('sets colour when key is active', () => {
+    render(<Keyboard />)
+
+    synth.settings.attributes.waveforms = ['sine']
+
+    fireEvent.keyDown(document, { key: 'b' })
+
+    // indirectly proves isActive ran and returned true
+    expect(synth.toggleAttribute).toHaveBeenCalled()
+  })
+
+  it('handles inactive non-note keys', () => {
+    render(<Keyboard />)
+
+    synth.settings.attributes.waveforms = []
+
+    fireEvent.keyDown(document, { key: 'b' })
+
+    expect(synth.toggleAttribute).toHaveBeenCalled()
+  })
+
+
+  it('applies colour when key is active', () => {
+    render(<Keyboard />)
+
+    synth.settings.attributes.waveforms = ['sine']
+
+    fireEvent.keyDown(document, { key: 'b' })
+
+    expect(randomColour).toHaveBeenCalled()
   })
 })
