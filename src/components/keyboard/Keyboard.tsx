@@ -142,7 +142,8 @@ export default function Keyboard() {
             const title = keys[keyName].touchTitle || keys[keyName].htmlTitle 
 
             return <span
-              data-key  = {keyName} 
+              data-key  = {keyName}
+              key       = {keyName}  
               className = "key" 
               style     = {style}
               title     = {title}
