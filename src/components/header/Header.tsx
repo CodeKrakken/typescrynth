@@ -1,4 +1,6 @@
 import {title} from './data'
+import './Header.css'
+
 
 export default function Header() {
   return <>

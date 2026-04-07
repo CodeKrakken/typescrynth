@@ -5,6 +5,7 @@ import { CustomTouchEvent } from './types';
 import { randomColour, keyStyle, generateKeyColours } from './functions';
 import { nodeAttribute, settingsAttribute } from '../synth/types';
 import { keySize, rowOffset } from './data';
+import './Keyboard.css'
 
 // set up button colours
 
