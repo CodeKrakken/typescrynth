@@ -47,30 +47,47 @@ describe('synth', () => {
   })
 
   it('adds attribute and creates nodes on toggle on', () => {
-    synth.toggleAttribute('baseFreq', '440')
+    synth.toggleAttribute('baseFreq', '16.35')
 
-    expect(synth.settings.attributes.baseFreqs).toContain('440')
+    expect(synth.settings.attributes.baseFreqs).toContain('16.35')
     expect(synth.settings.activeNodes.length).toBeGreaterThan(0)
   })
 
   it('removes attribute and stops nodes on toggle off', () => {
-    synth.toggleAttribute('baseFreq', '440')
-    synth.toggleAttribute('baseFreq', '440')
+    synth.toggleAttribute('baseFreq', '16.35')
+    synth.toggleAttribute('baseFreq', '16.35')
 
-    expect(synth.settings.attributes.baseFreqs).not.toContain('440')
+    expect(synth.settings.attributes.baseFreqs).not.toContain('16.35')
     expect(synth.settings.activeNodes.length).toBe(0)
   })
 
-  it('creates nodes for all attribute combinations', () => {
+  it('creates multiple nodes for multiple waveforms', () => {
     synth.toggleAttribute('waveform', 'square')
-    synth.toggleAttribute('baseFreq', '440')
+    synth.toggleAttribute('baseFreq', '16.35')
+
+    // 2 waveforms × 1 octave × 1 freq = 2 nodes
+    expect(synth.settings.activeNodes.length).toBe(2)
+  })
+
+  it('creates multiple nodes for multiple octaves', () => {
+    synth.toggleAttribute('octave', '0')
+    synth.toggleAttribute('baseFreq', '16.35')
+
+    // 2 waveforms × 1 octave × 1 freq = 2 nodes
+    expect(synth.settings.activeNodes.length).toBe(2)
+  })
+
+  it('creates multiple nodes for multiple notes', () => {
+    synth.toggleAttribute('baseFreq', '16.35')
+    synth.toggleAttribute('baseFreq', '18.35')
+
 
     // 2 waveforms × 1 octave × 1 freq = 2 nodes
     expect(synth.settings.activeNodes.length).toBe(2)
   })
 
   it('creates oscillator and gain nodes', () => {
-    synth.toggleAttribute('baseFreq', '440')
+    synth.toggleAttribute('baseFreq', '16.35')
 
     const node = synth.settings.activeNodes[0]
 
@@ -79,7 +96,7 @@ describe('synth', () => {
   })
 
   it('sets oscillator frequency', () => {
-    synth.toggleAttribute('baseFreq', '440')
+    synth.toggleAttribute('baseFreq', '16.35')
 
     const node = synth.settings.activeNodes[0]
 
@@ -87,7 +104,7 @@ describe('synth', () => {
   })
 
   it('balances gain across nodes', () => {
-    synth.toggleAttribute('baseFreq', '440')
+    synth.toggleAttribute('baseFreq', '16.35')
     synth.toggleAttribute('waveform', 'sine')
 
     synth.settings.activeNodes.forEach(node => {
