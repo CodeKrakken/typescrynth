@@ -123,27 +123,13 @@ describe('synth', () => {
 
     const audioContext = new AudioContext()
     expect(audioContext.resume).toBeDefined()
-  })  
-})
-
-describe('synth - getContext', () => {
-
-  beforeEach(() => {
-    jest.resetModules() // 🔑 resets module-level `context`
   })
 
   it('resumes context if suspended', async () => {
-    jest.resetModules()
 
     const { synth } = await import('./Synth')
-
-    // first call creates context
     synth.resume()
-
-    // force suspended
     lastContextInstance.state = 'suspended'
-
-    // second call should trigger resume
     synth.resume()
 
     expect(lastContextInstance.resume).toHaveBeenCalled()
