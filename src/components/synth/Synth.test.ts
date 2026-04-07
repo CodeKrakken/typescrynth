@@ -39,8 +39,8 @@ describe('synth', () => {
     jest.clearAllMocks()
 
     synth.settings.attributes.baseFreqs = []
-    synth.settings.attributes.waveforms = []
-    synth.settings.attributes.octaves = []
+    synth.settings.attributes.waveforms = ['sine']
+    synth.settings.attributes.octaves = ['4']
     synth.settings.activeNodes = []
   })
 
