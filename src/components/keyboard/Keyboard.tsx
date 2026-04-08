@@ -103,7 +103,7 @@ export default function Keyboard() {
       e.preventDefault()
       const key = (e.target as HTMLElement).dataset.key
       if (!key) return
-      endHold(key)
+      endHold(key!)
     }
 
     const preventZoom = (e: TouchEvent) => {

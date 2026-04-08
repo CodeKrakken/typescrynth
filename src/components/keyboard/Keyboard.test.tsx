@@ -97,21 +97,28 @@ describe('Keyboard', () => {
     expect(synth.toggleAttribute).toHaveBeenCalledWith('baseFreq', '16.35')
   })
 
+  it('ignores touchstart when no data-key is present', () => {
+    render(<Keyboard />)
 
+    const div = document.createElement('div')
+    const event = new Event('touchstart', { bubbles: true })
+
+    Object.defineProperty(event, 'target', { value: div })
+    event.preventDefault = jest.fn()
+    document.dispatchEvent(event)
+
+    expect(event.preventDefault).toHaveBeenCalled()
+    expect(synth.toggleAttribute).not.toHaveBeenCalled()
+  })
   
   it('ignores touchend when no data-key is present', () => {
     render(<Keyboard />)
 
-    const el = document.createElement('div')
-
+    const div = document.createElement('div')
     const event = new Event('touchend', { bubbles: true })
 
-    Object.defineProperty(event, 'target', {
-      value: el
-    })
-
+    Object.defineProperty(event, 'target', { value: div })
     event.preventDefault = jest.fn()
-
     document.dispatchEvent(event)
 
     expect(event.preventDefault).toHaveBeenCalled()
@@ -119,11 +126,12 @@ describe('Keyboard', () => {
   })
 
   it('handles touchend', () => {
-    const { container } = render(<Keyboard />)
-    const el = container.querySelector('[data-key="z"]')!
 
-    fireEvent.touchStart(el, { target: el })
-    fireEvent.touchEnd(el, { target: el })
+    const { container } = render(<Keyboard />)
+    const target = container.querySelector('[data-key="z"]')!
+
+    fireEvent.touchStart(target, { target: target })
+    fireEvent.touchEnd(target, { target: target })
 
     expect(synth.toggleAttribute).toHaveBeenCalledTimes(2)
   })
@@ -137,9 +145,8 @@ describe('Keyboard', () => {
   })
 
   it('runs isActive and receives false', () => {
-    render(<Keyboard />)
-
     synth.settings.attributes.waveforms = []
+    
     expect(isActive('q')).toBeFalsy()
   })
 
@@ -177,24 +184,25 @@ describe('Keyboard', () => {
   it('prevents zoom when multiple touches', () => {
     render(<Keyboard />)
 
-    const event = new Event('touchmove') as any
+    const event = new Event('touchmove', { bubbles: true })
+    const preventDefault = jest.fn()
 
-    event.touches = [{}, {}] // 2 touches
-    event.preventDefault = jest.fn()
+    Object.defineProperty(event, 'touches',         { value: [{}, {}] })    
+    Object.defineProperty(event, 'preventDefault',  { value: preventDefault })
 
     document.dispatchEvent(event)
 
-    expect(event.preventDefault).toHaveBeenCalled()
+    expect(preventDefault).toHaveBeenCalled()
   })
 
   it('does not prevent zoom for single touch', () => {
     render(<Keyboard />)
 
-    const event = new Event('touchmove') as any
+    const event = new Event('touchmove')
 
-    event.touches = [{}] // 1 touch
+    Object.defineProperty(event, 'touches', { value: [{}] })
     event.preventDefault = jest.fn()
-
+    
     document.dispatchEvent(event)
 
     expect(event.preventDefault).not.toHaveBeenCalled()
