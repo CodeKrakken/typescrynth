@@ -21,7 +21,7 @@ const isNote = (key: string) => {
   return keys[key].type === 'baseFreq'
 }
 
-const isActive = (key: string) => {
+export const isActive = (key: string) => {
   return synth.settings.attributes[
     `${keys[key].type}s` as settingsAttribute
   ]?.includes(keys[key].function as string)

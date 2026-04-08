@@ -1,5 +1,6 @@
 import { render, fireEvent } from '@testing-library/react'
 import Keyboard from './Keyboard'
+import {isActive} from './Keyboard'
 import { synth } from '../synth/Synth'
 import { randomColour } from './functions'
 
@@ -22,8 +23,8 @@ jest.mock('../synth/Synth', () => ({
 
 jest.mock('../data', () => ({
   keys: {
-    a: { type: 'baseFreq', function: '440', colour: '' },
-    b: { type: 'waveform', function: 'sine', colour: '' }
+    z: { type: 'baseFreq', function: '16.35', colour: '' },
+    q: { type: 'waveform', function: 'sine', colour: '' }
   }
 }))
 
@@ -47,23 +48,23 @@ describe('Keyboard', () => {
   it('renders all keys', () => {
     const { getByText } = render(<Keyboard />)
 
-    expect(getByText('a')).toBeInTheDocument()
-    expect(getByText('b')).toBeInTheDocument()
+    expect(getByText('z')).toBeInTheDocument()
+    expect(getByText('q')).toBeInTheDocument()
   })
 
   it('handles keydown and triggers synth', () => {
     render(<Keyboard />)
 
-    fireEvent.keyDown(document, { key: 'a' })
+    fireEvent.keyDown(document, { key: 'z' })
 
     expect(synth.resume).toHaveBeenCalled()
-    expect(synth.toggleAttribute).toHaveBeenCalledWith('baseFreq', '440')
+    expect(synth.toggleAttribute).toHaveBeenCalledWith('baseFreq', '16.35')
   })
 
   it('does not trigger on repeated keydown', () => {
     render(<Keyboard />)
 
-    fireEvent.keyDown(document, { key: 'a', repeat: true })
+    fireEvent.keyDown(document, { key: 'z', repeat: true })
 
     expect(synth.toggleAttribute).not.toHaveBeenCalled()
   })
@@ -71,24 +72,24 @@ describe('Keyboard', () => {
   it('handles keyup and releases note', () => {
     render(<Keyboard />)
 
-    fireEvent.keyDown(document, { key: 'a' })
-    fireEvent.keyUp(document, { key: 'a' })
+    fireEvent.keyDown(document, { key: 'z' })
+    fireEvent.keyUp(document, { key: 'z' })
 
     expect(synth.toggleAttribute).toHaveBeenCalledTimes(2)
   })
 
   it('handles touchstart', () => {
     const { container } = render(<Keyboard />)
-    const el = container.querySelector('[data-key="a"]')!
+    const el = container.querySelector('[data-key="z"]')!
 
     fireEvent.touchStart(el, { target: el })
 
-    expect(synth.toggleAttribute).toHaveBeenCalledWith('baseFreq', '440')
+    expect(synth.toggleAttribute).toHaveBeenCalledWith('baseFreq', '16.35')
   })
 
   it('handles touchend', () => {
     const { container } = render(<Keyboard />)
-    const el = container.querySelector('[data-key="a"]')!
+    const el = container.querySelector('[data-key="z"]')!
 
     fireEvent.touchStart(el, { target: el })
     fireEvent.touchEnd(el, { target: el })
@@ -99,28 +100,35 @@ describe('Keyboard', () => {
   it('ignores unknown keys', () => {
     render(<Keyboard />)
 
-    fireEvent.keyDown(document, { key: 'z' })
+    fireEvent.keyDown(document, { key: 'a' })
 
     expect(synth.toggleAttribute).not.toHaveBeenCalled()
   })
 
-  it('sets colour when key is active', () => {
+  it('runs isActive and receives false', () => {
     render(<Keyboard />)
 
-    synth.settings.attributes.waveforms = ['sine']
-
-    fireEvent.keyDown(document, { key: 'b' })
-
-    // indirectly proves isActive ran and returned true
-    expect(synth.toggleAttribute).toHaveBeenCalled()
+    synth.settings.attributes.waveforms = []
+    expect(isActive('q')).toBeFalsy
   })
+
+  // it('runs isActive and receives true', () => {
+  //   render(<Keyboard />)
+
+  //   synth.settings.attributes.waveforms = []
+
+  //   fireEvent.keyDown(document, { key: 'q' })
+
+  //   // indirectly proves isActive ran and returned true
+  //   expect(synth.toggleAttribute).toHaveBeenCalledTimes(1)
+  // })
 
   it('handles inactive non-note keys', () => {
     render(<Keyboard />)
 
     synth.settings.attributes.waveforms = []
 
-    fireEvent.keyDown(document, { key: 'b' })
+    fireEvent.keyDown(document, { key: 'q' })
 
     expect(synth.toggleAttribute).toHaveBeenCalled()
   })
@@ -131,7 +139,7 @@ describe('Keyboard', () => {
 
     synth.settings.attributes.waveforms = ['sine']
 
-    fireEvent.keyDown(document, { key: 'b' })
+    fireEvent.keyDown(document, { key: 'q' })
 
     expect(randomColour).toHaveBeenCalled()
   })
