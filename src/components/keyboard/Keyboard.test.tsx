@@ -96,6 +96,44 @@ describe('Keyboard', () => {
     expect(synth.toggleAttribute).toHaveBeenCalledWith('baseFreq', '16.35')
   })
 
+  it('ignores touchstart when no data-key is present', () => {
+    render(<Keyboard />)
+
+    const el = document.createElement('div')
+
+    const event = new Event('touchstart', { bubbles: true })
+
+    Object.defineProperty(event, 'target', {
+      value: el
+    })
+
+    event.preventDefault = jest.fn()
+
+    document.dispatchEvent(event)
+
+    expect(event.preventDefault).toHaveBeenCalled()
+    expect(synth.toggleAttribute).not.toHaveBeenCalled()
+  })
+  
+  it('ignores touchend when no data-key is present', () => {
+    render(<Keyboard />)
+
+    const el = document.createElement('div')
+
+    const event = new Event('touchend', { bubbles: true })
+
+    Object.defineProperty(event, 'target', {
+      value: el
+    })
+
+    event.preventDefault = jest.fn()
+
+    document.dispatchEvent(event)
+
+    expect(event.preventDefault).toHaveBeenCalled()
+    expect(synth.toggleAttribute).not.toHaveBeenCalled()
+  })
+
   it('handles touchend', () => {
     const { container } = render(<Keyboard />)
     const el = container.querySelector('[data-key="z"]')!
