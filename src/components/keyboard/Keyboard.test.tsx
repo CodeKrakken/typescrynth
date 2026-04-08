@@ -109,7 +109,7 @@ describe('Keyboard', () => {
     render(<Keyboard />)
 
     synth.settings.attributes.waveforms = []
-    expect(isActive('q')).toBeFalsy
+    expect(isActive('q')).toBeFalsy()
   })
 
   it('runs isActive and receives true', () => {
@@ -119,7 +119,7 @@ describe('Keyboard', () => {
 
     fireEvent.keyDown(document, { key: 'q' })
 
-    expect(isActive('q')).toBeTruthy
+    expect(isActive('q')).toBeTruthy()
   })
 
   it('handles inactive non-note keys', () => {
