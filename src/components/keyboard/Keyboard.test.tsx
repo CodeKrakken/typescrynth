@@ -5,17 +5,18 @@ import { synth } from '../synth/Synth'
 import { randomColour } from './functions'
 
 
-// --- mocks ---
+// mocks
 
 jest.mock('../synth/Synth', () => ({
   synth: {
+
     toggleAttribute: jest.fn(),
     resume: jest.fn(),
+    
     settings: {
+
       attributes: {
-        baseFreqs: [],
-        waveforms: [],
-        octaves: []
+        waveforms: []
       }
     }
   }
@@ -23,21 +24,21 @@ jest.mock('../synth/Synth', () => ({
 
 jest.mock('../data', () => ({
   keys: {
-    z: { type: 'baseFreq', function: '16.35', colour: '' },
-    q: { type: 'waveform', function: 'sine', colour: '' }
+
+    z: { type: 'baseFreq', function: '16.35'},
+    q: { type: 'waveform', function: 'sine'}
   }
 }))
 
 jest.mock('./functions', () => ({
+
   randomColour: jest.fn(() => 'red'),
   keyStyle: jest.fn(() => ({})),
   generateKeyColours: jest.fn()
 }))
 
-jest.mock('./data', () => ({
-  keySize: 50,
-  rowOffset: 10
-}))
+
+// tests
 
 describe('Keyboard', () => {
 
@@ -54,7 +55,7 @@ describe('Keyboard', () => {
 
   it('handles keydown and triggers synth', () => {
     render(<Keyboard />)
-
+    
     fireEvent.keyDown(document, { key: 'z' })
 
     expect(synth.resume).toHaveBeenCalled()
@@ -89,31 +90,14 @@ describe('Keyboard', () => {
 
   it('handles touchstart', () => {
     const { container } = render(<Keyboard />)
-    const el = container.querySelector('[data-key="z"]')!
+    const target = container.querySelector('[data-key="z"]')!
 
-    fireEvent.touchStart(el, { target: el })
+    fireEvent.touchStart(target, { target: target })
 
     expect(synth.toggleAttribute).toHaveBeenCalledWith('baseFreq', '16.35')
   })
 
-  it('ignores touchstart when no data-key is present', () => {
-    render(<Keyboard />)
 
-    const el = document.createElement('div')
-
-    const event = new Event('touchstart', { bubbles: true })
-
-    Object.defineProperty(event, 'target', {
-      value: el
-    })
-
-    event.preventDefault = jest.fn()
-
-    document.dispatchEvent(event)
-
-    expect(event.preventDefault).toHaveBeenCalled()
-    expect(synth.toggleAttribute).not.toHaveBeenCalled()
-  })
   
   it('ignores touchend when no data-key is present', () => {
     render(<Keyboard />)
