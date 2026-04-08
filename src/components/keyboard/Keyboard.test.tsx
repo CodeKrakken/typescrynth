@@ -112,16 +112,15 @@ describe('Keyboard', () => {
     expect(isActive('q')).toBeFalsy
   })
 
-  // it('runs isActive and receives true', () => {
-  //   render(<Keyboard />)
+  it('runs isActive and receives true', () => {
+    render(<Keyboard />)
 
-  //   synth.settings.attributes.waveforms = []
+    synth.settings.attributes.waveforms = ['sine']
 
-  //   fireEvent.keyDown(document, { key: 'q' })
+    fireEvent.keyDown(document, { key: 'q' })
 
-  //   // indirectly proves isActive ran and returned true
-  //   expect(synth.toggleAttribute).toHaveBeenCalledTimes(1)
-  // })
+    expect(isActive('q')).toBeTruthy
+  })
 
   it('handles inactive non-note keys', () => {
     render(<Keyboard />)
