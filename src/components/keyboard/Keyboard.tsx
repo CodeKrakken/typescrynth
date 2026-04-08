@@ -52,7 +52,7 @@ export default function Keyboard() {
     const startHold = (key: string) => {
       if (isKey(key) && !isHeld(key)) {
 
-        synth!.resume?.()
+        synth!.resume()
         
         synth.toggleAttribute(
           keys[key].type as nodeAttribute, 
