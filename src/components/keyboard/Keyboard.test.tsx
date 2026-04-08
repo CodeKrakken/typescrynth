@@ -78,6 +78,15 @@ describe('Keyboard', () => {
     expect(synth.toggleAttribute).toHaveBeenCalledTimes(2)
   })
 
+  it('does not toggle attribute for waveform on keyup', () => {
+    render(<Keyboard />)
+
+    fireEvent.keyDown(document, { key: 'q' })
+    fireEvent.keyUp(document, { key: 'q' })
+
+    expect(synth.toggleAttribute).toHaveBeenCalledTimes(1)
+  })
+
   it('handles touchstart', () => {
     const { container } = render(<Keyboard />)
     const el = container.querySelector('[data-key="z"]')!
