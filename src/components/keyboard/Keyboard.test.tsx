@@ -46,6 +46,15 @@ const release = (key: string) => {
   return fireEvent.keyUp(document, { key: key })
 }
 
+const touchAndRelease = (key: string) => {
+
+  const { container } = render(<Keyboard />)
+  const target = container.querySelector(`[data-key="${key}"]`)!
+
+  fireEvent.touchStart(target, { target: target })
+  fireEvent.touchEnd(target, { target: target })
+}
+
 // tests
 
 describe('Keyboard', () => {
@@ -135,11 +144,7 @@ describe('Keyboard', () => {
 
   it('handles touchend', () => {
 
-    const { container } = render(<Keyboard />)
-    const target = container.querySelector('[data-key="z"]')!
-
-    fireEvent.touchStart(target, { target: target })
-    fireEvent.touchEnd(target, { target: target })
+    touchAndRelease('z')
 
     expect(synth.toggleAttribute).toHaveBeenCalledTimes(2)
   })
