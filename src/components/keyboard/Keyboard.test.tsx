@@ -42,6 +42,9 @@ const press = (key: string, repeat: string = '') => {
   return fireEvent.keyDown(document, { key: key })
 }
 
+const release = (key: string) => {
+  return fireEvent.keyUp(document, { key: key })
+}
 
 // tests
 
@@ -79,7 +82,7 @@ describe('Keyboard', () => {
     render(<Keyboard />)
 
     press('z')
-    fireEvent.keyUp(document, { key: 'z' })
+    release('z')
 
     expect(synth.toggleAttribute).toHaveBeenCalledTimes(2)
   })
@@ -88,7 +91,7 @@ describe('Keyboard', () => {
     render(<Keyboard />)
 
     press('q')
-    fireEvent.keyUp(document, { key: 'q' })
+    release('q')
 
     expect(synth.toggleAttribute).toHaveBeenCalledTimes(1)
   })
