@@ -37,6 +37,11 @@ jest.mock('./functions', () => ({
   generateKeyColours: jest.fn()
 }))
 
+const press = (key: string, repeat: string = '') => {
+  if (repeat) return fireEvent.keyDown(document, { key: key, repeat: true })
+  return fireEvent.keyDown(document, { key: key })
+}
+
 
 // tests
 
@@ -56,7 +61,7 @@ describe('Keyboard', () => {
   it('handles keydown and triggers synth', () => {
     render(<Keyboard />)
     
-    fireEvent.keyDown(document, { key: 'z' })
+    press('z')
 
     expect(synth.resume).toHaveBeenCalled()
     expect(synth.toggleAttribute).toHaveBeenCalledWith('baseFreq', '16.35')
@@ -65,7 +70,7 @@ describe('Keyboard', () => {
   it('does not trigger on repeated keydown', () => {
     render(<Keyboard />)
 
-    fireEvent.keyDown(document, { key: 'z', repeat: true })
+    press('z', 'repeat')
 
     expect(synth.toggleAttribute).not.toHaveBeenCalled()
   })
@@ -73,7 +78,7 @@ describe('Keyboard', () => {
   it('handles keyup and releases note', () => {
     render(<Keyboard />)
 
-    fireEvent.keyDown(document, { key: 'z' })
+    press('z')
     fireEvent.keyUp(document, { key: 'z' })
 
     expect(synth.toggleAttribute).toHaveBeenCalledTimes(2)
@@ -82,7 +87,7 @@ describe('Keyboard', () => {
   it('does not toggle attribute for waveform on keyup', () => {
     render(<Keyboard />)
 
-    fireEvent.keyDown(document, { key: 'q' })
+    press('q')
     fireEvent.keyUp(document, { key: 'q' })
 
     expect(synth.toggleAttribute).toHaveBeenCalledTimes(1)
@@ -139,7 +144,7 @@ describe('Keyboard', () => {
   it('ignores unknown keys', () => {
     render(<Keyboard />)
 
-    fireEvent.keyDown(document, { key: 'a' })
+    press('a')
 
     expect(synth.toggleAttribute).not.toHaveBeenCalled()
   })
@@ -155,7 +160,7 @@ describe('Keyboard', () => {
 
     synth.settings.attributes.waveforms = ['sine']
 
-    fireEvent.keyDown(document, { key: 'q' })
+    press('q')
 
     expect(isActive('q')).toBeTruthy()
   })
@@ -165,7 +170,7 @@ describe('Keyboard', () => {
 
     synth.settings.attributes.waveforms = []
 
-    fireEvent.keyDown(document, { key: 'q' })
+    press('q')
 
     expect(synth.toggleAttribute).toHaveBeenCalled()
   })
@@ -176,7 +181,7 @@ describe('Keyboard', () => {
 
     synth.settings.attributes.waveforms = ['sine']
 
-    fireEvent.keyDown(document, { key: 'q' })
+    press('q')
 
     expect(randomColour).toHaveBeenCalled()
   })

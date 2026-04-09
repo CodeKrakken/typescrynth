@@ -96,6 +96,7 @@ export default function Keyboard() {
     const handleTouchStart = (e: CustomTouchEvent) => {
       e.preventDefault()
       const key = (e.target as HTMLElement).dataset.key
+      if (!key) return
       startHold(key!)
     } 
 
