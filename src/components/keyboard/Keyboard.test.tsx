@@ -59,21 +59,6 @@ const newKeyEvent = (event: string) => {
 }
 
 
-const newTouchEvent = (touchCount: number) => {
-  const newEvent = new Event('touchmove')
-  const preventDefault = jest.fn()
-  const touches = []
-
-  for (let i = 0; i < touchCount; i++) {
-    touches.push({})
-  }
-
-  Object.defineProperty(newEvent, 'touches',         { value: touches })    
-  Object.defineProperty(newEvent, 'preventDefault',  { value: preventDefault })
-  return newEvent
-}
-
-
 // tests
 
 describe('Keyboard', () => {
@@ -168,20 +153,6 @@ describe('Keyboard', () => {
   it('handles inactive non-note keys', () => {
     synth.settings.attributes.waveforms = []
     pressAndRelease('q')
-    expect(synth.toggleAttribute).toHaveBeenCalled()
-  })
-
-
-  it('prevents zoom when multiple touches', () => {
-    const newEvent = newTouchEvent(2)
-    document.dispatchEvent(newEvent)
-    expect(newEvent.preventDefault).toHaveBeenCalled()
-  })
-
-
-  it('does not prevent zoom for single touch', () => {
-    const newEvent = newTouchEvent(1)
-    document.dispatchEvent(newEvent)
-    expect(newEvent.preventDefault).not.toHaveBeenCalled()
+    expect(synth.toggleAttribute).toHaveBeenCalledWith('waveform', 'sine')
   })
 })

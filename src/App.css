@@ -20,4 +20,5 @@ body {
   font-family: 'Josefin Sans', sans-serif;
   touch-action: none;
   overscroll-behavior: none;
+  overflow: hidden;
 }
