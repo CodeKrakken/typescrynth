@@ -78,8 +78,12 @@ describe('synth', () => {
   it('balances gain across nodes', () => {
     synth.toggleAttribute('baseFreq', '16.35')
     synth.toggleAttribute('baseFreq', '18.35')
-    const calls = (synth.settings.activeNodes[0].gain.gain.setTargetAtTime as jest.Mock).mock.calls
-    expect(calls.some(call => call[0] === 1/synth.settings.activeNodes.length)).toBe(true)
+
+    const gainNode = synth.settings.activeNodes[0].gain.gain
+    const calls = (gainNode.setTargetAtTime as jest.Mock).mock.calls
+    const expectedGain = 1/synth.settings.activeNodes.length
+
+    expect(calls.some(call => call[0] === expectedGain)).toBe(true)
   })
 
 
