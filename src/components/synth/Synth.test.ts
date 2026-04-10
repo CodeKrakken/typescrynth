@@ -1,5 +1,4 @@
-import { synth } from './Synth'
-
+let synth: typeof import('./Synth').synth
 
 // mocks
 
@@ -21,32 +20,34 @@ const mockGain = () => ({
   }
 })
 
+const MockAudioContext = global.AudioContext as jest.Mock
 
-let lastContextInstance: any
+// const instance = MockAudioContext.mock.instances[0]
 
-class MockAudioContext {
-  createOscillator = jest.fn(() => mockOscillator())
-  createGain = jest.fn(() => mockGain())
-  resume = jest.fn()
-  currentTime = 0
-
-  constructor() {
-    lastContextInstance = this
-  }
-}
-
-// @ts-ignore
-global.AudioContext = MockAudioContext
+const createMockAudioContext = () => ({
+  createOscillator: jest.fn(() => mockOscillator()),
+  createGain: jest.fn(() => mockGain()),
+  resume: jest.fn(),
+  currentTime: 0,
+  state: 'running' as 'running' | 'suspended'
+})
 
 describe('synth', () => {
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    jest.resetModules()
+
+    ;(global as any).AudioContext = jest.fn(() => createMockAudioContext())
+
+    const module = await import('./Synth')
+    synth = module.synth
+
+    // now safe to initialise state
     synth.settings.attributes.baseFreqs = []
     synth.settings.attributes.waveforms = ['sine']
     synth.settings.attributes.octaves = ['4']
     synth.settings.activeNodes = []
   })
-
 
   it('adds attribute and creates nodes on toggle on', () => {
     synth.toggleAttribute('baseFreq', '16.35')
@@ -87,14 +88,16 @@ describe('synth', () => {
   })
 
 
-  it('resumes context if suspended', async () => {
-
-    const { synth } = await import('./Synth')
-    synth.resume()
-    lastContextInstance.state = 'suspended'
+  it('resumes context if suspended', () => {
     synth.resume()
 
-    expect(lastContextInstance.resume).toHaveBeenCalled()
+    const instance = (global.AudioContext as jest.Mock).mock.instances[0]
+
+    instance.state = 'suspended'
+
+    synth.resume()
+
+    expect(instance.resume).toHaveBeenCalled()
   })
 
 
