@@ -25,10 +25,10 @@ const mockGain = () => ({
 let lastContextInstance: any
 
 class MockAudioContext {
-
   createOscillator = jest.fn(() => mockOscillator())
   createGain = jest.fn(() => mockGain())
   resume = jest.fn()
+  currentTime = 0
 
   constructor() {
     lastContextInstance = this
@@ -75,27 +75,12 @@ describe('synth', () => {
   })
 
 
-  // it('balances gain across nodes', () => {
-  //   synth.toggleAttribute('waveform', 'sine')
-  //   synth.toggleAttribute('octave', '4')
-  //   synth.toggleAttribute('baseFreq', '16.35')
-  //   synth.toggleAttribute('baseFreq', '18.35')
-
-  //   const nodes = synth.settings.activeNodes
-  //   expect(nodes.length).toBeGreaterThan(0)
-
-  //   const expectedGain = 1 / nodes.length
-
-  //   nodes.forEach(node => {
-  //     const calls = node.gain.gain.setTargetAtTime.mock.calls
-
-  //     const hasBalancedCall = calls.some(
-  //       ([gain]) => gain === expectedGain
-  //     )
-
-  //     expect(hasBalancedCall).toBe(true)
-  //   })
-  // })
+  it('balances gain across nodes', () => {
+    synth.toggleAttribute('baseFreq', '16.35')
+    synth.toggleAttribute('baseFreq', '18.35')
+    const calls = (synth.settings.activeNodes[0].gain.gain.setTargetAtTime as jest.Mock).mock.calls
+    expect(calls.some(call => call[0] === 1/synth.settings.activeNodes.length)).toBe(true)
+  })
 
 
   it('resumes context if suspended', async () => {
