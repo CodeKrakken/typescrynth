@@ -22,23 +22,31 @@ const mockGain = () => ({
 })
 
 
-let context: any
-
-class MockAudioContext {
-  createOscillator = jest.fn(() => mockOscillator())
-  createGain = jest.fn(() => mockGain())
-  resume = jest.fn()
-  currentTime = 0
-
-  constructor() {
-    context = this
-  }
-}
+// const context = {
+//   createOscillator: jest.fn(() => mockOscillator()),
+//   createGain: jest.fn(() => mockGain()),
+//   resume: jest.fn(),
+//   currentTime: 0,
+//   state: 'suspended'
+// }
 
 // @ts-ignore
-global.AudioContext = MockAudioContext
+// global.AudioContext = context
+
+const context = new AudioContext()
 
 describe('synth', () => {
+
+  it('resumes context if suspended', async () => {
+
+    const { synth } = await import('./Synth')
+    synth.resume()
+    // context.state = 'suspended'
+    synth.resume()
+
+    expect(context.resume).toHaveBeenCalled()
+  })
+
 
   beforeEach(() => {
     synth.settings.attributes.baseFreqs = []
@@ -87,18 +95,7 @@ describe('synth', () => {
   })
 
 
-  it('resumes context if suspended', async () => {
-
-    const { synth } = await import('./Synth')
-    synth.resume()
-    context.state = 'suspended'
-    synth.resume()
-
-    expect(context.resume).toHaveBeenCalled()
-  })
-
-
-  it('removes nodes from activeNodes when toggled off', () => {
+    it('removes nodes from activeNodes when toggled off', () => {
     synth.toggleAttribute('baseFreq', '16.35')
     synth.toggleAttribute('baseFreq', '16.35')
 
