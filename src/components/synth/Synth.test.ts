@@ -4,7 +4,7 @@ import { synth } from './Synth'
 // mocks
 
 
-const AudioContextMock = {
+const AudioContextMock: any = {
   createOscillator: jest.fn(() => ({
     start: jest.fn(),
     stop: jest.fn(),
@@ -23,15 +23,9 @@ const AudioContextMock = {
   resume: jest.fn(),
   currentTime: 0,
   state: 'running' as 'running' | 'suspended'
-}
+};
 
-let context: {
-  state: 'running' | 'suspended'
-  resume: typeof jest.fn
-}
-
-context = AudioContextMock;
-(global as any).AudioContext = jest.fn(() => context)
+global.AudioContext = jest.fn(() => AudioContextMock)
 
 describe('synth', () => {
 
@@ -43,20 +37,19 @@ describe('synth', () => {
     synth.settings.activeNodes = []    
   })
 
+
   it('resumes context if suspended', () => {
-    context.state = 'suspended'
+    AudioContextMock.state = 'suspended'
     synth.resume()
-    expect(context.resume).toHaveBeenCalled()
+    expect(AudioContextMock.resume).toHaveBeenCalled()
   })
 
-  it('does not resume context if not suspended', () => {
-    context.state = 'running'
+
+  it('does not resume context if running', () => {
+    AudioContextMock.state = 'running'
     synth.resume()
-    expect(context.resume).not.toHaveBeenCalled()
+    expect(AudioContextMock.resume).not.toHaveBeenCalled()
   }) 
-
-
-  
 
 
   it('adds attribute and creates nodes on toggle on', () => {
@@ -98,7 +91,7 @@ describe('synth', () => {
   })
 
 
-    it('removes nodes from activeNodes when toggled off', () => {
+  it('removes nodes from activeNodes when toggled off', () => {
     synth.toggleAttribute('baseFreq', '16.35')
     synth.toggleAttribute('baseFreq', '16.35')
 
