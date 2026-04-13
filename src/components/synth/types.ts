@@ -6,6 +6,7 @@ export type node = {
   baseFreq: string
 }
 
+
 export type synthType = {
   settings: synthSettings
 }
@@ -19,6 +20,7 @@ export type synthSettings = {
   }
   activeNodes: node[]
 }
+
 
 export type nodeAttribute = 'octave' | 'waveform' | 'baseFreq'
 
