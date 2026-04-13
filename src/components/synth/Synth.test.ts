@@ -1,30 +1,11 @@
+import { AudioContextMock } from './data';
 import { synth } from './Synth'
-import { AudioContextMockType } from './types';
 
-
-// mock context
-
-const AudioContextMock: AudioContextMockType = {
-  createOscillator: jest.fn(() => ({
-    start: jest.fn(),
-    stop: jest.fn(),
-    connect: jest.fn(),
-    frequency: {
-      setValueAtTime: jest.fn()
-    }
-  })),
-  createGain: jest.fn(() => ({
-    connect: jest.fn(),
-    gain: {
-      cancelScheduledValues: jest.fn(),
-      setTargetAtTime: jest.fn()
-    }
-  })),
-  resume: jest.fn(),
-  state: 'running'
-};
+// set up mocked context
 
 global.AudioContext = jest.fn(() => AudioContextMock) as unknown as typeof AudioContext
+
+// tests
 
 describe('synth', () => {
 
@@ -39,14 +20,18 @@ describe('synth', () => {
 
   it('resumes context if suspended', () => {
     AudioContextMock.state = 'suspended'
+
     synth.resume()
+
     expect(AudioContextMock.resume).toHaveBeenCalled()
   })
 
 
   it('does not resume context if running', () => {
     AudioContextMock.state = 'running'
+
     synth.resume()
+    
     expect(AudioContextMock.resume).not.toHaveBeenCalled()
   }) 
 
