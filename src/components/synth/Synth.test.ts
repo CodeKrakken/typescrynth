@@ -21,8 +21,7 @@ const AudioContextMock: AudioContextMockType = {
     }
   })),
   resume: jest.fn(),
-  // currentTime: 0,
-  state: 'running' as 'running' | 'suspended'
+  state: 'running'
 };
 
 global.AudioContext = jest.fn(() => AudioContextMock) as unknown as typeof AudioContext
