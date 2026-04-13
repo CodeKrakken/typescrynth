@@ -30,16 +30,16 @@ let context: {
   resume: typeof jest.fn
 }
 
+context = AudioContextMock;
+(global as any).AudioContext = jest.fn(() => context)
+
 describe('synth', () => {
 
   beforeEach(() => {
     synth.settings.attributes.baseFreqs = []
     synth.settings.attributes.waveforms = ['sine']
     synth.settings.attributes.octaves = ['4']
-    synth.settings.activeNodes = []
-    jest.resetModules()
-    context = AudioContextMock;
-    (global as any).AudioContext = jest.fn(() => context)
+    synth.settings.activeNodes = []    
   })
 
   it('resumes context if suspended', async () => {
