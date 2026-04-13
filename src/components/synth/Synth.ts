@@ -11,7 +11,10 @@ let context: AudioContext
 
 const getContext = () => {
   
-  if (!context) { context = new AudioContext() }
+  if (!context) { 
+    context = new AudioContext() 
+    console.log(context)
+  }
   if (context.state === 'suspended') { context.resume() }
   
   return context
@@ -148,6 +151,5 @@ export const synth = {
 
   resume: () => { 
     context = getContext()
-    context.resume() 
   }
 }

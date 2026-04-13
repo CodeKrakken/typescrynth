@@ -36,21 +36,24 @@ context = AudioContextMock;
 describe('synth', () => {
 
   beforeEach(() => {
+    jest.clearAllMocks()
     synth.settings.attributes.baseFreqs = []
     synth.settings.attributes.waveforms = ['sine']
     synth.settings.attributes.octaves = ['4']
     synth.settings.activeNodes = []    
   })
 
-  it('resumes context if suspended', async () => {
-
-    const { synth } = await import('./Synth')
-    synth.resume()
+  it('resumes context if suspended', () => {
     context.state = 'suspended'
     synth.resume()
-
     expect(context.resume).toHaveBeenCalled()
   })
+
+  it('does not resume context if not suspended', () => {
+    context.state = 'running'
+    synth.resume()
+    expect(context.resume).not.toHaveBeenCalled()
+  }) 
 
 
   
