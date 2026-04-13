@@ -22,38 +22,53 @@ const mockGain = () => ({
 })
 
 
-// const context = {
-//   createOscillator: jest.fn(() => mockOscillator()),
-//   createGain: jest.fn(() => mockGain()),
-//   resume: jest.fn(),
-//   currentTime: 0,
-//   state: 'suspended'
-// }
+const createAudioContextMock = {
+  createOscillator: jest.fn(() => ({
+    start: jest.fn(),
+    stop: jest.fn(),
+    connect: jest.fn(),
+    frequency: {
+      setValueAtTime: jest.fn()
+    }
+  })),
+  createGain: jest.fn(() => ({
+    connect: jest.fn(),
+    gain: {
+      cancelScheduledValues: jest.fn(),
+      setTargetAtTime: jest.fn()
+    }
+  })),
+  resume: jest.fn(),
+  currentTime: 0,
+  state: 'running' as 'running' | 'suspended'
+}
 
-// @ts-ignore
-// global.AudioContext = context
-
-const context = new AudioContext()
+let context: any // ReturnType<typeof createAudioContextMock>
 
 describe('synth', () => {
-
-  it('resumes context if suspended', async () => {
-
-    const { synth } = await import('./Synth')
-    synth.resume()
-    // context.state = 'suspended'
-    synth.resume()
-
-    expect(context.resume).toHaveBeenCalled()
-  })
-
 
   beforeEach(() => {
     synth.settings.attributes.baseFreqs = []
     synth.settings.attributes.waveforms = ['sine']
     synth.settings.attributes.octaves = ['4']
     synth.settings.activeNodes = []
+    jest.resetModules()
+    context = createAudioContextMock
+    ;(global as any).AudioContext = jest.fn(() => context)
   })
+
+  it('resumes context if suspended', async () => {
+
+    const { synth } = await import('./Synth')
+    synth.resume()
+    context.state = 'suspended'
+    synth.resume()
+
+    expect(context.resume).toHaveBeenCalled()
+  })
+
+
+  
 
 
   it('adds attribute and creates nodes on toggle on', () => {
