@@ -3,24 +3,6 @@ import { synth } from './Synth'
 
 // mocks
 
-const mockOscillator = () => ({
-  start: jest.fn(),
-  stop: jest.fn(),
-  connect: jest.fn(),
-  frequency: {
-    setValueAtTime: jest.fn()
-  }
-})
-
-
-const mockGain = () => ({
-  connect: jest.fn(),
-  gain: {
-    cancelScheduledValues: jest.fn(),
-    setTargetAtTime: jest.fn()
-  }
-})
-
 
 const AudioContextMock = {
   createOscillator: jest.fn(() => ({
@@ -43,7 +25,7 @@ const AudioContextMock = {
   state: 'running' as 'running' | 'suspended'
 }
 
-let context: any // ReturnType<typeof AudioContextMock>
+let context: {} // ReturnType<typeof AudioContextMock>
 
 describe('synth', () => {
 
