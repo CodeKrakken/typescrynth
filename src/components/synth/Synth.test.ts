@@ -1,10 +1,10 @@
 import { synth } from './Synth'
-import { MockAudioContext } from './types';
+import { AudioContextMockType } from './types';
 
 
 // mock context
 
-const AudioContextMock: MockAudioContext = {
+const AudioContextMock: AudioContextMockType = {
   createOscillator: jest.fn(() => ({
     start: jest.fn(),
     stop: jest.fn(),
@@ -21,7 +21,7 @@ const AudioContextMock: MockAudioContext = {
     }
   })),
   resume: jest.fn(),
-  currentTime: 0,
+  // currentTime: 0,
   state: 'running' as 'running' | 'suspended'
 };
 
