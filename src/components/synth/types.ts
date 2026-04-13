@@ -23,3 +23,11 @@ export type synthSettings = {
 export type nodeAttribute = 'octave' | 'waveform' | 'baseFreq'
 
 export type settingsAttribute = 'octaves' | 'waveforms' | 'baseFreqs'
+
+export type MockAudioContext = {
+  createOscillator: jest.Mock
+  createGain: jest.Mock
+  resume: jest.Mock
+  currentTime: number
+  state: 'running' | 'suspended'
+}
