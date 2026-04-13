@@ -25,7 +25,10 @@ const AudioContextMock = {
   state: 'running' as 'running' | 'suspended'
 }
 
-let context: {} // ReturnType<typeof AudioContextMock>
+let context: {
+  state: 'running' | 'suspended'
+  resume: typeof jest.fn
+}
 
 describe('synth', () => {
 
