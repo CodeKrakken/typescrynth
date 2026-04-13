@@ -22,7 +22,7 @@ const mockGain = () => ({
 })
 
 
-const createAudioContextMock = {
+const AudioContextMock = {
   createOscillator: jest.fn(() => ({
     start: jest.fn(),
     stop: jest.fn(),
@@ -43,7 +43,7 @@ const createAudioContextMock = {
   state: 'running' as 'running' | 'suspended'
 }
 
-let context: any // ReturnType<typeof createAudioContextMock>
+let context: any // ReturnType<typeof AudioContextMock>
 
 describe('synth', () => {
 
@@ -53,7 +53,7 @@ describe('synth', () => {
     synth.settings.attributes.octaves = ['4']
     synth.settings.activeNodes = []
     jest.resetModules()
-    context = createAudioContextMock
+    context = AudioContextMock
     ;(global as any).AudioContext = jest.fn(() => context)
   })
 
