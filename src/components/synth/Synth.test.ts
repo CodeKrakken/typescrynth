@@ -38,8 +38,8 @@ describe('synth', () => {
     synth.settings.attributes.octaves = ['4']
     synth.settings.activeNodes = []
     jest.resetModules()
-    context = AudioContextMock
-    ;(global as any).AudioContext = jest.fn(() => context)
+    context = AudioContextMock;
+    (global as any).AudioContext = jest.fn(() => context)
   })
 
   it('resumes context if suspended', async () => {
