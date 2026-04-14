@@ -1,27 +1,8 @@
 import { synth } from './Synth'
-import { AudioContextMockType } from './types';
+import { AudioContextMock } from '../mocks';
+import { defaultSettings } from './data';
 
 // set up mocked context
-
-const AudioContextMock: AudioContextMockType = {
-  createOscillator: jest.fn(() => ({
-    start: jest.fn(),
-    stop: jest.fn(),
-    connect: jest.fn(),
-    frequency: {
-      setValueAtTime: jest.fn()
-    }
-  })),
-  createGain: jest.fn(() => ({
-    connect: jest.fn(),
-    gain: {
-      cancelScheduledValues: jest.fn(),
-      setTargetAtTime: jest.fn()
-    }
-  })),
-  resume: jest.fn(),
-  state: 'running'
-};
 
 global.AudioContext = jest.fn(() => AudioContextMock) as unknown as typeof AudioContext
 
@@ -44,6 +25,7 @@ describe('synth', () => {
     synth.resume()
 
     expect(AudioContextMock.resume).toHaveBeenCalled()
+    synth.settings.attributes.octaves = ['4', '5']
   })
 
 

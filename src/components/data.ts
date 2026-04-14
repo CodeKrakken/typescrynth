@@ -35,3 +35,4 @@ export const keys: keysType = {
 }
 
 export const nodeAttributes = ['baseFreq', 'waveform', 'octave']
+
