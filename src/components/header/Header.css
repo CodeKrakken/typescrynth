@@ -1,3 +1,4 @@
+/* mouse and touchpad */
 
 @media (pointer: fine) {
   @media screen and (orientation:portrait) {
@@ -15,10 +16,12 @@
   }
 }
 
+/* touchscreen */
+
 @media (pointer: coarse) {
   @media screen and (orientation:portrait) {
     .header {
-      font-size: 31px;
+      font-size: 30px;
       padding: 2dvw
     }
   }
