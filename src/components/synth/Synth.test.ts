@@ -1,5 +1,5 @@
 import { synth } from './Synth'
-import { AudioContextMock } from '../mocks';
+import { AudioContextMock } from '../../mocks';
 
 // set up mocked context
 

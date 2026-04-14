@@ -1,6 +1,7 @@
 import { render, fireEvent } from '@testing-library/react'
 import Keyboard from './Keyboard'
 import { synth } from '../synth/Synth'
+import { pressAndRelease, touchAndRelease } from '../../functions'
 
 
 // mocks
@@ -35,20 +36,6 @@ jest.mock('./functions', () => ({
 
 // test helper functions
 
-const pressAndRelease = (key: string, repeat: string = '') => {
-  if (repeat) return fireEvent.keyDown(document, { key: key, repeat: true })
-  fireEvent.keyDown(document, { key: key })
-  fireEvent.keyUp(document, { key: key })
-}
-
-
-const touchAndRelease = (key: string) => {
-  const { container } = render(<Keyboard />)
-  const target = container.querySelector(`[data-key="${key}"]`)!
-  fireEvent.touchStart(target, { target: target })
-  fireEvent.touchEnd(target, { target: target })
-}
-
 
 const newKeyEvent = (event: string) => {
   const div = document.createElement('div')
@@ -74,6 +61,7 @@ describe('Keyboard', () => {
 
   it('renders all keys', () => {
     const { getByText } = render(<Keyboard />)
+
     expect(getByText('z')).toBeInTheDocument()
     expect(getByText('q')).toBeInTheDocument()
   })
@@ -82,13 +70,16 @@ describe('Keyboard', () => {
   it('handles touchstart', () => {
     const { container } = render(<Keyboard />)
     const target = container.querySelector('[data-key="z"]')!
-    fireEvent.touchStart(target, { target: target })
+
+    fireEvent.touchStart(target)
+
     expect(synth.toggleAttribute).toHaveBeenCalledWith('baseFreq', '16.35')
   })
 
 
   it('handles touchend', () => {
     touchAndRelease('z')
+
     expect(synth.toggleAttribute).toHaveBeenCalledTimes(2)
   })
 })
@@ -108,51 +99,62 @@ describe('Keyboard', () => {
 
   it('handles keydown and triggers synth', () => {
     pressAndRelease('z')
+
     expect(synth.toggleAttribute).toHaveBeenCalledWith('baseFreq', '16.35')
   })
 
 
   it('does not trigger on repeated keydown', () => {
     pressAndRelease('z', 'repeat')
+
     expect(synth.toggleAttribute).not.toHaveBeenCalled()
   })
 
 
   it('handles keyup and releases note', () => {
     pressAndRelease('z')
+
     expect(synth.toggleAttribute).toHaveBeenCalledTimes(2)
   })
 
 
   it('does not toggle attribute for waveform on keyup', () => {
     pressAndRelease('q')
+
     expect(synth.toggleAttribute).toHaveBeenCalledTimes(1)
   })
 
 
   it('ignores touchstart when no data-key is present', () => {
     const event = newKeyEvent('touchstart')
+
     document.dispatchEvent(event)
+
     expect(synth.toggleAttribute).not.toHaveBeenCalled()
   })
   
 
   it('ignores touchend when no data-key is present', () => {
     const event = newKeyEvent('touchend')
+
     document.dispatchEvent(event)
+
     expect(synth.toggleAttribute).not.toHaveBeenCalled()
   })
   
 
   it('ignores unknown keys', () => {
     pressAndRelease('a')
+
     expect(synth.toggleAttribute).not.toHaveBeenCalled()
   })
 
 
   it('handles inactive non-note keys', () => {
     synth.settings.attributes.waveforms = []
+
     pressAndRelease('q')
+    
     expect(synth.toggleAttribute).toHaveBeenCalledWith('waveform', 'sine')
   })
 })

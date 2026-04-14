@@ -6,6 +6,7 @@ jest.mock('./data', () => ({
 }))
 
 describe('Header', () => {
+  
   it('renders title', () => {
     const { getByText } = render(<Header />)
 
