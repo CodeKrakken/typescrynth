@@ -1,6 +1,5 @@
 import { synth } from './Synth'
 import { AudioContextMock } from '../mocks';
-import { defaultSettings } from './data';
 
 // set up mocked context
 
@@ -12,6 +11,7 @@ describe('synth', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+
     synth.settings.attributes.baseFreqs = []
     synth.settings.attributes.waveforms = ['sine']
     synth.settings.attributes.octaves = ['4']
@@ -25,7 +25,6 @@ describe('synth', () => {
     synth.resume()
 
     expect(AudioContextMock.resume).toHaveBeenCalled()
-    synth.settings.attributes.octaves = ['4', '5']
   })
 
 
@@ -36,6 +35,16 @@ describe('synth', () => {
     
     expect(AudioContextMock.resume).not.toHaveBeenCalled()
   }) 
+
+
+  it('creates oscillator and gain nodes', () => {
+    synth.toggleAttribute('baseFreq', '16.35')
+
+    const node = synth.settings.activeNodes[0]
+
+    expect(node.oscillator.start).toHaveBeenCalled()
+    expect(node.gain.connect).toHaveBeenCalled()
+  })
 
 
   it('adds attribute and creates nodes on toggle on', () => {
@@ -53,17 +62,7 @@ describe('synth', () => {
     expect(synth.settings.attributes.baseFreqs).not.toContain('16.35')
     expect(synth.settings.activeNodes.length).toBe(0)
   })
-
-
-  it('creates oscillator and gain nodes', () => {
-    synth.toggleAttribute('baseFreq', '16.35')
-
-    const node = synth.settings.activeNodes[0]
-
-    expect(node.oscillator.start).toHaveBeenCalled()
-    expect(node.gain.connect).toHaveBeenCalled()
-  })
-
+  
 
   it('balances gain across nodes', () => {
     synth.toggleAttribute('baseFreq', '16.35')
@@ -74,13 +73,5 @@ describe('synth', () => {
     const expectedGain = 1/synth.settings.activeNodes.length
 
     expect(calls.some(call => call[0] === expectedGain)).toBe(true)
-  })
-
-
-  it('removes nodes from activeNodes when toggled off', () => {
-    synth.toggleAttribute('baseFreq', '16.35')
-    synth.toggleAttribute('baseFreq', '16.35')
-
-    expect(synth.settings.activeNodes.length).toBe(0)
   })
 })
