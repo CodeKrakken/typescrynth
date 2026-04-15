@@ -1,6 +1,8 @@
 import { fireEvent, render } from "@testing-library/react"
 import Keyboard from "./components/keyboard/Keyboard"
 
+// test helpers
+
 export const pressAndRelease = (key: string, repeat: string = '') => {
   if (repeat) return fireEvent.keyDown(document, { key: key, repeat: true })
   fireEvent.keyDown(document, { key: key })

@@ -1,5 +1,4 @@
-import { keysType, keyType } from '../types'
-import { synthType } from '../synth/types'
+import { keysType, keyType, synthType } from '../types'
 
 // helper functions
 
@@ -12,7 +11,6 @@ const position = (key: keyType, keySize: number, rowOffset: number) => {
     transform: `translate(${x}px, ${y}px)`
   }
 }
-
 
 const isEven = (n: number) => { return n % 2 === 0 }
 

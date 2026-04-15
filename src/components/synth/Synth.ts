@@ -1,4 +1,4 @@
-import { synthSettings, node, nodeAttribute, settingsAttribute } from './types'
+import { synthSettings, node, nodeAttribute, settingsAttribute } from '../types'
 import { defaultSettings } from './data'
 import { calculateFrequency } from './functions'
 import { nodeAttrs } from './data'

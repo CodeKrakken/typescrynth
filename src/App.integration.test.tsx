@@ -2,8 +2,6 @@ import { render, fireEvent } from '@testing-library/react'
 import Keyboard from './components/keyboard/Keyboard'
 import { synth } from './components/synth/Synth'
 import { AudioContextMock } from "./mocks";
-import { pressAndRelease } from './functions';
-import { describe } from 'node:test';
 
 global.AudioContext = jest.fn(() => AudioContextMock) as unknown as typeof AudioContext
 

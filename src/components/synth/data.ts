@@ -1,4 +1,4 @@
-import { nodeAttribute } from "./types"
+import { nodeAttribute } from "../types"
 
 export const defaultSettings = {
   attributes: {

@@ -1,4 +1,4 @@
-import { AudioContextMockType } from "./components/types";
+import { AudioContextMockType } from "./types";
 
 export const AudioContextMock: AudioContextMockType = {
   createOscillator: jest.fn(() => ({
