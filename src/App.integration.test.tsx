@@ -7,6 +7,8 @@ import { describe } from 'node:test';
 
 global.AudioContext = jest.fn(() => AudioContextMock) as unknown as typeof AudioContext
 
+let target: HTMLElement
+
 describe('App', () => {
 
   beforeEach(() => {
@@ -16,12 +18,12 @@ describe('App', () => {
     synth.settings.attributes.waveforms = ['sine']
     synth.settings.attributes.octaves = ['4']
     synth.settings.activeNodes = []
+
+    target = render(<Keyboard />).container.querySelector(`[data-key="z"]`)!
   })
 
 
   it('creates oscillator on key down', () => {
-    render(<Keyboard />)
-
     fireEvent.keyDown(document, { key: 'z' })
 
     expect(AudioContextMock.createOscillator).toHaveBeenCalled()
@@ -29,8 +31,6 @@ describe('App', () => {
 
 
   it('plays a note on key down', () => {
-    render(<Keyboard />)
-
     fireEvent.keyDown(document, { key: 'z' })
 
     expect(synth.settings.attributes.baseFreqs).toContain('16.35')
@@ -39,8 +39,6 @@ describe('App', () => {
 
 
   it('stops note on key up', () => {
-    render(<Keyboard />)
-
     fireEvent.keyDown(document, { key: 'z' })
 
     expect(synth.settings.attributes.baseFreqs).toContain('16.35')
@@ -54,19 +52,13 @@ describe('App', () => {
 
 
   it('creates oscillator on touch start', () => {
-    const { container } = render(<Keyboard />)
-    const target = container.querySelector(`[data-key="${'z'}"]`)!
-
     fireEvent.touchStart(target)
 
     expect(AudioContextMock.createOscillator).toHaveBeenCalled()
   })
 
 
-  it('plays a note on touch start', () => {
-    const { container } = render(<Keyboard />)
-    const target = container.querySelector('[data-key="z"]')!
-    
+  it('plays a note on touch start', () => {    
     fireEvent.touchStart(target)
 
     expect(synth.settings.attributes.baseFreqs).toContain('16.35')
@@ -74,10 +66,7 @@ describe('App', () => {
   })
   
 
-  it('stops note on touch end', () => {
-    const { container } = render(<Keyboard />)
-    const target = container.querySelector('[data-key="z"]')!
-    
+  it('stops note on touch end', () => {    
     fireEvent.touchStart(target)
 
     expect(synth.settings.attributes.baseFreqs).toContain('16.35')
