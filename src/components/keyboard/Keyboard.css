@@ -1,4 +1,3 @@
-
 #keyboard-container {
   display: flex;
   -webkit-user-drag: none;
@@ -18,6 +17,8 @@
   -ms-user-select: none;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  width: 48px;
+  height: 48px;
 }
 
 .text {
@@ -34,19 +35,5 @@
 @media (pointer:coarse) {
   .computer {
     display: none;
-  }
-}
-
-@media screen and (orientation:portrait) {
-  .key {
-    width: 48px;
-    height: 48px;
-  }
-}
-
-@media screen and (orientation:landscape) {
-  .key {
-    width: 48px;
-    height: 48px;
   }
 }
