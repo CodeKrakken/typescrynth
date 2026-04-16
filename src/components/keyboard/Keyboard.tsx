@@ -13,10 +13,6 @@ generateKeyColours(synth, keys)
 
 // functions
 
-const isKey = (key: string) => {
-  return Object.keys(keys).includes(key)
-}
-
 const isNote = (key: string) => {
   return keys[key].type === 'baseFreq'
 }
@@ -50,7 +46,7 @@ export default function Keyboard() {
     }
 
     const startHold = (key: string) => {
-      if (isKey(key) && !isHeld(key)) {
+      if (key in keys && !isHeld(key)) {
 
         synth!.resume()
         
